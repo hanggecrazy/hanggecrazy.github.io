@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yhv5.com/"/>
-  <updated>2017-05-14T07:24:33.558Z</updated>
+  <updated>2017-05-14T14:33:24.149Z</updated>
   <id>http://yhv5.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yhv5.com/update_gcc_1866.html"/>
     <id>http://yhv5.com/update_gcc_1866.html</id>
     <published>2017-05-10T10:02:00.000Z</published>
-    <updated>2017-05-14T07:24:33.558Z</updated>
+    <updated>2017-05-14T14:33:24.149Z</updated>
     
     <content type="html"><![CDATA[<p>升级前准备工作：<br>因gcc依赖mpc、gmp、mpfr三个包，因此需要先下载依赖包进行升级(可以选择不同的依赖包版本)<br>mpc： wget ftp://ftp.gnu.org/gnu/mpc/mpc-1.0.3.tar.gz<br>gmp： wget ftp://ftp.gnu.org/gnu/gmp/gmp-5.0.0.tar.gz<br>mpfr： wget ftp://ftp.gnu.org/gnu/mpfr/mpfr-3.0.0.tar.gz<br>gcc： wget <a href="http://ftp.gnu.org/gnu/gcc/gcc-4.9.2/gcc-4.9.2.tar.bz2" target="_blank" rel="external">http://ftp.gnu.org/gnu/gcc/gcc-4.9.2/gcc-4.9.2.tar.bz2</a></p>
 <h2 id="编译安装-mpc"><a href="#编译安装-mpc" class="headerlink" title="编译安装 mpc"></a>编译安装 mpc</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ tar -zxf mpc-1.0.3.tar.gz</div><div class="line">$ <span class="built_in">cd</span> mpc-1.0.3</div><div class="line">$ ./configure &amp;&amp; make &amp;&amp; make install</div></pre></td></tr></table></figure>
@@ -41,7 +41,7 @@
 <p>删除原软链<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rm -rf libstdc++.so.6</div></pre></td></tr></table></figure></p>
 <p>拷贝GCC编译的新版本libstdc<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ cp -r /usr/loca/lib64/libstdc++.so.0.21 /usr/lib64/</div></pre></td></tr></table></figure></p>
 <p>创建软链<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ln <span class="_">-s</span> libstdc++.so.6.0.21 libstdc++.so.6</div></pre></td></tr></table></figure></p>
-<p>全文完！</p>
+<p>(The End)</p>
 ]]></content>
     
     <summary type="html">
@@ -383,9 +383,9 @@
     
       <category term="MySQL" scheme="http://yhv5.com/tags/MySQL/"/>
     
-      <category term="mystat" scheme="http://yhv5.com/tags/mystat/"/>
-    
       <category term="PHP" scheme="http://yhv5.com/tags/PHP/"/>
+    
+      <category term="mystat" scheme="http://yhv5.com/tags/mystat/"/>
     
   </entry>
   
