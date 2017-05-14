@@ -1,0 +1,1939 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+    
+    <entry>
+      <title><![CDATA[CentOS升级gcc]]></title>
+      <url>/update_gcc_1866.html</url>
+      <content type="html"><![CDATA[<p>升级前准备工作：<br>因gcc依赖mpc、gmp、mpfr三个包，因此需要先下载依赖包进行升级(可以选择不同的依赖包版本)<br>mpc： wget ftp://ftp.gnu.org/gnu/mpc/mpc-1.0.3.tar.gz<br>gmp： wget ftp://ftp.gnu.org/gnu/gmp/gmp-5.0.0.tar.gz<br>mpfr： wget ftp://ftp.gnu.org/gnu/mpfr/mpfr-3.0.0.tar.gz<br>gcc： wget <a href="http://ftp.gnu.org/gnu/gcc/gcc-4.9.2/gcc-4.9.2.tar.bz2" target="_blank" rel="external">http://ftp.gnu.org/gnu/gcc/gcc-4.9.2/gcc-4.9.2.tar.bz2</a></p>
+<h2 id="编译安装-mpc"><a href="#编译安装-mpc" class="headerlink" title="编译安装 mpc"></a>编译安装 mpc</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ tar -zxf mpc-1.0.3.tar.gz</div><div class="line">$ <span class="built_in">cd</span> mpc-1.0.3</div><div class="line">$ ./configure &amp;&amp; make &amp;&amp; make install</div></pre></td></tr></table></figure>
+<h2 id="编译安装-mpfr"><a href="#编译安装-mpfr" class="headerlink" title="编译安装 mpfr"></a>编译安装 mpfr</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ tar -zxf mpfr-3.0.0.tar.gz</div><div class="line">$ <span class="built_in">cd</span> mpfr-3.0.0</div><div class="line">$ ./configure &amp;&amp; make &amp;&amp; make install</div></pre></td></tr></table></figure>
+<h2 id="编译安装-gmp"><a href="#编译安装-gmp" class="headerlink" title="编译安装 gmp"></a>编译安装 gmp</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ tar -zxf gmp-5.0.0.tar.gz</div><div class="line">$ <span class="built_in">cd</span> gmp-5.0.0</div><div class="line">$ ./configure &amp;&amp; make &amp;&amp; make install</div></pre></td></tr></table></figure>
+<h2 id="编译安装-gcc"><a href="#编译安装-gcc" class="headerlink" title="编译安装 gcc"></a>编译安装 gcc</h2><h3 id="下载编译所需的依赖项"><a href="#下载编译所需的依赖项" class="headerlink" title="下载编译所需的依赖项"></a>下载编译所需的依赖项</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ tar -jxf gcc-4.9.2.tar.bz2</div><div class="line">$ <span class="built_in">cd</span> gcc-4.9.2</div><div class="line">$ ./contrib/download_prerequisites</div><div class="line">$ <span class="built_in">cd</span> ..</div></pre></td></tr></table></figure>
+<h3 id="建立编译输出目录"><a href="#建立编译输出目录" class="headerlink" title="建立编译输出目录"></a>建立编译输出目录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ mkdir gcc-build-4.9.2</div></pre></td></tr></table></figure>
+<h3 id="生成makefile文件"><a href="#生成makefile文件" class="headerlink" title="生成makefile文件"></a>生成makefile文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> gcc-build-4.9.2</div><div class="line">$ ../gcc-4.9.2/configure --enable-checking=release --enable-languages=c,c++ --disable-multilib</div></pre></td></tr></table></figure>
+<h4 id="gcc-编译参数说明"><a href="#gcc-编译参数说明" class="headerlink" title="gcc 编译参数说明:"></a>gcc 编译参数说明:</h4><p>–enable-languages //指定 gcc 能编译哪些语言的文件，每种语言用逗号分隔, 例如 c,c++,Java。<br>–disable-multilib //默认 gcc 能在32位系统上将代码编译成64位程序，或者在64位系统上编译成32位程序，如果加上这个编译选项则表示关闭这个gcc的交叉编译功能。</p>
+<h2 id="执行编译"><a href="#执行编译" class="headerlink" title="执行编译"></a>执行编译</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ make -j4 &amp;&amp; make install</div></pre></td></tr></table></figure>
+<p>注：如果机器是单核就直接make &amp;&amp; make install ,参数-j4是利用多核编译，便以速度要快很多。</p>
+<h3 id="gcc编译常见错误："><a href="#gcc编译常见错误：" class="headerlink" title="gcc编译常见错误："></a>gcc编译常见错误：</h3><h4 id="错误一：“—make-5-s-attrtab-Killed”-是因为内存不足，可以分配交换空间来支持，具体操作如下："><a href="#错误一：“—make-5-s-attrtab-Killed”-是因为内存不足，可以分配交换空间来支持，具体操作如下：" class="headerlink" title="错误一：“—make[5]: * [s-attrtab] Killed” 是因为内存不足，可以分配交换空间来支持，具体操作如下："></a>错误一：“—make[5]: <em>*</em> [s-attrtab] Killed” 是因为内存不足，可以分配交换空间来支持，具体操作如下：</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ dd <span class="keyword">if</span>=/dev/zero of=/tmp/myswap bs=32k count=32768</div></pre></td></tr></table></figure>
+<p>(bs=32k指定每个扇区占用32kb,读入了32768个区段,输出了32768个区段,bs参数的目的在于指定每次读取及输入多少个bytes;由于磁盘存取的最小单位为扇区,因此设置bs也等于设置每个扇区的大小;而count的目的则在指定可以使用多少个扇区.因此,可以使用的硬盘空间就等于bs<em>count.以上范例为例,可以使用的硬盘空间等于32</em>32768=1048576(KB),亦等于1G)<br>格式化swap文件执行mkswap命令,将myswap文件格式化成s文件系统,系统才能使用,切换到/tmp目录,并执行以下命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ mkswap /tmp/myswap</div></pre></td></tr></table></figure></p>
+<p>启动swap分区<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ swapon /tmp/myswap</div></pre></td></tr></table></figure></p>
+<p>如果需要停止则执行 swapoff /tmp/myswap<br>检查swap分区<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ free -g/-m</div></pre></td></tr></table></figure></p>
+<h4 id="错误二：-“make-2-configure-stage1-libcpp-Error-1-”是因为缺少gcc-c"><a href="#错误二：-“make-2-configure-stage1-libcpp-Error-1-”是因为缺少gcc-c" class="headerlink" title="错误二： “make[2]: *** [configure-stage1-libcpp]Error 1 ”是因为缺少gcc-c++"></a>错误二： “make[2]: *** [configure-stage1-libcpp]Error 1 ”是因为缺少gcc-c++</h4><p>执行如下命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ yum install gcc-c++</div></pre></td></tr></table></figure></p>
+<h2 id="设置GLIBC"><a href="#设置GLIBC" class="headerlink" title="设置GLIBC"></a>设置GLIBC</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> /usr/lib64</div></pre></td></tr></table></figure>
+<p>删除原软链<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rm -rf libstdc++.so.6</div></pre></td></tr></table></figure></p>
+<p>拷贝GCC编译的新版本libstdc<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ cp -r /usr/loca/lib64/libstdc++.so.0.21 /usr/lib64/</div></pre></td></tr></table></figure></p>
+<p>创建软链<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ln <span class="_">-s</span> libstdc++.so.6.0.21 libstdc++.so.6</div></pre></td></tr></table></figure></p>
+<p>全文完！</p>
+]]></content>
+      
+        <categories>
+            
+            <category> Linux </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> gcc </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[CentOS 6.x搭建VPN]]></title>
+      <url>/centos_of_vpn_1733.html</url>
+      <content type="html"><![CDATA[<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><h3 id="检查机器是否支持VPN"><a href="#检查机器是否支持VPN" class="headerlink" title="检查机器是否支持VPN"></a>检查机器是否支持VPN</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ modprobe ppp-compress-18 &amp;&amp; <span class="built_in">echo</span> ok </div><div class="line">ok</div></pre></td></tr></table></figure>
+<p>如果返回OK则说明内核支持 MPPE，否则内核就没有集成，需要升级内核高于2.6.15。</p>
+<h3 id="检查内核TUN虚拟设备状态"><a href="#检查内核TUN虚拟设备状态" class="headerlink" title="检查内核TUN虚拟设备状态"></a>检查内核TUN虚拟设备状态</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cat /dev/net/tun</div><div class="line">cat: /dev/net/tun: File descriptor <span class="keyword">in</span> bad state</div></pre></td></tr></table></figure>
+<p>则说明可以安装。</p>
+<h3 id="检查系统内核是否已经集成了PPP"><a href="#检查系统内核是否已经集成了PPP" class="headerlink" title="检查系统内核是否已经集成了PPP"></a>检查系统内核是否已经集成了PPP</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ rpm -q ppp</div><div class="line">ppp-2.4.5-10.el6.x86_64</div></pre></td></tr></table></figure>
+<p>如果centos6.4内核版本大于2.6.15则可以不做上面的检查,否则需要自行安装PPP</p>
+<h3 id="查看PPP是否支持MEEP"><a href="#查看PPP是否支持MEEP" class="headerlink" title="查看PPP是否支持MEEP"></a>查看PPP是否支持MEEP</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ strings ‘/usr/sbin/pppd’ | grep -i mppe| wc <span class="_">-l</span></div><div class="line">42</div></pre></td></tr></table></figure>
+<p>如果返回0则表示不支持；输出为30或更大的数字就表示支持。</p>
+<h2 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h2><h3 id="安装ppp和iptables"><a href="#安装ppp和iptables" class="headerlink" title="安装ppp和iptables"></a>安装ppp和iptables</h3><p>PPTPD要求Linux内核支持mppe，一般来说CentOS安装时已经包含了<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ yum install -y perl ppp iptables</div></pre></td></tr></table></figure></p>
+<h3 id="安装pptpd"><a href="#安装pptpd" class="headerlink" title="安装pptpd"></a>安装pptpd</h3><p>对于32位CentOS，执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ wget http://acelnmp.googlecode.com/files/pptpd-1.3.4-1.rhel5.1.i386.rpm</div><div class="line">$ rpm -ivh pptpd-1.3.4-1.rhel5.1.i386.rpm</div></pre></td></tr></table></figure></p>
+<p>对于64位CentOS，执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ wget http://acelnmp.googlecode.com/files/pptpd-1.3.4-1.rhel5.1.x86_64.rpm</div><div class="line">$ rpm -ivh pptpd-1.3.4-1.rhel5.1.x86_64.rpm</div></pre></td></tr></table></figure></p>
+<p>安装pptp过程中可能会出现异常，常见的是pptp于ppp版本不兼容，这样就只能选择合适的ppp版本或者pptd 版本来相互兼容了。</p>
+<h3 id="修改配置信息"><a href="#修改配置信息" class="headerlink" title="修改配置信息"></a>修改配置信息</h3><p>首先修改ppp配置信息，它在/etc/ppp/options.pptpd<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cp -r /etc/ppp/options.pptpd /etc/ppp/options.pptpd_bak</div><div class="line">$ vi /etc/ppp/options.pptpd</div></pre></td></tr></table></figure></p>
+<p>如下图：<br><img src="http://yhv5.com/uploads/2015/10/options.jpg" alt="options"><br>然后修改配置/etc/ppp/chap-secrets，这里面就是设置vpn账号和密码的文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cp -r /etc/ppp/chap-secrets /etc/ppp/chap-secrets_bak</div><div class="line">$ vi /etc/ppp/chap-secrets</div></pre></td></tr></table></figure></p>
+<p>其中格式：username pptpd password <em>**<br>//username是你的vpn帐号，password是你的vpn的密码，</em>表示对任何ip，记得不要丢了这个星号。如下图：<br><img src="http://yhv5.com/uploads/2015/10/secrets.jpg" alt="secrets"><br>接着需要修改pptp配置信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cp -r /etc/pptpd.conf /etc/pptpd.conf_bak</div><div class="line">$ vi /etc/pptpd.conf</div></pre></td></tr></table></figure></p>
+<p>修改内容如下图：<br><img src="http://yhv5.com/uploads/2015/10/pptpd.jpg" alt="pptpd"><br>另外还需要修改一个内核配置让其支持转发，否则是不能上网的。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ vi /sysctl.conf</div></pre></td></tr></table></figure></p>
+<p>修改内容如下图：<br><img src="http://yhv5.com/uploads/2015/10/sysctl.jpg" alt="sysctl"></p>
+<h3 id="启动pptp-和防火墙服务iptables"><a href="#启动pptp-和防火墙服务iptables" class="headerlink" title="启动pptp  和防火墙服务iptables"></a>启动pptp  和防火墙服务iptables</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ /sbin/service pptpd start</div></pre></td></tr></table></figure>
+<p>启动防火墙需要特别注意，我们上面指定了一个专用网络ip段，因此需要设置转发规则<br>如我的防火墙设置：<br><img src="http://yhv5.com/uploads/2015/10/iptables.jpg" alt="iptables"><br>将上面红色圈中的vpsip修改成自己的vps ip即可，如果vps有多个网卡就需要使用－o ethxx来指定可以上网的网卡,如上图最上面红色框中的2行中使用了－o 来指定网卡。<br>最好保存并重启防火墙。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ /sbin/service iptables start</div></pre></td></tr></table></figure></p>
+<p>然后重启pptp服务即可。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$/sbin/service pptpd restart</div></pre></td></tr></table></figure></p>
+<p>另外也可以将pptp和防火墙设置成开机自启<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ chkconfig pptpd on</div><div class="line">$ chkconfig iptables on</div></pre></td></tr></table></figure></p>
+<p>最后展示2张链接成功的图：<br><img src="http://yhv5.com/uploads/2015/10/show.jpg" alt="show"><img src="http://yhv5.com/uploads/2015/10/online.jpg" alt="online"></p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> centos </tag>
+            
+            <tag> pptpd </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[HP(9470)吃下黑苹果10.11]]></title>
+      <url>/hp_mac_10_11_1720.html</url>
+      <content type="html"><![CDATA[<p>终于闲下来吃口黑苹果了，hp(9470)最终完美驱动10.11，现在呈给各位看客朋友，勿喷。<br><strong>机器配置</strong></p>
+<blockquote>
+<p>处理器：惠普Folio 9470m采用了Ivy Bridge i5 335u处理器<br>内存：8G 金士顿1600MHZ + 4G 海力士1600MHZ<br>显示器：Intel HD Grpjics 4000 1366 x 768<br>硬盘：120G SSD<br>声卡：Intel HDA(Intel High Definition Audio )<br>网卡：本身自带inter,无解，淘宝买块usb无线网卡驱动，记得一定是能支持10.11的。<br>系统：WIN10+MAC10.11。</p>
+</blockquote>
+<h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><p>下载如下工具：</p>
+<ul>
+<li>懒人版mac ox 10.11 网盘地址：<a href="http://pan.baidu.com/s/1pJrIQvx" target="_blank" rel="external">http://pan.baidu.com/s/1pJrIQvx</a> 提取码：jri4</li>
+<li>win版变色龙wowpc.iso  网盘地址：<a href="http://pan.baidu.com/s/1bnv5lvD" target="_blank" rel="external">http://pan.baidu.com/s/1bnv5lvD</a> 提取码: 6a2a</li>
+<li>版磁盘管理工具DiskGenius 网盘地址：<a href="http://pan.baidu.com/s/1o6iX1Qq" target="_blank" rel="external">http://pan.baidu.com/s/1o6iX1Qq</a> 提取码: ypug</li>
+<li>硬盘助手硬盘助手ddmac 网盘地址：<a href="http://pan.baidu.com/s/1ntBzOJR" target="_blank" rel="external">http://pan.baidu.com/s/1ntBzOJR</a> 提取码: 7dsq</li>
+<li>hfs+ for windows 或者 macdriver mac磁盘软件 网盘地址：<a href="http://pan.baidu.com/s/1sj3QeLn" target="_blank" rel="external">http://pan.baidu.com/s/1sj3QeLn</a> 提取码: w5vf </li>
+<li>Mac鼠标键盘驱动 网盘地址：<a href="http://pan.baidu.com/s/1c0wPcMO" target="_blank" rel="external">http://pan.baidu.com/s/1c0wPcMO</a> 提取码: f6jz</li>
+<li>启动引导生成软件easybcd 网盘地址：<a href="http://pan.baidu.com/s/1dD9EmUd" target="_blank" rel="external">http://pan.baidu.com/s/1dD9EmUd</a> 提取码: mghq</li>
+<li>multibease Mac以太网卡声卡驱动 网盘地址：<a href="http://pan.baidu.com/s/1qWP6Myo" target="_blank" rel="external">http://pan.baidu.com/s/1qWP6Myo</a> 提取码: ducj</li>
+<li>kext wizard  Mac驱动权限修复软件 网盘地址：<a href="http://pan.baidu.com/s/1dD6q2vZ" target="_blank" rel="external">http://pan.baidu.com/s/1dD6q2vZ</a> 提取码: 7tf3</li>
+</ul>
+<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><h4 id="创建mac引导分区"><a href="#创建mac引导分区" class="headerlink" title="创建mac引导分区"></a>创建mac引导分区</h4><p>win下面使用系统自带磁盘管理或磁盘工具DiskGenius进行分割大概8G的分区，不要格式化了。用来将mac 10.11写入该引导分区，另外还需要准备一块较大的空间用来安装Mac系统（&gt;30G以上吧，不然你会后悔的）。</p>
+<h4 id="写入mac引导镜像"><a href="#写入mac引导镜像" class="headerlink" title="写入mac引导镜像"></a>写入mac引导镜像</h4><p>使用硬盘助手ddmac并以管理员权限运行 ，选择懒人版镜像和上面未被格式化的分区（分区别选错了，可以看分区大小区分），只保留写入复选框，其他去掉，然后写入镜像，如果无法写入的，可以先去掉写入选项，选择其他分区，再选择回未格式化的分区勾上写入。</p>
+<h4 id="调整分区参数"><a href="#调整分区参数" class="headerlink" title="调整分区参数"></a>调整分区参数</h4><p>硬盘分区写入后，可使用分区软件DiskGenius调整分区参数为AF。</p>
+<h4 id="安装hfs-for-windows-或者macdrver"><a href="#安装hfs-for-windows-或者macdrver" class="headerlink" title="安装hfs+ for windows 或者macdrver"></a>安装hfs+ for windows 或者macdrver</h4><p>安装hfs+ for windows或者macdriver，用来在win下面管理hfs+格式分区，也就是苹果分区。安装完之后就可以在win下面看到上面写入分区的引导镜像内容。</p>
+<h4 id="复制驱动"><a href="#复制驱动" class="headerlink" title="复制驱动"></a>复制驱动</h4><p>将键盘驱动和鼠标驱复制到上面写入的硬盘分区下的/Extra/Extensions/下面，删除System/Library/Extensions/下面的IOBluethooth开头的蓝牙驱动（不然安装过程会要求接入苹果的蓝牙键盘和鼠标），后续该路径简写为/S/L/E/。</p>
+<h4 id="创建win下mac引导文件"><a href="#创建win下mac引导文件" class="headerlink" title="创建win下mac引导文件"></a>创建win下mac引导文件</h4><p>将下载的win版版色龙复制到win系统根目录C盘新建文件夹HJMac下，使用easybcd将变色龙引导写入到win系统引导中。</p>
+<h4 id="启动安装mac"><a href="#启动安装mac" class="headerlink" title="启动安装mac"></a>启动安装mac</h4><p>重启系统后可以看到引导中多了一个刚才创建的引导，选择进入选择我们上面写入的硬盘分区，使用命令行模式启动-v -f -x （这样如果出现无国可以方便排查）</p>
+<h4 id="获取显卡ID"><a href="#获取显卡ID" class="headerlink" title="获取显卡ID"></a>获取显卡ID</h4><p>顺利的话能进行安装，但是这里我们看看进入到安装界面时屏幕分辨率是否正常，如果不正常的，可以在顶部选择磁盘工具中的查看系统信息，找到对应的图形卡中对应的两组id值（设备ID和修正版ID）纪录下来，我这里分别是0x0166，0x0009，如图：<img src="http://yhv5.com/uploads/2015/10/hd4000.jpg" alt="hd4000"></p>
+<h4 id="注入显卡ID到变色龙启动文件"><a href="#注入显卡ID到变色龙启动文件" class="headerlink" title="注入显卡ID到变色龙启动文件"></a>注入显卡ID到变色龙启动文件</h4><p>点击顶部的黑苹果选择重启系统到win，将刚才纪录的两组ID值注入到/Extra/org.chameleon.Boot.plist中。如可添加<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">&lt;key&gt;Graphics Mode&lt;/key&gt;</div><div class="line">&lt;string&gt;1366x768x32&lt;/string&gt;</div><div class="line">&lt;key&gt;CsrActiveConfig&lt;/key&gt;</div><div class="line">&lt;string&gt;103&lt;/string&gt;</div><div class="line">&lt;key&gt;EthernetBuiltIn&lt;/key&gt;</div><div class="line">&lt;string&gt;Yes&lt;/string&gt;</div><div class="line">&lt;key&gt;GraphicsEnabler&lt;/key&gt;</div><div class="line">&lt;string&gt;Yes&lt;/string&gt;</div><div class="line">&lt;key&gt;Kernel&lt;/string&gt;</div><div class="line">&lt;string&gt;/System/Library/Kernels/kernel</div><div class="line">&lt;key&gt;Kernel Flags&lt;/key&gt;</div><div class="line">&lt;string&gt;<span class="_">-f</span>&lt;/string&gt;</div><div class="line">&lt;key&gt;Timeout&lt;/key&gt;</div><div class="line">&lt;string&gt;3&lt;/string&gt;</div><div class="line">&lt;key&gt;USBBusFix&lt;/key&gt;</div><div class="line">&lt;string&gt;Yes&lt;/string&gt;</div><div class="line">&lt;key&gt;HD4000PlatformId&lt;/key&gt;</div><div class="line">&lt;string&gt;9&lt;/string&gt;</div><div class="line">&lt;key&gt;ig-platform-id&lt;/key&gt;</div><div class="line">&lt;string&gt;0x01660009&lt;/string&gt;</div><div class="line">&lt;key&gt;InjectIntel-ig&lt;/key&gt;</div><div class="line">&lt;string&gt;09006601&lt;/string&gt;</div><div class="line">&lt;key&gt;IntelCapriFB&lt;/key&gt;</div><div class="line">&lt;string&gt;3&lt;/string&gt;</div><div class="line">&lt;key&gt;device-properties&lt;/key&gt;</div><div class="line">&lt;string&gt;5e0000000100000001000000520000000100000002010c00d041030a000000000101060000027fff04002c0000004100410050004c002c00690067002d0070006c006100740066006f0072006d002d006900640000000800000003006601&lt;/string&gt;</div></pre></td></tr></table></figure></p>
+<p>注：Graphics Mode 可以指定分辨率，EthernetBuiltIn 是否内建网卡，GraphicsEnabler 是否开启显卡侦测，HD4000PlatformId显卡驱动id , 如果是HD5000就改成5000，ID值就是0x0009，解释下为什么我这里是9，在计算机内部指令是0x0009 对应0x09和0x00，这里所以就是值9，ig-platform-id 这个值就是刚才的纪录的两组合ID，注意顺序。InjectIntel-ig这个值需要注意顺序为09006601（分解为0x09,0x00,0x66,0x01）。IntelCapriFB 这个是1366 x 768 分辨率的都写3，其他分辨率的值不一样。最后一个值比较重要，是一组显卡神奇string注入代码，直接使用即可。</p>
+<h4 id="检查显卡驱动是否正常驱动"><a href="#检查显卡驱动是否正常驱动" class="headerlink" title="检查显卡驱动是否正常驱动"></a>检查显卡驱动是否正常驱动</h4><p>修改完之后，重启上面第8步操作，此时来到安装界面分辨率应该是正常的，另外可以到磁盘工具下面的系统信息中找到刚才的图形卡，可以看到是总线是内建状态（表示驱动成功）。</p>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p>点击磁盘工具，将上面准备的大于30G的分区抹掉，选择日志类型分区格式，退出磁盘工具后选择刚才创建的Mac分区进行安装，一般安装过程需要等待接近15-20分钟。</p>
+<h4 id="驱动修改"><a href="#驱动修改" class="headerlink" title="驱动修改"></a>驱动修改</h4><p>安装完成后会重启系统，先进入到win系统，将Mac引导盘中的/Extra 复制到Mac安装好的分区根目录下，然后到安装盘中删除/Extra/Extensions ,/Extra/SMBIOS.plist，这里说下为什么要删除，因为，本身/S/L/E/下面已经有/Extra/Extension/下面的驱动，删除SMBios.plist是防止无法登录iMessage，将鼠标驱动AppleACPIPS2Nub.kext和键盘驱动ApplePS2Controller.kext以及fsckSM.kext复制到/S/L/E/。</p>
+<h4 id="重启检查"><a href="#重启检查" class="headerlink" title="重启检查"></a>重启检查</h4><p>安装完成后会重启，来到刚才安装Mac分区，选择安装的Mac分区，并使用命令行模式-v -f -x 进行继续安装后续的操作，这个过程基本上不会出现问题。</p>
+<h4 id="进入桌面"><a href="#进入桌面" class="headerlink" title="进入桌面"></a>进入桌面</h4><p>这样应该可以顺利进入桌面，分辨率这时候应该是正常的，安装multibease,和kext wizard，前者是包含了一部分的驱动如以太网卡驱动、声卡驱动等等，可以方便的直接安装。到此为止电脑基本上就算正常了，如果无线网卡没办法驱动的，就买个usb的吧！</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>最后上一张安装完成的截图：<img src="http://yhv5.com/uploads/2015/10/system.jpg" alt="system"></p>
+<p>对于很多无法登录AppStore的看客，可以试着先内建以太网卡，或者使用蓝牙驱动创建en0,避免先安装无线网卡导致无线网卡变成en0,无法登录AppStore。<img src="http://yhv5.com/uploads/2015/10/network.jpg" alt="network"></p>
+<p>最后说下为什么上面介绍时说系统安装分区一定要大于30G，因为系统安装完之后基本上就到了20G+，剩余的空间就不会很多了，苹果系统下面进行无损扩容分区非常不方便，所以建议大家开始就将分区设置大一些。</p>
+<p>然后说下怎么进行无损扩容，首先你需要有块移动硬盘或者普通硬盘能接入到电脑上的都行，将这块硬盘分一个区大概不要小于Mac目前的系统分区就够了，然后再Mac系统下使用磁盘工具把这个分区格式和成日志式。选择我们需要备份的Mac系统盘，在磁盘工具顶部选择“文件－&gt;新建镜像－&gt;Mac的镜像”，选择后填写好镜像的名称和备份的磁盘路径（刚格式化出来的分区），这个过程需要半小时左右，具体看导出的分区大小决定。结束后会在目标分区上生成一个名称.dmg格式的镜像文件。然后在win下面使用磁盘工具将分区进行合并好后，重新创建新的分区。使用win版变色龙来引导Mac到安装界面，选择磁盘工具，点击上方的“编辑－&gt;恢复”后，选择上面生产的dmg格式文件，恢复到新创见的分区上即可，如果分区格式不对，可以使用磁盘工具格式化为日志式分区类型。等待大概10分钟左右就可以将之前的系统恢复过来了，过程比较麻烦，所以建议之前将分区设置大一些。</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 10.11 </tag>
+            
+            <tag> HP </tag>
+            
+            <tag> 黑苹果 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Redis Cluster部署]]></title>
+      <url>/redis_cluster_1670.html</url>
+      <content type="html"><![CDATA[<p>Redis Cluster 分布式集群，牺牲了数据的强一致性，来保证数据的可用性。也就是所谓的Redis从一个单纯的NoSQL内存数据库变成了分布式NoSQL数据库，CAP（Consistency &amp; Availability &amp; Partition-Tolerancy）模型也从CP变成了AP，三者只能取其二。</p>
+<h3 id="redis安装"><a href="#redis安装" class="headerlink" title="redis安装"></a>redis安装</h3><p>下载地址可以到官方下载或者下载本站地址<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /home/work/soft/</div><div class="line">wget http://yhv5.com/soft/redis-3.0.3.tar.gz</div><div class="line">tar -zxvf redis-3.0.3.tar.gz</div><div class="line"><span class="built_in">cd</span> redis-3.0.3</div><div class="line">configure --prefix=/home/work/redis</div><div class="line">make &amp;&amp; make install</div></pre></td></tr></table></figure></p>
+<h3 id="配置修改"><a href="#配置修改" class="headerlink" title="配置修改"></a>配置修改</h3><p>修改redis配置文件/home/work/redis/bin/redis.conf 如下内容<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">bind</span> XXX.XXX.XXX.XXX <span class="comment">#修改为自己的绑定IP地址</span></div><div class="line">cluster-enabled yes <span class="comment">#开启Cluster</span></div><div class="line">dir /mnt/redis/rdb <span class="comment">#rds数据落地文件路径</span></div><div class="line">dbfilename dump.rdb <span class="comment">#将内存数据刷入</span></div><div class="line">pidfile /mnt/redis/pid/redis-XXXX.pid <span class="comment">#路径可以自定义，将XXXX替换为对应端口</span></div><div class="line">cluster-config-file nodes-XXXX.conf <span class="comment">#这个配置文件不是要我们去配的，而是Redis运行时保存配置的文件，所以我们也不可以修改这个文件,将XXXX替换为我们的端口号。</span></div><div class="line">cluster-node-timeout 15000 <span class="comment">#集群超时时间：结点超时多久则认为它宕机了。</span></div><div class="line">cluster-require-full-coverage no <span class="comment">#槽是否全覆盖：默认是yes，只要有结点宕机导致16384个槽没全被覆盖，整个集群就全部停止服务，所以一定要改为no</span></div><div class="line">daemonize yes <span class="comment">#守护进程模式</span></div><div class="line">logfile <span class="string">"/mnt/redis/log/redis.log"</span> <span class="comment">#日志文件,路径可以自定义</span></div><div class="line">port XXXX <span class="comment">#监听端口,将XXXX替换为我们的端口</span></div></pre></td></tr></table></figure></p>
+<p>为保证集群的稳定性，数据冗余为1则至少需要3台Master和3台Slave(即一主对应一从)，那么我们将开启6个端口来支持这6个redis服务（端口分别为6380-6385）。因此需要将redis配置拷贝6份，我们将配置也重命名为redis.conf.端口号，如图：<br><img src="http://yhv5.com/uploads/2015/09/conf.png" alt="conf"></p>
+<h3 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h3><p>可以按照/home/work/redis/bin/redis.server /home/work/redis/bin/conf/redis.conf.xxx 方式来启动6个实例,也可以批量启动<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>((i=0; i&lt;6; i++));<span class="keyword">do</span> /home/work/redis/bin/redis.server /home/work/redis/bin/conf/redis.conf.638<span class="variable">$i</span> ;<span class="keyword">done</span></div></pre></td></tr></table></figure></p>
+<p>为了方便我提供了一个快速启动的脚本（见文末附件）,即可以用如下方式启动、重启、或者停止服务。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>((i=0; i&lt;6; i++));<span class="keyword">do</span> /home/work/redis/redis_control -p 638<span class="variable">$i</span> [start|stop|restart];<span class="keyword">done</span></div></pre></td></tr></table></figure></p>
+<p><img src="http://yhv5.com/uploads/2015/09/start.png" alt="start"></p>
+<p>如果执行顺利可以查看6个服务进程是否都已经启动。如果有问题可以按照日志进行排查（往往因为pid或log无权限写入，而导致启动失败）。</p>
+<p>查看进程是否正常：</p>
+<p><img src="http://yhv5.com/uploads/2015/09/cluster.png" alt="cluster"></p>
+<p>查看进程pid是否生成到对应文件：</p>
+<p><img src="http://yhv5.com/uploads/2015/09/pid.png" alt="pid"></p>
+<h3 id="集群部署"><a href="#集群部署" class="headerlink" title="集群部署"></a>集群部署</h3><p>上面操作完成后，6个实例之间并没有任何关联，现在需要用到redis-trib管理器，但它依赖于ruby，因此需要先安装ruby以及rubygems<br>安装ruby之前需要先安装开发包支持<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">yum install openssl* openssl-devel zlib-devel gcc gcc-c++ make autoconf readline-devel curl-devel expat-devel gettext-devel</div><div class="line"><span class="built_in">cd</span> /home/work/soft/</div><div class="line">wget http://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p247.tar.gz</div><div class="line">tar zxvf ruby-2.0.0-p247.tar.gz</div><div class="line"><span class="built_in">cd</span> ruby-2.0.0-p247</div><div class="line">./configure --enable-shared --enable-pthread --prefix=/home/work/ruby</div><div class="line">make &amp;&amp; make install</div></pre></td></tr></table></figure></p>
+<h4 id="加入环境变量"><a href="#加入环境变量" class="headerlink" title="加入环境变量"></a>加入环境变量</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> <span class="string">"PATH=<span class="variable">$PATH</span>:/home/work/ruby/bin;export PATH"</span> &gt;&gt; /etc/profile</div><div class="line"><span class="built_in">source</span> /etc/profile</div></pre></td></tr></table></figure>
+<h4 id="下载rubygems"><a href="#下载rubygems" class="headerlink" title="下载rubygems"></a>下载rubygems</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /home/work/soft/</div><div class="line">wget https://rubygems.org/downloads/redis-3.2.1.gem</div><div class="line">gem install redis-3.2.1.gem --local --no-rdoc --no-ri</div></pre></td></tr></table></figure>
+<h3 id="创建集群命令"><a href="#创建集群命令" class="headerlink" title="创建集群命令"></a>创建集群命令</h3><p>格式如：/home/work/soft/redis-3.0.3/src/redis-trib.rb create –replicas ip1:port1 ip2:port2 ….<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/work/soft/redis-3.0.3/src/redis-trib.rb create --replicas 1 10.48.56.215:6380 10.48.56.215:6381 10.48.56.215:6382 10.48.56.215:6383 10.48.56.215:6384 10.48.56.215:6385</div></pre></td></tr></table></figure></p>
+<p><img src="http://yhv5.com/uploads/2015/09/create.png" alt="create">2）查看集群节点：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/work/redis/bin/redis-cli -h 10.48.56.215 -p 6380 cluster nodes</div></pre></td></tr></table></figure></p>
+<p><img src="http://yhv5.com/uploads/2015/09/status.png" alt="status"></p>
+<h4 id="添加数据"><a href="#添加数据" class="headerlink" title="添加数据"></a>添加数据</h4><p>接下来我们向集群中添加一些数据，执行命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>((i=0; i&lt;20; i++)); <span class="keyword">do</span> /home/work/redis/bin/redis-cli -c -h 10.48.56.215 -p 6380 <span class="built_in">set</span> yh_<span class="variable">$i</span>  <span class="variable">$i</span> ;<span class="keyword">done</span></div></pre></td></tr></table></figure></p>
+<h4 id="连接集群"><a href="#连接集群" class="headerlink" title="连接集群"></a>连接集群</h4><p>启动redis-cli时要加-c选项，不加-c选项如果查询到某个值不在该节点上会提示error<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/work/redis/bin/redis-cli -h 10.48.56.215 -p 6380 -c</div></pre></td></tr></table></figure></p>
+<p>就能看到以错误形式显示出的MOVED重定向信息。<img src="http://yhv5.com/uploads/2015/09/info.png" alt="info"></p>
+<h3 id="向集群添加节点"><a href="#向集群添加节点" class="headerlink" title="向集群添加节点"></a>向集群添加节点</h3><p>现在我们向集群中增加2个节点，一个Master和一个Salve节点，端口分别为（6386和6387）</p>
+<p>首先和刚才一样复制2份redis配置，如下：</p>
+<p><img src="http://yhv5.com/uploads/2015/09/addconf.png" alt="addconf"></p>
+<p>接下来启动新增的2个redis服务：</p>
+<p><img src="http://yhv5.com/uploads/2015/09/addstart.png" alt="addstart"></p>
+<p>查看进程pid已经写入成功：</p>
+<p><img src="http://yhv5.com/uploads/2015/09/addpid.png" alt="addpid"></p>
+<p>现在我们将端口为6386的节点作为Master添加到集群中，执行命令如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/work/soft/redis-3.0.3/src/redis-trib.rb add-node Newip:port MasterIP:port，这里我们选择了6380端口的Master.</div></pre></td></tr></table></figure></p>
+<p><img src="http://yhv5.com/uploads/2015/09/addnode1.png" alt="addnode1"></p>
+<p>我们再次查看集群节点可以看到端口为6386的node已经成为了Master.</p>
+<p><img src="http://yhv5.com/uploads/2015/09/addstatus.png" alt="addstatus"></p>
+<p>接下来我们将端口为6387的作为Slave节点添加到端口为6386的Master下面，需要记录上图中的第一列中的MasterId执行命令如下:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/work/soft/redis-3.0.3/src/redis-trib.rb add-node --slave --master-id MasterId NewIP:port MasterIP:port</div></pre></td></tr></table></figure></p>
+<p><img src="http://yhv5.com/uploads/2015/09/addslave.png" alt="addslave"></p>
+<p>查看一下添加的节点：</p>
+<p><img src="http://yhv5.com/uploads/2015/09/slave.png" alt="slave"></p>
+<h3 id="Resharding"><a href="#Resharding" class="headerlink" title="Resharding"></a>Resharding</h3><p>接下来我们可以对集群中的slots重新分配，比如我们需要将端口为6380的Master中的5000slot分配给6386端口的Master,则可以执行如下命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/work/soft/redis-3.0.3/src/redis-trib.rb reshard ResIP:port DesIP:port</div></pre></td></tr></table></figure></p>
+<p><img src="http://yhv5.com/uploads/2015/09/reshard.png" alt="reshard"></p>
+<p>我们再次查询key为”yh_2”时发现已经重定向到了6386端口上。</p>
+<p><img src="http://yhv5.com/uploads/2015/09/regetkey.png" alt="regetkey"></p>
+<p>我们在来看下一下集群节点：</p>
+<p><img src="http://yhv5.com/uploads/2015/09/reshardresult.png" alt="reshardresult"></p>
+<p>最后附上本文资源：<a href="http://yhv5.com/software/redis_control">redis启动脚本</a>，<a href="http://yhv5.com/software/redis-3.0.3.tar.gz"> redis-3.0.3 </a>, <a href="http://yhv5.com/software/redis-3.2.1.gem"> rubygem </a>。</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> Linux </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> cluster </tag>
+            
+            <tag> redis </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[随笔之泰山游玩记]]></title>
+      <url>/travel_1615.html</url>
+      <content type="html"><![CDATA[<p>想必在这个黄金周没有各位看客都没有空闲吧！是个好机会出去放松放松长期工作的疲惫身躯了，于是就有了下面的内容….</p>
+<p>这个长假对于我来说还是比较充实的，本次旅行的终点便是大家熟悉而又不陌生的五岳之首-泰山。下面看看泰山的位置吧</p>
+<p><img src="http://yhv5.com/uploads/2014/10/map.jpg" alt="map"></p>
+<p>泰山位于山东省会济南市正南方向50km左右的泰安市(车道估计有70km)。</p>
+<p>如果大家想想直接旅行去泰山，估计就只能去泰山了，因为登泰山肯定是一件费劲的事儿，到时候从泰山下来估计哪儿也不想去了，因此我们制定的路线并不是直接去泰山，而是先去周边的旅游景点。</p>
+<p>泰山之前续-第一站：济南市</p>
+<p>10月1日傍晚18:27在北京南站乘坐G2601踏上此次旅行的第一步，高铁在月黑的夜晚开着300KM/h的速度一路向南，在21:50分左右到达济南站，并入住离火车站300m左右的天虹商务酒店（当时的酒店费用是188/天），由于到时已经比较晚了，到处看不到商店买零食和水，结果在济南车火车站东侧的世纪华联超市（邮政宾馆旁）买了一瓶6元的水，结果被骗了，让我觉得山东人的豪气顿时全无。骗子居然利用世纪华联超市名义在济南火车站行骗，骗走大洋70，后果断报警，平生第一次打110，追回大洋，发现落难者竟络绎不绝的前来讨债，无语的发现卖的东西都是2012年的。警察同志告诉我，之前记者都来采访过但愁于没有证据无法断案，现在只好遇到一次报案就帮忙追回一次。还原现场:达到济南站晚上10点左右，到处看不到买零食和水的地方，仅仅注意到济南站东侧邮政宾馆旁的“世纪华联超市”，买了一瓶水6大洋，给他100，没注意到他竟然把100悄悄给撕掉一个角，并告诉我说这钱少了一个角，是真钱，让我在钱包里面找那个角，并把钱包拿来里面的钱翻出来，他看我钱包里面还有100的大洋，于是说他家进货全是零钱，换100大洋的零钱给我，事先觉得以为自己的钱有问题，这老板都不在乎，就答应了他换，于是乎开始了骗局找我184，我接过钱数了一下少10大洋，让他再数，他数了确实少，然后看见他补了10大洋，呃呃呃没有数钱拿着钱就走了，这就被坑爹了。骗子花样很多，有些情况是把你钱包翻个底，然后随手套走大洋。基于带着警察同志到店询问，骗子说忙刚才找错了，或者说你自己落下了，他帮你捡着的，没有可靠证据，无法立案。唉百度一把，结果一大把被骗都忍气吞声了。这是济南的第一印象！</p>
+<p>第二天一大早便抽身去了传说中的大明湖（门票30元/位），也可以买通票（75元/位，包含大明湖景区30元、五龙湖景区5元、趵突泉景区40元），大明湖风景确实不错，如果围绕着湖转一圈估计的费一上午的时间，主要是水上娱乐，快艇、划船的人真不少，里面游玩的就像普通的游乐场没有两样，一般情况下不想去玩，主要是看湖畔风景。10月的大明湖吹着一阵阵的凉风，让人精神顿时抖擞，不愧是5A景点。后来去参观了老舍纪念馆、超然楼等等地方。</p>
+<p><img src="http://yhv5.com/uploads/2014/10/map2.jpg" alt="map2"></p>
+<p>由于我们走的比较快，一上午过去了，我们差不多围绕着转了一个圈，其中的东湖是免费参观的。中午就在开元广场随便吃了点东西，便进入广场的一个鸿星尔克专卖店购物，当时的甩卖价让我心动的买了两件衣服，结果证明还是买对了。</p>
+<p>一下子就到下午2点多了，由于时间关系，本想去五龙潭公园参观的，但是由于考虑时间因素，我们接着去了附近的趵突泉，这里的门票要比大明湖贵（门票40元/位），买票进园，一路都是都是泉（话说有888个泉眼，目前有史书记载的就有72个），清澈透明，风水宜人，真是适合养老啊。</p>
+<p>于是这一天时间就这样过去了，水也就看完了，于是去看山~</p>
+<p>泰山之前续-第二站：泰安市</p>
+<p>10月2日8:05乘坐K8281次列车由济南站出发前往泰山站，由于这之间路程较短差不多不到一个小时的车程就到了。吃完饭，在泰山站寄存行李（车站都没有寄存的地方，只好在一个超市寄存，12元还是挺便宜的），立马前往附近的岱庙景点（门票30元/位），岱庙具体位置如下：</p>
+<p><img src="http://yhv5.com/uploads/2014/10/map3.jpg" alt="map3"></p>
+<p>大约离泰山站不到5km，乘坐k37可以到附近（但是由于实在不太明白泰安乘车路线，第一次坐反了车，于是在那儿等了好久好久的车才坐回去）。岱庙可以堪称小皇宫，就像是故宫的缩影，在这里可以肉眼直接眺望泰山山顶，据说是皇帝专门修建眺望泰山的“别墅”。看看是不是像故宫</p>
+<p><img src="http://yhv5.com/uploads/2014/10/map4.gif" alt="map4"></p>
+<p><img src="http://yhv5.com/uploads/2014/10/map5.jpg" alt="map5"></p>
+<p>岱庙一游，约了下午5点的车去泰山看封禅（shan）大典（10月1日后第一场是在18点15分开始，进行2小时），多数人都是看第一场的，因为第二场晚上20点开始都要等到22:00去了，晚上山上特别冷，所以那时候的票价要便宜些，于是3点多就转车回火车站拿上行李到了泰山脚下–天外村，坐等预约大巴（票价10元/位来回）前往封禅大典目的地，因为我们买的套票（泰山门票127元/位+封禅大典门票D区168元/位），因此门票都在天外村广场取票，从天外村到封禅大典大概需要30多分钟的车程。</p>
+<p><img src="http://yhv5.com/uploads/2014/10/map6.jpg" alt="map6"></p>
+<p>封禅大典确实是非常精彩，建议去登泰山的伙伴都去看看，各种表演凸显了各个朝代皇帝到泰山祭祀山神的壮观景象，而且在天烛峰的夜景也比较迷人，在这里一种复古的感觉悠然而生。</p>
+<p>晚上8点多了，乘来的车又会到了太外村，在这里我们在KFC吃了夜宵，做了登山前的准备工作，大致晚上10点左右，由于太外村是车道上中天门，而登山的道在红门，于是提前买上登山杖，打车（15元）前往红门登山口。来到红门一看夜间来登山的人还是比较多，各种山上下山的人都在步行着，各种灯光照得路面台阶清晰可见。</p>
+<p>大约晚上10点左右开始登山的前奏，由于自己带了帐篷，而检票处不让带帐篷，于是顺道带着溜进去，背着20公斤的行李移步青云，一波一波的人被我们甩在身后了，为了保持体力，没过多久我们放慢了节奏，慢慢登山，一路沿斗母宫、壶天阁、步天桥走走停停到达半山腰中天门，已经是凌晨12点多了，人此时也累的不行了，也没有再注意什么夜间景色，休息中顺便补充了一点食物，我们开始寻找搭帐篷的地方，由于很多地方都不太适合，十分钟之后继续前行，沿着云步桥、望人松、对松亭达到南天门，由于前半程已经非常疲惫不堪，因此下半程花了可以搭帐篷的地方，足足3个小时才到达南天门，在这里人山人海，到处都是睡着人，也找不到搭帐篷的地方，最后选择铺上防潮垫、裹着睡袋休息了2个小时，5点多左右爬起来开始看日出，结果由于山上雾霭蒙蒙满山阔，看不到什么云海，于是选择在继续前往玉皇顶，中途在山上吃了10元的“丰盛”早餐，大致步行了20分钟左右来到山顶，风相当大，在这里有祭祀，有求神、有购物的人群，看了看遍四处游玩去了，警告后天坞索道、桃花源索道，没过多久我们便又回到了南天门，在这里时而遇到小雨急下，时而大风凛冽。由于看日出的期望基本已经破灭，于是逗留到上午10点多左右开始下山。</p>
+<p>由山顶下山，可谓是痛苦万分，每一步台阶都是多么的痛苦不堪，脚在不断的抖散，柱着登山杖步履蹒跚的一步一步往下摞，此时由于已经白天，夜间没有看到的景象此时也可以一收眼底，边走边停，快到中午的时候我们来到了半山腰中天门，由于实在苦不堪言，便在中天门买汽车票（30元/位）坐车下山了，此时的人又累又饿脚也痛，舒服的在车上度过了那么短暂的20多分钟，达到山脚下-天外村。</p>
+<p>下午时分便乘坐k39路车去高铁站，在哪儿找了好几个地方吃饭，最后在一个超时里面自营的小饭店吃了一顿，饥饿难耐最终也吃得一干二净，傍晚18:15分我们乘坐G142次车从泰安乘车回到北京南，最终到家已经是晚上10点左右，自己做了一点东西吃了，就休息了。</p>
+<p>总结：此次出行，首遇火车站骗子，这是第一印象；在山东吃的每一顿饭，我注意到都没有提供过餐巾纸，这是第二大印象；热情好客、乐于助人的场景亲身经历，这是第三印象。总之还是值得去的一个地方。。。</p>
+<p>附上本次出行的各种门票：</p>
+<p>大明湖门票：</p>
+<p><img src="http://yhv5.com/uploads/2014/10/daminghu.jpg" alt="daminghu"></p>
+<p>趵突泉门票：</p>
+<p><img src="http://yhv5.com/uploads/2014/10/baotuquan.jpg" alt="baotuquan"></p>
+<p>岱庙门票：</p>
+<p><img src="http://yhv5.com/uploads/2014/10/daimiao.jpg" alt="daimiao"></p>
+<p>封禅大典门票：</p>
+<p><img src="http://yhv5.com/uploads/2014/10/tianzufeng.jpg" alt="tianzufeng"></p>
+<p>泰山门票：</p>
+<p><img src="http://yhv5.com/uploads/2014/10/taishan.jpg" alt="taishan"></p>
+<p>车票：</p>
+<p><img src="http://yhv5.com/uploads/2014/10/trail.jpg" alt="trail"></p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 大明湖 </tag>
+            
+            <tag> 泰安 </tag>
+            
+            <tag> 泰山 </tag>
+            
+            <tag> 济南 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[MySQL中的部分小技巧]]></title>
+      <url>/mysql_skill_1601.html</url>
+      <content type="html"><![CDATA[<p>熬夜看代码已经养成了习惯，如果看看优秀的代码还是值得的，但是如果是烂代码就太浪费时间了，总结下大致看到的一些问题，主要是关于MySQL中的SQL语句问题，下面一起来看看吧！ 第一个问题，关于分页处理，在一般情况下面我们都会使用如下语句来进行分页查询</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> TABLENAME <span class="keyword">LIMIT</span> x,y;</div></pre></td></tr></table></figure>
+<p>如果在数据量较少的情况下上面的语句是ok，没有可以挑剔的地方，但是当数据量较大或者是超过了1000W以上呢？ 这样的语句还ok 吗？这样的语句就没有一点问题吗？或许你可以执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">EXPLAIN SELECT * FROM TABLENAME LIMIT 10000000, 10;</div></pre></td></tr></table></figure>
+<p>看看这样的SQL执行的效率有多高，很多程序员都会这样写，包括我看到的部分代码也一样。其实我们还是可以换一种方式来处理这样的问题，比如这样的SQL</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT * FROM TABLENAME WHERE id &gt; n LIMIT x, y;</div></pre></td></tr></table></figure>
+<p>其实有了这样一个条件，则可以过滤除开条件以外的数据，从而减少了扫描数千万的数据带来性能影响，在数据量较大的情况下，你的收益还是蛮高的，不信你就试试看吧~ 另外还有几种模式，一起介绍给大家。 mysql查询今天，昨天，近7天，近30天，本月，上一月数据的sql语句的优化，具体可参看如下： 查询当日的数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT * FROM TABLENAME WHERE to_days(current_time) = to_days(now());</div></pre></td></tr></table></figure>
+<p>查询昨天的数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT * FROM TABLENAME WHERE to_days(now()) – to_days(current_time) &lt;= 1;</div></pre></td></tr></table></figure>
+<p>查询近7天的数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT * FROM TABLENAME WHERE date_sub(curdate(), INTERVAL 7 DAY) &lt;= date(current_time);</div></pre></td></tr></table></figure>
+<p>查询近30天的数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT * FROM TABLENAME WHERE date_sub(curdate(), INTERVAL 30 DAY) &lt;= date(current_time);</div></pre></td></tr></table></figure>
+<p>查询本月的数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT * FROM TABLENAME WHERE date_format(current_time, &apos;%Y%m&apos;) = date_format(curdate() , &apos;%Y%m&apos;);</div></pre></td></tr></table></figure>
+<p>查询上一月的数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT * FROM TABLENAME WHERE period_diff(date_format(now() , &apos;%Y%m&apos;) , date_format(current_time, &apos;%Y%m&apos;)) =1;</div></pre></td></tr></table></figure>
+<p>希望能帮助各位路人。</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> SQL </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> MySQL </tag>
+            
+            <tag> 技巧 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Mystat 数据库监测]]></title>
+      <url>/mystat_1575.html</url>
+      <content type="html"><![CDATA[<p>说起这款mystat，其实它就是一个Perl脚本，但是用来监测mysql还是足够了，下面我们来介绍一下这款利器。 因为是perl脚本，所以首先需要机器支持Perl，如果你的机器没有安装那么可以直接执行yum install perl，它会帮你安装各种Perl的依赖lib，如果你喜欢编译安装，那么可以去 perl官方(<a href="http://www.perl.org/get.html" target="_blank" rel="external">http://www.perl.org/get.html</a>) 下载编译安装，具体编译细节本文不做介绍。 好了已经安装或者已经有perl的小伙伴就可以去下载perl的mysql包了，首先需要安装的是<a href="http://www.cpan.org/modules/by-module/DBD/" target="_blank" rel="external">DBI</a>，Perl连接数据库需要安装DBI模块和相应数据库的DBD驱动，Linux上默认安装的Perl是没有该模块的,所以要手动安装。</p>
+<h3 id="安装DBI"><a href="#安装DBI" class="headerlink" title="安装DBI"></a>安装DBI</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">wget http://cpan.metacpan.org/authors/id/T/TI/TIMB/DBI-1.631.tar.gz</div><div class="line">tar -zxvf DBI-1.631.tar.gz</div><div class="line"><span class="built_in">cd</span> DBI-1.631</div><div class="line">perl Makefile.PL</div><div class="line">make</div><div class="line">make install</div></pre></td></tr></table></figure>
+<h3 id="安装DBD-mysql"><a href="#安装DBD-mysql" class="headerlink" title="安装DBD-mysql"></a>安装DBD-mysql</h3><p>具体可以到官方(<a href="http://search.cpan.org/~capttofu/DBD-mysql-4.020/" target="_blank" rel="external">http://search.cpan.org/~capttofu/DBD-mysql-4.020/</a>) 选择版本下载，我这里选择的是截止目前为止的最高版本DBD-mysql-4.020，好了下载我们一如既往的编译安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">wget http://search.cpan.org/CPAN/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.020.tar.gz</div><div class="line">tar -zxvf DBD-mysql-4.011.tar.gz</div><div class="line"><span class="built_in">cd</span> DBD-mysql-4.011</div><div class="line">perl Makefile.PL --mysql_config=/usr/<span class="built_in">local</span>/mysql/bin/mysql_config</div><div class="line">make</div><div class="line">make install</div></pre></td></tr></table></figure>
+<p>安装完成之后，我们就可以去下载mystat脚本了，可以到本文末下载或者去作者博客(<a href="http://www.penglixun.com/" target="_blank" rel="external">http://www.penglixun.com/</a>) 站下载，下载好脚本到我们的服务器上即可运行它,执行脚本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./mystat.pl -hlocalhost -uusername -ppassword</div></pre></td></tr></table></figure></p>
+<p>结果如下图：<img src="http://yhv5.com/uploads/2014/08/mystat.jpg" alt="mystat"></p>
+<p><a href="http://yhv5.com/software/DBD-mysql-4.020.tar.gz">DBD-mysql-4.020.tar.gz</a> 下载</p>
+<p><a href="http://yhv5.com/software/DBI-1.631.tar.gz">DBI-1.631.tar.gz</a> 下载</p>
+<p><a href="http://yhv5.com/software/mystat.pl">mystat.pl</a> 下载</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> SQL </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> MySQL </tag>
+            
+            <tag> mystat </tag>
+            
+            <tag> PHP </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Zabbix监控]]></title>
+      <url>/zabbix_1552.html</url>
+      <content type="html"><![CDATA[<p>zabbix是一款基于WEB界面的提供分布式系统监视以及网络监视功能的企业级开源解决方案，源码是用PHP写的，官方地址可以移步<a href="http://www.zabbix.com" target="_blank" rel="external">zabbix</a>观摩。</p>
+<p>其实市场上的监控工具已经多得数不胜数了，现在比较流行的都是站长利用第三方进行监控自己的站点，很少自己来维护一套监控方案了，但是我觉得zabbix还是有必要了解和知道的，因为它的确很优秀，不仅能监视各种网络参数，保证服务器系统的安全运营；还能提供柔软的通知机制以让系统管理员快速定位/解决存在的各种问题。不管你是否关心，但是它真的做到了。</p>
+<p>简单介绍一下zabbix：由主要由两部分构成，即zabbix server与可选组件zabbix agent，大家一看便知道其中一个是用作为服务端，一个是作为客户端代理。</p>
+<p>zabbix server可以通过SNMP，zabbix agent，ping，端口监视等方法提供对远程服务器/网络状态的监视，数据收集等功能，它可以运行在Linux，Solaris， HP-UX， AIX， Free BSD， Open BSD， OS X等平台之上。而zabbix agent需要安装在被监视的目标服务器上，它主要完成对硬件信息或与操作系统有关的内存，CPU等信息的收集。zabbix agent可以运行在Linux ，Solaris， HP-UX， AIX， Free BSD，Open BSD，OS X， Tru64/OSF1， Windows NT4.0，Windows 2000/2003/XP/Vista/Win7/Win8…..)等系统之上，支撑平台多样化，满足了广大群众的渴求。</p>
+<p>zabbix server可以单独监视远程服务器的服务状态；同时也可以与zabbix agent配合，可以轮询zabbix agent主动接收监视数据（trapping方式），同时还可被动接收zabbix agent发送的数据（trapping方式）。<br> 另外zabbix server还支持SNMP (v1,v2)，可以与SNMP软件(例如：net-snmp)等配合使用，集有这么多功能于一身的zabbix确实很强大，看看它是否能帮你做到你需要的事儿。</p>
+<p>zabbix的主要功能：CPU负荷监控、 内存使用监控、磁盘使用监控、 网络状况监控、端口监视、日志监视</p>
+<p>zabbix的主要特点： 安装与配置简单，学习成本低、支持多语言（包括中文）、免费开源、自动发现服务器与网络设备、分布式监视以及WEB集中管理功能、 可以无agent监视、用户安全认证和柔软的授权方式、通过WEB界面设置或查看监视结果、email等通知功能。</p>
+<hr>
+<p>到这里或许你已经被它的功能所屈服，接下来我们一起走一遍它吧~</p>
+<h4 id="安装zabbix-server"><a href="#安装zabbix-server" class="headerlink" title="安装zabbix server"></a>安装zabbix server</h4><p>我们可以去其<a href="http://www.zabbix.com/download.php" target="_blank" rel="external">官方</a> 下载zabbix 服务端的tar包到自己的机器上来或者到本文末进行下载：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget http://sourceforge.net/projects/zabbix/files/ZABBIX%20Latest%20Stable/2.2.5/zabbix-2.2.5.tar.gz/download</div></pre></td></tr></table></figure></p>
+<p>安装zabbix_server之前我们需要安装mysql和其依赖的一些lib库，这些你懂的，如mysql-devel依赖，net-snmp依赖，libcurl依赖、perl-DBI。</p>
+<p>mysql安装不在本篇介绍范围内，具体可以移步各大论坛博客查阅。好了我们继续….</p>
+<h5 id="执行编译"><a href="#执行编译" class="headerlink" title="执行编译"></a>执行编译</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./configure --enable-server --enable-agent --with-mysql --with-net-snmp --with-libcurl --prefix=/usr/<span class="built_in">local</span>/zabbix</div></pre></td></tr></table></figure>
+<h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">make &amp;&amp; make install</div></pre></td></tr></table></figure>
+<p>进行install，如果遇到各种error基本上都是依赖包没有安装造成，可以各种翻墙GG；</p>
+<p>接下来你需要创建一个zabbix用户来启动zabbix服务，因此需要先执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">useradd <span class="_">-d</span> /usr/<span class="built_in">local</span>/zabbix -p zabbix zabbix</div></pre></td></tr></table></figure></p>
+<h5 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi /usr/<span class="built_in">local</span>/zabbix/etc/zabbix_server.conf</div></pre></td></tr></table></figure>
+<p>新增如下代码<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">LogFile=/tmp/zabbix_server.log <span class="comment">#zabbix服务端日志</span></div><div class="line">DBName=zabbix                  <span class="comment">#zabbix所属数据库名称</span></div><div class="line">DBUser=hanggecrazy             <span class="comment">#zabbix所属数据库用户</span></div><div class="line">DBPassword=hanggecrazy         <span class="comment">#zabbix数据库密码</span></div></pre></td></tr></table></figure></p>
+<p>到这里其实zabbix_server的工作就做完了，我们可以执行如下命令来启动服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server -c /usr/<span class="built_in">local</span>/zabbix/etc/zabbix_server.conf &amp;</div></pre></td></tr></table></figure>
+<h4 id="安装zabbix-agent"><a href="#安装zabbix-agent" class="headerlink" title="安装zabbix_agent"></a>安装zabbix_agent</h4><p>安装agent没有server这么麻烦，只需要解压包就行了，下载地址可以去官方下载或者到本文末下载：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget http://www.zabbix.com/downloads/2.2.5/zabbix_agents_2.2.5.linux2_6_23.amd64.tar.gz（根据自己的机器位选择）</div></pre></td></tr></table></figure>
+<p>然后直接解压到/usr/local/zabbix，然后需要修改vi /usr/local/zabbix/etc/zabbix_agent.conf配置，新增如下代码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">LogFile=/tmp/zabbix_agentd.log</div><div class="line">Server=127.0.0.1</div><div class="line">ServerActive=127.0.0.1</div><div class="line">Hostname=zabbix</div></pre></td></tr></table></figure>
+<p>到这里也完成了agent的工作，我们可以启动agent了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_agentd -c /usr/<span class="built_in">local</span>/zabbix/etc/zabbix_agentd.conf &amp;;</div></pre></td></tr></table></figure>
+<h4 id="配置web访问"><a href="#配置web访问" class="headerlink" title="配置web访问"></a>配置web访问</h4><p>我们可以将zabbix_server解压目录中的frontends文件copy到我们的站点根目录，比如<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">copy -r /usr/<span class="built_in">local</span>/download/zabbix-2.2.5/frontends/php /usr/<span class="built_in">local</span>/nginx/html/zabbix</div></pre></td></tr></table></figure></p>
+<p>然后根据自己的选择的服务（nginx、apache、ligttpd）进行配置。</p>
+<p>完成之后我们就可以通过web进行访问了，因为zabbix源码是php ，我们需要安装php解析器（环境），安装php由于篇幅限制，本文不做介绍，具体可以移步各大论坛博客求攻略，web访问进入如下界面：</p>
+<p><img src="http://yhv5.com/uploads/2014/08/zabbix.jpg" alt="zabbix"></p>
+<p>接下来需要，在php配置文件中修改如下配置以满足zabbix的需要，max_execution_time、max_input_time、time zone</p>
+<p>修改php.ini文件之后重启php，看到如下配置都ok，然后next。<img src="http://yhv5.com/uploads/2014/08/zabbix_2.jpg" alt="zabbix_2"></p>
+<p>根据提示填写基本配置信息并点击测试，pass之后继续next。</p>
+<p><img src="http://yhv5.com/uploads/2014/08/zabbix_3.jpg" alt="zabbix_3"></p>
+<p>到这一步，可能就要报错了，原因是我们需要先把数据表导入到数据库才能继续了，好吧，我们那就去导数据吧~，点击next</p>
+<p><img src="http://yhv5.com/uploads/2014/08/zabbix_5.jpg" alt="zabbix_5"></p>
+<p><img src="http://yhv5.com/uploads/2014/08/zabbix_6.jpg" alt="zabbix_6"></p>
+<p><img src="http://yhv5.com/uploads/2014/08/zabbix_7.jpg" alt="zabbix_7"></p>
+<p>如果遇到无法创建zabbix.conf.php，可以将站点根目录文件夹权限修改一下chown -R www:www /usr/local/nginx/html/zabbix</p>
+<p>需要将zabbix_server解压目录中的database文件夹中相应文件导入db，zabbix目前支持mysql、Oracle、sqllite、db2，我们把对应的文件夹中的文件导入db即可，这里我们选择mysql，则把mysql下面的3个文件（data.sql、images.sql、schema.sql）导入mysql中 ,完成之后我们就可以继续完成安装了，到这步就已经结束了，因为是导入的数据，因此zabbix默认登陆名是zabbix口令也是zabbix。我们登陆进入之后可以看到整个后台布局如下</p>
+<p><img src="http://yhv5.com/uploads/2014/08/zabbix_4.jpg" alt="zabbix_4"></p>
+<p><a href="http://yhv5.com/software/zabbix-2.2.5.tar.gz">zabbix-2.2.5.tar.gz</a> 下载</p>
+<p><a href="http://yhv5.com/software/zabbix_agents_2.2.5.linux2_6_23.amd64.tar.gz">zabbix_agents_2.2.5.linux2_6_23.amd64.tar.gz</a>下载</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> zabbix </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[揭秘Token的工作原理]]></title>
+      <url>/token_1532.html</url>
+      <content type="html"><![CDATA[<p>随着去年“棱镜门”事件曝光，人们才开始发现自己的隐私都被NSA监听，无论是生活中用到的通讯设备，还是工作中用到的PC，以及现在流行的各种端设备，都一一被指出安全问题，越来越多的个人或者企业也意识到了自己的安全工作没有做到位，当然也不排除那种有带有私心的范儿们。其实这一切都归咎于科技的高速发展，促使着人们学会去改进，而不是停滞不前。唠叨了这么多还是说明一点问题安全对于人们是多么的重要，IT是一个信息化时代，少不了的红黑帽之间的较量，正是由于这个原因就造就了各种大牛级的人物出现。</p>
+<p>接下来提到的Token（令牌）使用的RSA加密无非就是一种安全钥匙，目前也广泛的运用在各种企业，比如国家银行、私企、事业单位等等。下面我们就来一起探讨一下这个神奇的令牌是怎样实现安全认证的。</p>
+<p>首先说到Token，有必要先了解一下RSA是什么？RSA是基于一个十分简单的数论事实：将两个大素数相乘十分容易，但是想要对其乘积进行因式分解却极其困难，因此可以将乘积公开作为加密密钥。具体可以移步 <a href="http://baike.baidu.com/view/10613.htm" target="_blank" rel="external">这里</a> 观摩。通过了解RSA我们知道它也并不是万能的，因为早在之前就已经有人将RSA-155（512bits）成功分解，花了五个月时间（约8000 MIPS 年）和224 CPU hours 在一台有3.2G中央内存的Cray C916计算机上完成。2002年，RSA-158也被成功因数分解。2009年12月12日，编号为 RSA-768 （768bits,232 digits）数也被成功分解。北京时间2013年2月15日上午消息，据《纽约时报》周二报道，欧美数学家和密码学家偶然发现，被全世界广泛应用的<a href="http://baike.baidu.com/view/355291.htm" target="_blank" rel="external">公钥</a><a href="http://baike.baidu.com/view/155969.htm" target="_blank" rel="external">加密算法</a>RSA存在漏洞。因此RSA的破解也只是一个时间问题，但是目前为止还没有科学家能够破解RSA足够长的加密秘钥，因此相对来说还是比较安全的，不然为啥银行还要用它~~</p>
+<p>我们常看见的Token可以算是银行的令牌，Token上有一个LED的显示屏，显示的数字每一分钟变化一次，其实也就是它内部芯片每分钟都会使用一种算法，组合该因子与当前时间，生成一个随机的数字。当然在银行内部服务器也需要采取和这个Token同一种算法产生该随机数字，以便保证Token和银行内部服务器生成的口令单一认证，就像每个客户都有了世界上独一无二的身份认证，来保证用户使用Token的安全性。服务器端和每个对应的Token都使用同样的一套算法，可以自定义计算生成秘钥的时间间隔。每批次生产的Token都拥有唯一的序列号，和有效时间，然后服务器端和Token执行相同的计算程序，在设定好的相同的更新时间计算出新的一组数字，这样就达到了认证的目的，当然也还是有人会问，如果不一致怎么办，其实在有效期内Token还是较安全的，如果发现Token无法认证，基本上应该是它和银行内部服务器的心跳出现了差异，因此导致无法验证通过，这样的Token只能返厂，不过还是有一部分厂家会将Token的心跳时间设置较大，以便保证即使出现心跳差异也能够继续使用，当然这个心跳设置的时间周期越短对于用户来说越安全。</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> RSA </tag>
+            
+            <tag> Token </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[致那些年我们一起犯过的错]]></title>
+      <url>/make_error_1519.html</url>
+      <content type="html"><![CDATA[<p>首先说明写作本文的用意，大致是昨天凌晨5点左右，我手机接到阿里云的短信报警提示–服务器宕机了，开始以为几分钟之内就能恢复正常，但是没有自己想象的那样，基础服务在重启之后都正常了，但是自己的一些作业被耽搁了，于是小编上准备上阿里云提交工单求解释。</p>
+<p>话说到官方提交完工单之后，顺便浏览了一下官方最近的活动，心想能遇有什么优惠政策。于是就在站内各种扫描，确实看到有一些令人心痒的活动，比如说官方推出的“<a href="http://free.aliyun.com/?spm=5176.383338.3.2.nHMQNT&amp;tracelog=shybanner" target="_blank" rel="external">0元拥抱云计算</a>”，看着就点进去了。进去之后里面做的很花哨啊！各种养眼的惠民政策，看着就顺势往下走，由于个人习惯喜欢在触摸板左右滑动，结果偶然屏幕右侧多出一块空白区域（下面给出），觉得很好奇啊~，想一下不应该啊，毕竟是阿里云，前端工作应该还是比较到位的，于是刷新了几下在看，仍然出现该情况，这下我就好奇了，于是去看源码发现，不知道那个粗心大意的攻城狮把宽度写错了（本来是100%的宽度，结果不知道啥情况手抖了一下增加了一个0，变成1000%），也许犯着糊涂的时候他本身不是故意的，但就是不知怎么回事儿的情况下就成这样了（我们这一行经常这样说），好吧说了这么多还是上一张图为证吧！</p>
+<p><img src="http://yhv5.com/uploads/2014/07/alibug.jpg" alt="alibug"></p>
+<p>另外在来看一下淘宝订单交易记录吧~，这里的效果更奇葩，还是上图为证；<br><img src="http://yhv5.com/uploads/2014/07/taobao.jpg" alt="taobao"></p>
+<p>再如，淘宝的虚拟充值平台交易时弹出的对话框，都是一些细小的问题没有规范导致。</p>
+<p><img src="http://yhv5.com/uploads/2014/07/chongzhi.jpg" alt="chongzhi"></p>
+<p>总结：每个人过多过少都会犯糊涂，疏忽大意是难免的，只能说是尽量避免不要出现严重的后果，影响用户的体验。有些时候就想着为了去解决一件事情而去做这件事儿，但是呢，结果事情没解决反而捅了篓子，惹出一摊子事儿来，就像我们曾经一起犯过的错，踩了前人留下的坑，各种坑爹的坑，填填补补，伤痕累累，最终劳民伤财啊。当然还是希望自己不要给后人留下坑否则后来者也会同样的抱怨曾经的缔造者。终规终矩，还是说明一个问题，规范，如果自己把自己的事儿做好，就不会让其他人为你头疼了。</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 错误 </tag>
+            
+            <tag> 阿里 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[MySQL之高性能分析二]]></title>
+      <url>/mysql_efficient_2_1260.html</url>
+      <content type="html"><![CDATA[<p>话说上一篇 <a href="http://yhv5.com/mysql_efficient_693.html">MySQL高性能分析一</a> 写于半年以前了，现在继续聊聊下一部分-索引类型的相关知识。</p>
+<p>在写作本文之前有必要说明一下索引的优缺点，使用索引本身是为了解决问题，但是如果使用者滥用索引或者使用不当，索引也会让你付出惨痛的代价，因此我们有必要合理正确的使用索引，来解决遇到的问题，而不是带来新的问题。简单的说使用索引可以帮助我们：</p>
+<ul>
+<li><p>索引大大减少了服务器需要扫描的数据量；</p>
+</li>
+<li><p>索引可以帮助服务器避免排序和临时表；</p>
+</li>
+<li><p>索引可以将随机I/O变为顺序I/O；</p>
+</li>
+</ul>
+<p>本文主要介绍关于索引的类型，索引可分为：B-Tree、哈希索引（hash index）、空间数据索引（R-Tree）、全文索引、其他索引类型。</p>
+<h4 id="B-Tree"><a href="#B-Tree" class="headerlink" title="B-Tree"></a>B-Tree</h4><p>如果在没有指定索引类型的情况下，多数都是指B-Tree索引（实际情况下是使用的B+Tree），不同的存储引擎之间B-Tree性能也是各有不同，如MyISAM使用的前缀压缩技术使得索引变小，但是InnoDB则按照原数据格式进行存储，再如MyISAM索引通过数据的物理位置引用被索引的行，而InnoDB则根据主键引用被索引的行。如下图所示：</p>
+<p><img src="http://yhv5.com/uploads/2014/07/1.jpg" alt="1"></p>
+<p>由上图可知，B-Tree对索引是按照顺序组织数据存储的，所以很适合查找范围数据，例如一个基于文本域的索引树上，按照字母顺序传递连续的值进行查找非常适合，所以像查找以某个字母开头的方式效率非常高。通常这种B-Tree索引有如下六种查询方式（这里主要介绍联合索引的形式）：</p>
+<ul>
+<li><p>全值匹配：和索引中的所有列进行匹配，联合索引或者单列索引；</p>
+</li>
+<li><p>匹配最左前缀：联合索引中只匹配第一列；</p>
+</li>
+<li><p>匹配列前缀：联合索引或者单列索引中匹配第一列的首位；</p>
+</li>
+<li><p>匹配范围值：查找值是一个范围区间，如小于一个值或者大于一个值；</p>
+</li>
+<li><p>精确匹配某一列并范围匹配另一列：即如在联合索引中第一列精确匹配，第二列范围匹配；</p>
+</li>
+<li><p>只访问索引的查询：查询只需要访问索引，不需要访问数据，即覆盖索引；</p>
+</li>
+</ul>
+<p>当然针对以上的几种查询方式，在B-Tree联合索引中也有一些限制，如果不是按照最左列开始查找，则无法使用索引，另外也不能跳过索引中的列进行查找，即在联合索引中，可能跳过中间列进行查找，这样也只能使用跳过列之前的索引列查找，如果查询某个列是范围查找，则其右边的列都不能使用索引，这些限制并非是B-Tree本身的限制，而是MySQL优化器和存储引擎使用的方式导致，看到这里也许大家应该清楚了创建联合索引的顺序至关重要，因此我们也需要优化我们的SQL来满足不同的查询需求。</p>
+<h4 id="哈希索引（hash-index）"><a href="#哈希索引（hash-index）" class="headerlink" title="哈希索引（hash index）"></a>哈希索引（hash index）</h4><p>基于哈希表实现，只有精确匹配索引所有列的查询才有效，对于每一行数据，存储引擎都会对所有的索引列进行计算一个哈希码（hash code）,哈希码是一个较小的值，并且不同的键值的行计算出来的哈希码也不一样。哈希索引将所有的哈希码存储在索引中，同时哈希表中保存指向每个数据行的指针。如下介绍一个列子具体说明：</p>
+<p>假设某一数据表中有数据<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">+----------|----------+</div><div class="line">| username | password |</div><div class="line">+----------+----------+</div><div class="line">| ZhangSan |  123456  |</div><div class="line">+----------+----------+</div><div class="line">| LiSi     |  234567  |</div><div class="line">+----------+----------+</div><div class="line">| WangWu   |  345678  |</div><div class="line">+----------+----------+</div><div class="line">| ZhaoLiu  |  456789  |</div><div class="line">+----------+----------+</div></pre></td></tr></table></figure></p>
+<p>如果使用哈希索引函数func()，他们返回值假设如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">func(&apos;ZhangSan&apos;) = 1345</div><div class="line">func(&apos;LiSi&apos;) = 9876</div><div class="line">func(&apos;WangWu&apos;) = 9999</div><div class="line">func(&apos;ZhaoLiu&apos;) = 1234</div></pre></td></tr></table></figure></p>
+<p>则哈希索引的数据结构如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">| 槽（Slot）|   值（Value）   |</div><div class="line">|   1234    | 指向第4行的指针 |</div><div class="line">|   1345    | 指向第1行的指针 |</div><div class="line">|   9876    | 指向第2行的指针 |</div><div class="line">|   9999    | 指向第3行的指针 |</div></pre></td></tr></table></figure></p>
+<p>通过上面可以看出槽是按照顺序排列，但是值并非是按照顺序进行，如果MySQL查询WangWu则先进行计算WangWu的哈希值，并使用该值寻找对应的记录指针，因为func(‘WangWu’) = 9999 ,所以MySQL在索引中查找9999就可以找到对应的指针是第3行，最后比较查找第三行的值是否是WangWu，以确保是要找的行。</p>
+<p>因为哈希索引自身只存储对应的哈希值，所以索引的结构非常紧凑，这也让哈希索引查找速度非常快，但哈希索引也有它的限制：</p>
+<ul>
+<li><p>哈希索引只包含哈希值和行指针，而不存储字段值，所以不能使用索引中的值来避免读取行（即查找数据行），不过访问内存中的行速度非常快，所以大部分情况造成的影响并不明显；</p>
+</li>
+<li><p>哈希索引数据并不是按照索引值顺序存储的，也就无法用于排序；</p>
+</li>
+<li><p>哈希所以也不支持部分索引列的匹配查找，因为哈希索引始终是件索引列的全部内容计算哈希值。例如数据列（A,B）创建了哈希索引，如果只查询数据列A则无法使用哈希索引；</p>
+</li>
+<li><p>哈希索引只支持等值比较查询，包括=、IN()、&lt;=&gt;（注意&lt;&gt;和&lt;=&gt;是不同的操作），也不支持范围查找。</p>
+</li>
+<li><p>访问哈希索引的数据非常快，除非很多哈希冲突（不同的索引列值却有相同的哈希值），当出现哈希冲突时，存储引擎必须遍历链表中的所有的行指针，逐行进行比较，直到找到符合条件的行为止；</p>
+</li>
+<li><p>如果哈希冲突很多，一些索引维护操作的代价就会很高。</p>
+</li>
+</ul>
+<p>基于上述的限制，哈希索引也只适合某些特定的场合，而一旦适合哈希索引，则它带来的性能提升也将非常显著，如“星型”schema。</p>
+<h4 id="空间数据索引（R-Tree）"><a href="#空间数据索引（R-Tree）" class="headerlink" title="空间数据索引（R-Tree）"></a>空间数据索引（R-Tree）</h4><p>MyISAM表支持空间索引，可以用来存储地理数据，和B-Tree索引不同，这类索引无需前缀查询。空间索引会从所有维度来索引数据，查询时可以有效的使用任意维度来组合查询，但必须使用MySQL的GIS相关函数如MBRCONTAINS()等来维护数据，由于目前GIS还不算完善，所以大部分人都不会使用这个特性。</p>
+<h4 id="全文索引"><a href="#全文索引" class="headerlink" title="全文索引"></a>全文索引</h4><p>全文索引是一种特殊类型的索引，它查找的是文本中的keyword，而不是直接比较索引中的值。全文搜索和其他几种类型索引的匹配方式也完全不一样，它有很多需要注意的细节，如停用词，词干和复数、布尔搜索等，全文索引更类似搜索引擎，而不是简单的where条件匹配查找。因此在相同的列上同时创建全文索引和基于值的B-Tree索引是不会有冲突的，全文索引适用于MATCH AGAINST 操作，而不是WHERE条件操作。</p>
+<h4 id="其他索引类型"><a href="#其他索引类型" class="headerlink" title="其他索引类型"></a>其他索引类型</h4><p>还有很多第三方的存储引擎使用了不同类型的数据结构来存储数据，如TokuDB使用分形树索引（fractal tree index），这是一类较新开发的数据结构，算是B-Tree的改进版。</p>
+<p>通过上述介绍的索引类型，我们应该很清楚的了解了MySQL内部的索引方式，如何构建高性能的索引策略我们下一站继续！~</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> SQL </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> MySQL </tag>
+            
+            <tag> 索引 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[XY散点图添加文字标签]]></title>
+      <url>/xy_plot_to_add_a_text_label_1239.html</url>
+      <content type="html"><![CDATA[<p>亲爱的小伙伴们，还在愁给EXCEL或者PPT内的XY散点图加文字标签吗？当你百度一下的时候，网上主要讲到两种方法：一、用宏（VBA编程）；二、用专业插件（XYChartLabeler下载地址见文末）。</p>
+<p>个人谈谈这两种方法的弊端吧，对于第一种，如果你是VB高手，那就十分方便，如果你是VB小白，那么也许你会选择第二种。第二种使用非常方便，但唯一的缺点此款插件只能在EXCEL内使用，不能用于幻灯片内；如果你是调研行业的小伙伴也许公司会要求PPT内的图表不能直接从EXCEL粘贴，要从PPT内直接插图表（这主要是方便客户提取或编辑数据）。苦于这种原因，那么你也许就会通过手动插入文本框自己一个个添加标签或者选择数据→添加→选择系列名称、X轴、Y轴，一个一个的添加。如下图所示：<br><img src="http://yhv5.com/uploads/2014/07/12.png" alt="1"></p>
+<p>举例数据中共8行，相当于需要重复添加八次。数据添加成功后，我们再添加数据标签，并在设置数据标签格式内勾选系列名称，最终成功添加。</p>
+<p>由于小编就属于VB小白，并且也属于不能从EXCEL直接粘图表的一员，因此在这向小伙伴们分享一种简便的方式，高手可以直接飘过。方法很简单，我们只需要在数据上换换格式就OK了。正常做XY散点图的数据源格式如下图：</p>
+<p><img src="http://yhv5.com/uploads/2014/07/21.png" alt="2"></p>
+<p>我们仅需要将数据格式转换成如下的一个矩阵格式，第一行实际上就是X轴，第二行到最后一行实际上就都是Y轴了。然后呢我们只需要选中全部数据→插入→散点图。结果图表如下：</p>
+<p><img src="http://yhv5.com/uploads/2014/07/31.png" alt="3"></p>
+<p>最后一步就是选中数据点→添加数据标签→设置数据标签格式→勾选系列名称（结果图如下）</p>
+<p><img src="http://yhv5.com/uploads/2014/07/61.png" alt="6"></p>
+<p>当然了，这种方法也还是有缺陷的，大家应该很快意识到了，每个系列点都需要添加标签设置标签。但是在应用到幻灯片中有一定的帮助，当用在气泡图的时候就显得很快捷了。所以大家可以结合所需，灵活运用各种方法。</p>
+<p>顺便附上气泡图一例（上图为数据源格式，下图为成功的气泡图）<br><img src="http://yhv5.com/uploads/2014/07/71.png" alt="7"><br><img src="http://yhv5.com/uploads/2014/07/81.png" alt="8"></p>
+<p>可能亲会想说，调整数据格式是不是太麻烦了呀？其实呢如果数据量少的话当然可以手动调整，如果数据量多，或者要批量处理同样的数据，我们就可以借助EXCEL技巧和IF公式改变数据格式，但考虑这种情况不多见，此处就不多啰嗦了。最最方便的方式当然就是把模板保存好，下次使用就可以直接提取，哈哈。</p>
+<p>其实还有另外一种小技巧了呀，当做完XY散点图后，添加数据标签，然后直接将数据标签修改成文字就OK了。是不是很简单？</p>
+<p>最后附上工具下载地址<a href="http://yhv5.com/software/XYChartLabeler.rar"> XYChartLabeler </a></p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> XYChartLabeler </tag>
+            
+            <tag> XY散点 </tag>
+            
+            <tag> XY散点图加文字标签 </tag>
+            
+            <tag> 气泡图 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[SPSS批量加注标签]]></title>
+      <url>/spss_batch_tagging_1211.html</url>
+      <content type="html"><![CDATA[<p>最近因为合作方数据统计报表出的太频繁，少不了使用到SPSS，但每次处理问卷标签值赋值都有种崩溃的绝望，看着就眼晕，小伙伴们有木有！然而各位看客朋友的福音到了，小编特意将平生所学、所用”批量加注标签”的方式总结了一番，分享给各位看客朋友，需要能帮互大家提高工作效率，欢迎吐槽，请勿喷水~</p>
+<h3 id="第一部分——Excel内预处理"><a href="#第一部分——Excel内预处理" class="headerlink" title="第一部分——Excel内预处理"></a>第一部分——Excel内预处理</h3><p>一般调研问卷是以WORD或者EXCEL的文档形式保存，这主要是方便整理和可视化管理。因此首先可以将问卷中选项的数值和标签整理出来（当然问卷一般有不同的格式，可以根据问卷规律整理，blablabla，如果对EXCEL非常熟悉，可以直接跳楼到第二部分-SPSS）。</p>
+<p>例如处理后的形式可能是如下图：（当然根据您具体的过程而定）<br><img src="http://yhv5.com/uploads/2014/07/1.png" alt="1"></p>
+<p>然后我们可以通过分列变成下图：（主要是方便套用公式）</p>
+<p><img src="http://yhv5.com/uploads/2014/07/2.png" alt="2"></p>
+<p>套用公式：如下图</p>
+<p>在E2单元格套用公式：$C$1&amp;” “&amp;C2</p>
+<p>在E3单元格套用公式：C3&amp;”‘“&amp;D3&amp;”‘“</p>
+<p><img src="http://yhv5.com/uploads/2014/07/3.png" alt="3"></p>
+<p>细心的看客肯定看到小编标黄色的行了，每个题项结束后都会插入空行隔开，这是因为在SPSS里面不同变量赋值所需。SPSS语法编辑器里面一个语法结束后需要回车后再编辑第二个语法。当遇到有非常非常多的题项时可以采用编序号+排序的方式快速插入，同时编序号后在筛选条件下也方便您快速复制以上公式啦，blablabla…</p>
+<p>同时看客们是否注意到此处label加了s，其实加s主要是对多个变量但是相同标签批量赋值，但单个变量赋值加s是不会影响的，为了方便大家理解特加以说明。如下图：<br><img src="http://yhv5.com/uploads/2014/07/22.png" alt="22"></p>
+<p>那么变量A2-A7的标签都同时赋值为1-非常满意，2-基本满意，3-不满意，4-非常不满意。</p>
+<h3 id="第二部分——SPSS"><a href="#第二部分——SPSS" class="headerlink" title="第二部分——SPSS"></a>第二部分——SPSS</h3><p>接下来就是SPSS发挥强大功用了，继续走起~~~</p>
+<p>1、打开SPSS的语法编辑器，点击”文件”-&gt;”新建”-&gt; “语法”，如下图（小编用的SPSS19.0）<br><img src="http://yhv5.com/uploads/2014/07/4.png" alt="4"></p>
+<p>2、将上述EXCEL内整理得到的标签复制到编辑器，如下图（箭头所指的空白处就是我们在EXCEL内插入的空白行） <img src="http://yhv5.com/uploads/2014/07/5.png" alt="5"></p>
+<p>3、点击”运行”-&gt;”全部”： <img src="http://yhv5.com/uploads/2014/07/6.png" alt="6"></p>
+<p>4、成功运行效果图（上图为查看器内的显示截图，下图为SPSS变量视图的截图）</p>
+<p><img src="http://yhv5.com/uploads/2014/07/7.png" alt="7"><a href="http://yhv5.com/uploads/2014/07/10.png"></a><img src="http://yhv5.com/uploads/2014/07/8.png" alt="8"></p>
+<p>备注：如果步骤2中没有空行（回车），如下图：</p>
+<p><img src="http://yhv5.com/uploads/2014/07/9.png" alt="9"></p>
+<p>我们可以看到左侧箭头所示，实际上语法编辑器内只默认了一个变量。现在我们再运行看看效果：(上图为查看器内的显示截图，下图为SPSS变量视图的截图）<br><img src="http://yhv5.com/uploads/2014/07/10.png" alt="10"></p>
+<p><img src="http://yhv5.com/uploads/2014/07/11.png" alt="11"></p>
+<p>根据上面结果可知，查看器内语法报错，并且变量视图内只有A1变量成功赋值。</p>
+<p>到了这里，如果没有报错，基本就ok了，上面也看到了最终的效果。希望本文能帮助到正在水深火热中痛苦挣扎的小伙伴们。。。</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> SPSS </tag>
+            
+            <tag> 批量加注标签 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[抢T码购阿里通信170亲心号卡]]></title>
+      <url>/aliqin_1189.html</url>
+      <content type="html"><![CDATA[<p>话说，这都已经半个月前的事儿了，阿里、TX（JD）都在为筹办618活动大肆宣扬惠民政策，遇到这么好的事儿，或许你也没错过吧~</p>
+<p>当然这种互联网的活动也不是头一回了，就像小米F码一样，阿里这次来效仿了一个T码，具体活动可移步其<a href="http://aliqin.tmall.com/" target="_blank" rel="external"> 官网 </a>，活动期间使用这个T码可以用来购买阿里通信（虚拟运营商）170号卡，不过在头一个月前，要是你能预约，也就不用抢这个T码了，那时候小编没有这么好的运气遇上，这次正好赶上抢T码，抢了T码可以绑定一款手机，在6月18日的时候进行提前优惠选购亲心号卡和购买手机，也许大家看中的都不是神马手机之类的，只是对它的号卡感兴趣。不过这次惠民活动最早开始在一线和不多的二线城市进行，其他城市就要等候佳音了，当然也不是全国所有城市都发售的（因为阿里本次虚拟运营竞标，只获得全国不到40个地区和城市，苏宁竞标虚拟运营城市获得高达61个之多），具体的发行城市如下图:</p>
+<p><img src="http://yhv5.com/uploads/2014/06/aliqin.jpg" alt="aliqin"></p>
+<p>介绍了这么多，现在说说为嘛这个号卡这么多人抢（总共3波共计100W），首先要介绍这个号卡是1709的虚拟运营商卡，也就是不和传统三大运营商一样，没有各种套餐神马的，这个虚拟号卡就是单纯的流量计费，通过官网我们了解到号卡都是以M资源计算的，具体的资费情况对比（移动运营商）如下：</p>
+<p>流量计费：1元 = 5M资源 = 5M流量（比起传统的移动30M/5元略贵）</p>
+<p>话费计费：1分钟 = 0.75M资源 = 0.15元（么有高额的漫游费用，各种打电话都是0.15很划算，全国接听免费）</p>
+<p>短信计费：1条 = 0.5M资源 = 0.1元（和移动一样）</p>
+<p>通过上面的对比，相信大家也已经看出了，亲心号卡的实惠所在，当然比起传统运营商的套餐来说，这种流量计费月底不清零，并可以累计到下月继续使用，不仅降低了消费门槛，而且T码抢购的用户在今年（2014）年，可以享受7折优惠。另外还有也是小编最关心的一点是，阿里后期可能会推出，亲心号卡在WiFi模式下免费打电话，如果是这样是不是又可以节约一大笔资费了，相当实惠啊，有木有！</p>
+<p>好了，晒一张个人抢购的亲心号卡，介绍了这么多，没有发售的地区和没有抢到的小伙伴是不是也很心动了，不要打我，虽然我抢到了号卡，但我是无辜的~~~</p>
+<p><img src="http://yhv5.com/uploads/2014/06/qinxin.jpg" alt="qinxin"></p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 170号卡 </tag>
+            
+            <tag> T码 </tag>
+            
+            <tag> 阿里通信 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[关于科技-你没听过的那些事儿]]></title>
+      <url>/wonderful_tech_1173.html</url>
+      <content type="html"><![CDATA[<p>也许当你看到标题就已经想入非非了，是的，科技总会给人们带来无穷的新鲜感，让你欲罢无能~，下面就一起来看看这些创意吧！写作本文并不代表小编的主观态度，只是分享乐趣哈，请勿喷水，欢迎各种吐槽~</p>
+<p>哈尔滨一家以机器人为主题的餐厅里，煮水饺、煮面、炒菜、地面送餐、空中传菜、迎宾都由机器人来完成，18种长相各异、个头不等、讲着简单语言的机器人是这家餐厅的“主力员工”。有图有真相，见下图：</p>
+<p><img src="http://yhv5.com/uploads/2014/06/1.jpg" alt="1jpg"></p>
+<p>&nbsp;</p>
+<p>日前，一款 <a href="http://www.designboom.com/technology/ophone-capable-of-sending-scent-messages-06-13-2014/" target="_blank" rel="external">手机配件 oPhone</a> 就做到了这点，让发送气味变得像发送短信一样简单。<a href="http://www.onotes.com/" target="_blank" rel="external">oPhone</a> 由哈佛大学教授 David Edwards 和 Rachel Field 研制，目前正在准备推向市场。外观上看，这台机器略显奇怪：两个伸出的圆柱体，外加一个底座。它是一个手机配件，目前只适用于 iOS，用户需要下载免费的 app。oPhone 的核心是一块名为 oChip 的气味芯片。这块芯片上有 32 种“原味”，类似色彩中的“原色”。32 种气味可以合成 30 多万种复杂的气味。oPhone 的工作原理基于“编码——解码”的过程：用户用 app 输入气味，传递给同样使用 oPhone 的小伙伴，小伙伴接收后，oPhone 解码，释放气味。当然气味需要特定的材料生成。类似打印机中的“墨盒”，oPhone 有一个“气味盒”，气味盒中的材料用完需要更换。一套香味材料售价 20 美元，上图为证：</p>
+<p><img src="http://yhv5.com/uploads/2014/06/2.jpg" alt="2"></p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 科技 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[做一个充满能量的普通人]]></title>
+      <url>/to_be_an_ordinary_person_full_of_energy_1166.html</url>
+      <content type="html"><![CDATA[<p>前段时间出地铁正好遇到一群卖艺的小乐队，他们有自己的乐队名称（桶子鼓乐队），有自己的专辑出售（每张20元）。于是也加入人群欣赏了一会儿。临走之时还有一点小感触，本就打算写点什么，但却一直被耽搁。</p>
+<p>昨晚小罗罗突然说在地铁里遇到一枚帅哥弹琴卖艺，于是我们开始了一波的讨论。在小罗罗眼里，他始终对这类人群表示深深的不理解。而我却有着不一样的看法和理解。</p>
+<p>我觉得他们至少也是在付出劳动力，并且说不定他们也还有自己的音乐梦想，只是由于缺乏机遇、缺乏平台让他们不能像正真的音乐人一样。但他们也在用自己的方式表达对此的热爱（但至于卖艺之人的真正目的还是要自己去判断）。<br>社会的人群分布就像一个金字塔，少数的人群是在塔尖，而大部分的人却是处于金字塔身和塔底。而这部分人也可称为普通人。当然我也是其中的一员。按照马斯洛的需要层次理论，从金字塔底到塔尖分别是生理需求、安全需求、社交需求、尊重需求、自我实现。不错，每个人都有理想，也有实现理想的愿望。当我们还在为满足我们的底层需求而奔波劳碌的时候，我们是不是就可以算得上是普通人呢？</p>
+<p>当我听着桶子鼓乐队的歌声，看着他们的投入；当我看到满脸汗水、挂着微笑的小摊小贩时；当我看到早高峰忙忙碌碌的人群时；还有晚上十二点之后还疾驰在路上的人们……我瞬间就能充满正能量。因为即使我们是再普通不过的人群，但我们仍旧用自己的双手去创建明天，飞洒着汗水，即使充满艰辛和坎坷，我们努力着、尝试着。偶尔我们会沮丧，但我们不会自暴自弃；偶尔我们会怨天尤人，但我们会尝试将其转化前行的动力。虽然我们处在金字塔底层，但我们也在贡献着我们的大量财富；虽然我们是普通人，但我们也追求梦想，勇于奋进。<br><img src="http://yhv5.com/uploads/2014/06/power.jpg" alt="power"></p>
+<p>就如同桶子鼓乐队，虽然没有明星的演唱会，但他们可以有街头巡演；可以把自己的歌曲带给身边的人，把快乐和激情传递给身边的人。这不禁让我想到“星星之火可以燎原”，虽然意境不一样，但相信我们每一个普通人在坚持自己的梦想的时候，在努力开心的面对生活艰辛的时候，我们就是自己的英雄。</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 桶子鼓乐队 </tag>
+            
+            <tag> 正能量 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[第三方(Sina、RR、QQ)API同步登录]]></title>
+      <url>/php_vendor_login_1155.html</url>
+      <content type="html"><![CDATA[<p>话说，这都是一年以前就想写的，一直都没想起这件事了，最近发现很多人都在做关于这个方面应用（虽然RR都黯然神伤了，陌陌已经整装待发了），但还是将自己的心得总结一下，分享给有需要的小伙伴们吧！其实也是比较简单的操作，老鸟可飞过，只为新手指路。</p>
+<h3 id="同步登录之QQ"><a href="#同步登录之QQ" class="headerlink" title="同步登录之QQ"></a>同步登录之QQ</h3><ul>
+<li><p>首先介绍QQ，先去其 <a href="http://open.qq.com/" target="_blank" rel="external">开放平台官网 </a>申请账号并认证得到appid和appkey，还是需要科普一下，appid：应用的唯一标识，在OAuth2.0认证过程中，appid的值即为oauth_consumer_key的值；appkey：appid对应的密钥，访问用户资源时用来验证应用的合法性。在OAuth2.0认证过程中，appkey的值即为oauth_consumer_secret的值，并申请需要回调的地址callbackURL，由于目前TX使用的是OAuth2.0认证（老版本就可以不用往下看了），然后可以去官方下载相应的SDK，取其核心文件（comm/config.php、class/QC.class.php）包含即可（SDK文末附上）。</p>
+<p>  如下是登录地址调用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">require_once(<span class="string">'./comm/config.php'</span>);//这里需要替换appid、appkey以及callback为申请的参数值</div><div class="line">require_once(<span class="string">'./class/QC.class.php'</span>);</div><div class="line"><span class="variable">$qq</span> = new QC();</div><div class="line"><span class="variable">$qq_url</span> = <span class="variable">$qq</span>-&gt;qq_login();//这就是登录地址</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>将上述地址置于前端页面点击链接即可去调取TX第三方相应的登录界面（有PAD、移动、PC类型），输入TX账号登陆并授权即可（前提是你的站点已经通过认证）,否则只能使用测试账号进行登录（申请应用注册的账号）。</p>
+<p>授权完成之后，接下来就可以到回调页面进行操作或者获取用户信息等等操作了，获取登录用户信息的接口是get_user_info,具体如下调用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://graph.qq.com/user/get_user_info?access_token=YOUR_ACCESS_TOKEN&amp;oauth_consumer_key=YOUR_APP_ID&amp;openid=YOUR_OPENID</div></pre></td></tr></table></figure>
+<p>替换access_token为登录后返回地址栏上的access_token，oauth_consumer_key是申请的appid,openid是在授权过程中生成的，可以直接获取到，获取调用$qq -&gt;get_openid()获取，这就是简单的TX登录授权并获取用户信息。</p>
+<h3 id="同步登录之Sina"><a href="#同步登录之Sina" class="headerlink" title="同步登录之Sina"></a>同步登录之Sina</h3><ul>
+<li>Sina的申请和TX大同小异，先移步 <a href="http://open.weibo.com/" target="_blank" rel="external">微博开放平台官方</a> 注册申请获取appkey和secretkey以及回调地址，如下是登录地址调用：<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">include_once(<span class="string">'./config.php'</span>);</div><div class="line">include_once(<span class="string">'./saetv2.ex.class.php'</span>);</div><div class="line"><span class="variable">$webo</span> = new SaeTOAuthV2( WB_AKEY, WB_SKEY );//参数分别为appkey和secretkey</div><div class="line"><span class="variable">$weibo_url</span> = <span class="variable">$webo</span>-&gt;getAuthorizeURL( WB_CALLBACK_URL );//参数为申请的回调地址</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>将得到的登录地址置于前端点击即可跳转到微博的第三方登录界面，这里也可以设置各种端的调用展示效果。比较完善的一点是它提供了各种调用结果错误码的解释，可以更快更有效的帮助新手使用。授权完成即可在回调页面进行调用获取用户信息等等操作，由于微博的接口函数很多，就不一一举例了（SDK文末附上）。</p>
+<h3 id="同步登录之RR"><a href="#同步登录之RR" class="headerlink" title="同步登录之RR"></a>同步登录之RR</h3><ul>
+<li>RR的申请还是一样，只好去 <a href="http://open.renren.com/" target="_blank" rel="external">RR开放平台</a> 注册了！然后一样的拿到appkey和secretkey还要回调地址，这样就可以直接调用登录地址了：<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">require_once (<span class="string">'./config.inc.php'</span>);</div><div class="line">include_once(<span class="string">'./RennClientBase.php'</span>);</div><div class="line"><span class="variable">$renren</span> = new RennClientBase(RR_AKEY, RR_SKEY );//参数分别为appkey和secretkey</div><div class="line"><span class="variable">$renren_url</span> = <span class="variable">$renren</span>-&gt;getAuthorizeURL(RR_CALLBACK_URL);//参数为申请的回调地址</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>和上面两种例子一样操作完成之后再相对应的回调页面处理结果即可！（SDK文末附上）</p>
+<p>SDK下载: <a href="http://yhv5.com/software/QQ-SDK.zip">QQSDK</a>、<a href="http://yhv5.com/software/WB-SDK.zip">WBSDK</a>、<a href="http://yhv5.com/software/RR-SDK.zip">RRSDK</a></p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> PHP </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> PHP </tag>
+            
+            <tag> QQ </tag>
+            
+            <tag> Sina </tag>
+            
+            <tag> 人人 </tag>
+            
+            <tag> 第三方登录 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Pworld2014分享]]></title>
+      <url>/pworld_share_1139.html</url>
+      <content type="html"><![CDATA[<p>伴着6月5日Pworld2014上海站结束，整个大会取得圆满成功，小编有幸参加了北京站的Pworld，当然面对众多的业界精英，受益颇多，现将自己的的大会记录和自己的感想分享给小伙伴们，欢迎大家吐槽！</p>
+<p>介绍之前还是要说明一下Pworld是神马？</p>
+<p>Pworld全称PWorld 2014软件架构&amp;平台创新大会，是由普元、InfoQ联合主办的全国顶级技术盛会，其官网可以移步 <a href="http://www.infoq.com/cn/zones/pworld2014/index.html" target="_blank" rel="external">Pworld2014</a> 观摩，大会刚开始主持人就介绍了Pword中的“P”代表的含义：Process流程、Platform平台、Pioneer先锋、Partake分享、Primeton普元，含义直击主题啊！</p>
+<p>大会共耗时半天，率先由普元CTO焦烈焱首秀，焦总用自己丰富的经验和远见全面诠释了“云与移动互联时代的企业应用架构”。其中介绍到了“小核心，大外围”思想，其主要内容就是“微应用+大平台”的企业架构模式，用这种模式将用户简单化、运营连续化、架构碎片化，并利用流式计算和数据治理的方式（元数据、数据质量、数据标准）综合处理移动与互联网产生的海量数据，采用开放平台降低管理复杂性，提高技术可靠性、保障数据的一致性、提高业务连续性；最终达到技术可沉淀、能力可积累、平台可运营的一体化产业链！</p>
+<p>接着阿里云移动云总监杨名带来的主题是“云时代的软件服务”，杨总入戏即介绍了云时代的特点，并阐述了云时代将会出现的商业模式服务化、使用方式移动化、设计思路互联网化、大数据驱动创新的模式，当然其中一部分已经成为了现实，因为目前云计算带来的变革也是巨大的，接着介绍了关于阿里云方面的一系列云部署方案，其中就有以下四种：</p>
+<ul>
+<li><p>软件 + 云服务器（ECS）；<br>  优势：最简单的部署，应用、数据和存储独享<br>  不足：维护比较复杂，单点故障</p>
+</li>
+<li><p>软件 + 高可用部署 + 独享数据和应用服务；<br>  优势：应用、数据和存储独享<br>  不足：维护比较复杂</p>
+</li>
+<li><p>软件 + 高可用部署 + 独享数据服务；<br>  优势：维护相对简单，数据和存储独享<br>  不足：通过系统内部的逻辑处理实现多租户</p>
+</li>
+<li><p>软件 + 高可用部署 + 共享数据服务。<br>  优势：维护简单，成本低<br>  不足：通过系统内部的逻辑处理实现多租户，数据共享</p>
+</li>
+</ul>
+<p>从上面可以看出每一种方案都有它自己的优点缺点，没有绝对的好坏，只有合理规划业务才能更好的管理。</p>
+<p>然后是瑞友科技IT应用研究院副院长池建强介绍了“企业应用架构实践”，老池话幅战线拉得巨长，讲了自己现阶段企业软件遇到的问题，并提出自己的三个解决方案，另外介绍了构建企业应用开发平台的方法，和现阶段流行的DOCKER的使用，总感觉就是说了一下自己目前遇到的问题和自己将怎么去处理，然后一个劲的推崇DOCKER，就像一个游说者！！！</p>
+<p>最后介绍一下这位与会最年轻的嘉宾顾伟，他带来的是“关于普元和阿里云联合推出的一种云实践方案-混合云”，他宏观的介绍了企业应用与互联网应用之间的相互过渡，其中业务量、升级速度、响应速度由企业应用向互联网应用过渡，而强一致性、业务逻辑、数据读写由互联网应用向企业应用过渡，接着介绍了混合云的部署，使用软件架构弥补硬件不足，并采用异步事件驱动应用架构（SEDA）分段处理，通过对每段逻辑进行有效的资源和处理能力的调配，进而提高系统的吞吐能力、稳定性、以及系统的水平扩展能力，并分了四个步骤分别阐述他们过渡带来的问题和处理方案：</p>
+<ul>
+<li><p>弹性——关键技术：计算、存储、网络虚拟化；负载均衡，反向代理；多租户，数据共享与隔离；混合云架构；</p>
+</li>
+<li><p>可靠性—-关键技术：多份存储；分布式应用架构资源合理调配，业务合理分组；故障切换，应用漂移；应用健康性巡查，服务自动重连；</p>
+</li>
+<li><p>安全性—-关键技术：流控、黑白名单，资源访问权限严格控制；长短请求分离；巡查，规范，隔离，防泄漏；</p>
+</li>
+<li><p>快速交付–关键技术：丰富的云服务打包，整理行业解决方案；一键式模块化部署，可回滚，安全检测；持续集成，自动化测试，灰度发布；应用开发框架，解决企业应用固有的权限，组织机构等。</p>
+</li>
+</ul>
+<p>最后贴一张自己去参加大会的照片~</p>
+<p><img src="http://yhv5.com/uploads/2014/06/pworld.jpg" alt="pworld"></p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Pworld </tag>
+            
+            <tag> 分享 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[吐血推荐一款前端工具FIDDLER]]></title>
+      <url>/tools_fiddler_1080.html</url>
+      <content type="html"><![CDATA[<p>终于有时间可以更新博客了，首先说明写作本文的用意，一来是长时间没有更新博客了，二来这个工具确实挺好用的，因此吐血推荐给大家！~</p>
+<p>如果你是前端小码，你一定知道这个工具，如果不知道那么你就out了，首先介绍的这款前端工具主要是用来抓包使用，它也是抓包利器，功能比较齐全，使用方便（打开即用），完全不用配置。</p>
+<p>当然如果你只看到了它的这点功能，那么肯定算不上啥利器了，大家都知道App应用，基本都是调取后端接口完成数据的交互，平时我也主要用它来分析App接口数据，这样就可以方便在App上调试，具体操作下面介绍。</p>
+<hr>
+<ul>
+<li>首先需要开启我们的抓包利器Fiddler工具，如下图所示：</li>
+</ul>
+<p><img src="http://yhv5.com/uploads/2014/05/first1.jpg" alt="first"></p>
+<ul>
+<li>打开手机WiFi，在WiFi设置中选择你连接的WiFi并选择修改网络，在弹出的对话框中选择代理，将PC上使用的IP地址填写到对应位置，并将上面再Fiddler中设置的端口号填写到该位置，这里为了方便操作，我使用了虚拟软件Genymotion工具来模Android客户端，具体关于这个工具的使用，不是本文讨论范围，想了解可以移步本博客 <a href="http://yhv5.com/android_genymotion_1112.html" title="详细阅读 Android模拟器之神器-Genymotion">Android模拟器之神器-Genymotion</a> 观摩。如下图所示：</li>
+</ul>
+<p><img src="http://yhv5.com/uploads/2014/05/third.jpg" alt="third"></p>
+<p>到这里基本就完成了整个调试抓包的流程，为了让你的设置生效，需要使用移动设备或者终断模拟器访问http:.//ip:port（也就是上面的ip地址和端口）下载CA证书安装到设备之后才能使用，完成这步操作之后你就可以在移动设备或者终端模拟器上访问你需要调试的App应用，可以看到你访问App应的时候都会抓取到很多相关的接口数据。这样就可以根据你想要的接口分析数据了，当然Fiddler工具远远不止这点功能，他的其他功能也是非常强大的，好了大家可以尽情的去使用它并挖掘它的潜力了。完成之后顺便截张图如下：</p>
+<p><img src="http://yhv5.com/uploads/2014/05/four.jpg" alt="four"></p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> fiddle </tag>
+            
+            <tag> 前端 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Win7笔记本虚拟WiFi热点]]></title>
+      <url>/win7_wifi_1068.html</url>
+      <content type="html"><![CDATA[<p>以前在学校的时候，为了手机也能用无线网，因此自己就开始捣搞在自己的机器上面开一个热点给手机使用，那时候记得自己还专门去下载了一个开启WiFi的软件来创建这个热点，不过最近由于公司的WiFi网络实在不稳定可能是自己的手机信号本身就不好的原因（但感觉公司的WiFi是移动型的），因此自己又想在自己电脑上面创建一个热点，但是这回就没有这么麻烦了，无需任何软件win7系统本身就可以创建虚拟的WiFi热点，具体的操作如下介绍。</p>
+<ul>
+<li><p>首先确保电脑开启了无线网和操作者具有管理员权限，然后使用WIN键在对话框中输入cmd，查找到cmd.exe之后右键选择管理员权限启动。</p>
+</li>
+<li><p>使用命令：netsh wlan set hostednetwork mode=allow ssid=无线网名称 key=无线网口令</p>
+</li>
+</ul>
+<p>比如netsh wlan set hostednetwork mode=allow ssid=hanggecrazy key=hanggecrazy（其中mode可以设置热点的开启allow和禁用disallow）回车之后如下图则创建成功。</p>
+<p><img src="http://yhv5.com/uploads/2014/05/openwifi.jpg" alt="openwifi"></p>
+<ul>
+<li>运行成功后，打开网络和共享中心，点击左侧更改适配器设置。进入适配器设置就会发现多出了一个网卡为“Microsoft Virtual WiFi Miniport Adapter”的无线网络连接2并将其重命名（理论上面任意名字都行）。若没有，则尝试更新无线网卡驱动。如下图：</li>
+</ul>
+<p><img src="http://yhv5.com/uploads/2014/05/wifi.jpg" alt="wifi"></p>
+<ul>
+<li>选择一个需要共享的适配器（网络已连接）并右键单击选择“属性”，在弹出的对话框顶部选择“共享”选项卡，勾选上第一个选项，并选择，刚才创建的热点适配器，如下图</li>
+</ul>
+<p><img src="http://yhv5.com/uploads/2014/05/select.jpg" alt="select"></p>
+<ul>
+<li>确定之后，提供共享的网卡图标旁会出现“共享的”字样，表示该网络已共享至新创建的热点，然后回到DOS界面继续输入命令开启热点服务：netsh wlan start hostednetwork，按回车键运行。执行成功如下图所示：</li>
+</ul>
+<p><img src="http://yhv5.com/uploads/2014/05/success.jpg" alt="success"></p>
+<ul>
+<li>最后，新创建的热点WiFi红叉消失，WiFi基站已组建好并启动，用支持WiFi的设备搜索到自己建立的无线网络（如上面提到的hangecrazy）,输入自己设置的密码（如上面提到的hanggecrazy），即可使用其他设备连接WiFi热点上网了。</li>
+</ul>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> wifi </tag>
+            
+            <tag> win7 </tag>
+            
+            <tag> 热点 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Android模拟器之神器-Genymotion]]></title>
+      <url>/android_genymotion_1112.html</url>
+      <content type="html"><![CDATA[<p>笔者热心推荐一款直接可以胜过原生模拟器，并成功秒杀 BlueStacks 的android模拟器 Genymotion，它拥有卓越的性能成为目前史上最快的Android模拟器，对，你没有看错，是最快没有之一。它秒级开关机速度足够让你膜拜了，但这个不是重点，重要的是它甚至可以模拟目前世面上任意一款android手机，不但可以批量生成，而且可以自定义，此外，堪比真机的操作体验实在让人欲罢不能（希望你的真机性能足够卓越，不然在Genymotion面前，一切都是浮云）！</p>
+<p>好了介绍了这么一堆废话，开门见山聊正题，下面介绍如何使用这款神器，可以到 <a href="http://www.genymotion.cn/#theme=download" target="_blank" rel="external">Genymotion中文站</a> 去下载，最好注册一下，因为可以通过云端同步数据（非常友爱啊）！下载好了不要问我怎么安装，一路Next（一路走好），安装完成并不能马上就使用它，因为它依赖于 Oracle VirtualBox，可能又有人要问为啥了！因为模拟器的基础设备都是靠它来驱动完成的，那么没办法只好继续下载吧！毕竟是Oracle的，你需要登录下载，可以移步这里 <a href="https://www.virtualbox.org/" target="_blank" rel="external">Oracle VirtualBox</a> 下载，安装一路顺风，最后需要将它的服务启动起来（它默认是自启动的）。好了接下来说怎么使用了吧！</p>
+<p>现在准备工作都做好了！开始打开我们的模拟器Genymotion，第一次要稍微慢一些，因为你还要初始化一些安装。接下来就到了下面这一步：</p>
+<h4 id="创建设备"><a href="#创建设备" class="headerlink" title="创建设备"></a>创建设备</h4><p>在设备管理界面选择上方的Add来创建设备：</p>
+<p><img src="http://yhv5.com/uploads/2014/05/1.jpg" alt="1"></p>
+<h4 id="选择系统及版本"><a href="#选择系统及版本" class="headerlink" title="选择系统及版本"></a>选择系统及版本</h4><p>创建虚拟设备，选择你相中的一项，然后Next启程吧，之后确认创建的设备信息之后就可以在线安装设备需要的依赖包了（苦逼，又要下载啊```大致都是200M不等，没商量继续下载吧！）。</p>
+<p><img src="http://yhv5.com/uploads/2014/05/2.jpg" alt="2"></p>
+<h4 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h4><p>下载完成之后点击Finsh之后来到设备管理界面，选择我们创刚建的虚拟设备（细心的看客或许你已经注意到了上面已经虚拟了好几种设备了），可以对它进行配置修改、删除等等操作，当然你还可以连接到云端，即选择设备管理界面上面的Setting即可设置，将数据备份云端或者设置代理服务等等！如图：</p>
+<p><img src="http://yhv5.com/uploads/2014/05/3.jpg" alt="3"> <img src="http://yhv5.com/uploads/2014/05/4.jpg" alt="4"></p>
+<h4 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h4><p>完事之后，选中要启动的设备，在设备管理界面选择上方的Play，设备就开始初始化了，最后便来到了我们熟悉的android界面，操作和手机上面一致，无缝对接啊！！！到这里各自爱干嘛干嘛~ ，可别忘记了右侧和下侧还有一些工具条供你使用，另外告诉你一个秘密，你还可以把各种apk从桌面（Mac也可以使用哦）拖到模拟器即可使用，免去你需要在模拟器中下载安装包来安装的烦恼，做到无痛使用啊，强悍吧！！！！</p>
+<p><img src="http://yhv5.com/uploads/2014/05/5.jpg" alt="5"></p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> android </tag>
+            
+            <tag> Genymotion </tag>
+            
+            <tag> 模拟器 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[灰度发布]]></title>
+      <url>/grayscale_release_1054.html</url>
+      <content type="html"><![CDATA[<p><a href="http://baike.baidu.com/view/2563299.htm" target="_blank" rel="external">灰度发布 </a>又称作为灰度放量，在产品领域这个名词已经耳熟能详了，在互联网行业这个词汇应该也出现了有些年头了，但到目前为止仍然还不是很多的企业采用这种发布方式。所谓灰度发布，含义就是在黑与白之间，能够平滑过渡的一种发布方式，换句话说对于一个产品升级，先让一部分用户继续用老产品，另一部分用户开始用新产品，如果用户对新产品没有什么反对意见或者重大问题，那么逐步扩大范围，最后让所有用户都是用新产品。灰度发布可以保证整体系统的稳定，在初始灰度的时候就可以发现、调整问题，以保证其影响度。</p>
+<p>从上面的解释含义可以看出灰度发布的重要意义，但是灰度发布是否适合所有的场景呢？为何仍然有企业不适合灰度呢？理解这个问题其实也要分情况的，换句话说，不同的企业性质也许就会采用不同的产品发布方式。比如百度或者腾讯，因为它们的用户群体很大，每次对于一个产品的升级都会影响到很多的用户，为了减少新产品带来的问题影响到广大的客户群体，因此它们会使用灰度发布产品，这样不仅有利于自己产品更好的升级和用户的体验度，也可以将问题成本降低至最小。但对于一些小型的企业，本来用户群体不是很大，如果采用灰度发布，不仅仅是增加了运营成本，而且也会相应的增加维护成本和工作量，换来的价值利润可能不足以支撑这种过渡方式。在每次产品的迭代过程中，产品升级的前提都是在于带来价值大于消耗的成本，如果利益小于成本那么也就不会进行升级了，因此这也是一个度量。当然采用灰度发布不仅对产品也是对用户和企业本身都是最好的接收方式，将风险成本降低到最小都是每个企业的想法，企业是否适合这种产品发布方式都需要线下去评估和调研，另外主要是灰度的时间是相对较长的，如果从长远利益看是可以进行灰度，如果只是临时性产品发布，时间是不允许的，因此灰度发布适合产品长期运行。</p>
+<p>上述大致是笔者对灰度发布的一个看法或者观点吧！只是希望大家合理运用才是至关重要的。</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 灰度发布 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[浅谈云存储]]></title>
+      <url>/talkof_cloud_storage_1010.html</url>
+      <content type="html"><![CDATA[<p>就在昨天新闻爆出了<a href="http://www.ithome.com/html/iphone/82660.htm" target="_blank" rel="external"> 苹果躺着赚钱：一晚上多了384亿 </a> 的消息下，我们得知苹果在股市带动下一夜净赚了384亿，什么概念呢？大致相当于零售巨头塔吉特的市值。于是也有人到<a href="https://www.worldpayzinc.com/tech-wealth" target="_blank" rel="external"> worldpayzinc </a>网站去查看了一下科技公司每秒能赚多少钱，hanggcrazy也兴趣正浓的上worldpayzinc去查看了一番，其中在网站上面以形象的视觉方式为我们提供了答案，</p>
+<p><img src="http://yhv5.com/uploads/2014/04/11.jpg" alt="1"></p>
+<p>图中列出了十二家科技公司在一秒钟所得到的回报和赚取的利润，其中苹果公司最高到达了1644刀的纯利润，而Twitter则是负利润29刀。我们知道，这么多的利润背后也少不了客户在线上、线下的操作，于是我们又找到了针对部分互联网行业中平均一分钟内请求的数据统计结果如下图所示，<img src="http://yhv5.com/uploads/2014/04/21.jpg" alt="2">其中可以看出在短短的一分钟都能产生如此庞大的数据量，可想而知在整个互联网行业中每一分钟乃至日复一日年复一年所产生的数据是不可想象的，那么这么多的数据如何存储的呢？</p>
+<p>现在是大数据的时代，很多公司都开启了云数据库存储来解决这个问题，笔者最近也关注了部分企业对大数据的存储方案，比如亚马逊的<a href="https://aws.amazon.com/cn/s3/?nc1=h_ls" target="_blank" rel="external"> AWS(Amazon Web Servives) </a> 是比较出色的，另外还有百度的<a href="http://developer.baidu.com/wiki/index.php?title=docs/cplat/bcs" title="docs/cplat/bcs" target="_blank" rel="external"> BCS(Baidu Cloud Storage) </a>，腾讯的<a href="http://wiki.open.qq.com/wiki/CDB%E6%9C%8D%E5%8A%A1%E4%BB%8B%E7%BB%8D" target="_blank" rel="external"> CDB(Cloud Database) </a>， 阿里的<a href="http://www.aliyun.com/product/rds/" target="_blank" rel="external"> RDS(Relational Database Service) </a>，新浪的<a href="http://www.infoq.com/cn/articles/cl-sae-datastore" target="_blank" rel="external"> RDC(Relational Database Cluster) </a> 等等，这些想必大家都很了解了。另外上述云存储也陆续的对外提供了API和相应的SDK，方便第三方的更好介入和应用。腾讯的CDB目前已经推出普通版和高性能版SSD供不同需求的客户选择，但普通版的销售并不理想，可能主要是高性能版的降价造成的（资料来源 腾讯钟超宇），经过半年的灰度，CDB已经比较稳定了，并且腾讯很多的业务都已经迁移到了CDB上；相对于阿里的RDS就已经广泛运用于ECS和轻云上面了，只要有条件的都可以去使用；国外应该都对AWS非常的感兴趣，因为在某种角度上面说AWS从时间和技术上面都非常的成熟了。</p>
+<p>目前许多公司都有了自己的 * AE（App Engine）了，随着业务的快速增长，大数据对于公司既是欢喜又是担忧，为了更好的解决各种业务带来的大数据，更便捷、合理的进行后端扩展是至关重要，然而后端对数据的稳定性也是一种考验，因此这也将更加严格的要求我们的攻城狮需要有更能适应变化的设计方案和应对大数据带来新技术难题的挑战，我们也将非常地关注和期待新技术给互联网带来的变革和体验。</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> AWS </tag>
+            
+            <tag> BCS </tag>
+            
+            <tag> CDB </tag>
+            
+            <tag> RDS </tag>
+            
+            <tag> 云存储 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Chrome UA插件问题]]></title>
+      <url>/chrome_ua_991.html</url>
+      <content type="html"><![CDATA[<p>今天笔者在无意识中爬文 <a href="http://www.wooyun.org/" target="_blank" rel="external">乌云</a> 平台上面最近报告的漏洞，各种形形色色奇葩的XSS攻击还是历历在目，只有想不到的，没有做不到的。虽然自己以前也做过这方面的安全过滤处理，但是看见乌云上频频爆出的漏洞，心中既是欢喜又是担忧，欢喜是因为我又了解到了一些新的东西；忧虑是因为自己在这些方面的工作没有完全做到位。</p>
+<p>提及安全，试问大家在做任何事是不是都先将安全方面放在首位呢？我想这里应该不用我来强调，可以见得它有举足重轻的分量。那你是否会问：为什么都将安全方面放在第一考虑，为何还是出现问题？ 这个问题其实也就说明安全是没有绝对的，没有人能将事情做得最完美，即使可能是花着百分之百的心思去处理这件事。因此，我们需要做的是减少问题的出现，尽量避免不必要的烦恼，来减少人力物力方面的支出，毕竟不要让人疲于奔命。</p>
+<p>作为一枚程序猿，我想熟悉这方面工作的人都知道，几乎很难将一段程序在没有BUG的前提下完成，这也因此有了“调试”工作的意义。好吧！说了这么多就想引出今天的正题-chrome浏览器插件 <a href="https://chrome.google.com/webstore/detail/user-agent-switcher-for-c/djflhoibgkdhkhhcedjiklpkjnoahfmg" target="_blank" rel="external">UserAgent switch</a> 的XSS问题。听这个名字大家都应该知道是干什么使的，对，其实就是一个切换UA的工具。很多人都注意了各方面的params、COOKIE、referer blablabla什么什么的过滤，但是往往还忽略了UserAgent也可能带来隐患。这不问题来了，使用UA工具添加一条UA信息准备切换过去，但是问题出来了。我添加的信息VALUE是一段脚本，如：<code>&lt;script&gt;window.location = &quot;http://www.yhv5.com/&quot;&lt;/script&gt;</code>，保存之后我便再也无法使用UA了，修改、添加、切换都无法使用。就连页面结构都乱了。如下图：</p>
+<p><img src="http://yhv5.com/uploads/2014/04/ua.jpg" alt="ua"></p>
+<p>不过这只是前端的一个影响，细心的朋友就会注意到如果安全工作没有做到位，可能就会遇到：在使用很多日志分析工具都是生成html格式的报告，如果这个字段值没有经过合适的过滤编码就直接输出在html里，管理员查看的时候就会执行插入的js了。<span class="subject">Splunk</span>就曾经出过因为对referer字段没有过滤导致的xss漏洞。本质上来说如果要进行xss攻击，只要找到一个未过滤的输入点。输入的数据在支持脚本的软件（不仅限于浏览器）里解析就可以了。sqli也是类似的道理。而输入点并不仅仅是网页里的表单，只要去发现，输入点无处不在，也防不胜防。</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> chrome </tag>
+            
+            <tag> UserAgent </tag>
+            
+            <tag> xss </tag>
+            
+            <tag> 乌云 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[喜得Pworld2014门票]]></title>
+      <url>/pworld_tickets_975.html</url>
+      <content type="html"><![CDATA[<p>话说笔者关注<a href="http://www.qconbeijing.com/" target="_blank" rel="external"> Qcon </a>举办的软件大会已经一年多了，但一直都没有机会入围现场观看，这是一件多么可悲的事儿啊！面对如此高的门票（1000元人民币）就已经将我拒之门外了，基本上已经对这类大会只抱着在线观摩余后视频的心情了。</p>
+<p>本来说来也巧，和朋友讨论了一些关于Qcon举办的大会，虽然没有机会可以去，但是是否可以通过其他方式入场呢？想了一下应该都是需要money的，搜寻了一下，可以通过自愿者的方式入场，有是有这样的规则，但是条件有些不满足，各种限制性因素又浇灭了心中燃起的那朵小火苗。看来现阶段物质基础不满足的条件下真心无缘Qcon大会啊。</p>
+<p>伤心欲绝中去Qcon上面继续看视频，不知不觉发现<a href="http://www.infoq.com/cn/zones/pworld2014/" target="_blank" rel="external"> Pworld 2014 </a> 大会也快到了，了解了一下，这也是一个互联网行业比较有技术含量的分享大会。最值得关注的是，下面提供了”免费报名”的功能，不仅免费报名还有机会免费获得入场的门票（1000元人民币），心中甚是欢喜啊！虽然目前还没有得到门票，但是心情已经开始跳跃不能平静了。按照<br>流程我注册了会员，大致如下流程：</p>
+<p><strong>选择大会地址 </strong></p>
+<p><img src="http://yhv5.com/uploads/2014/04/1.jpg" alt="1"></p>
+<p><strong>填写申请信息 </strong></p>
+<p><img src="http://yhv5.com/uploads/2014/04/2.jpg" alt="2"></p>
+<p><strong>审核 </strong><br>审核阶段大致两三个小时之后便通过了审核（信息无误的情况下）。晚上我便收到了正式的电子门票。</p>
+<p><img src="http://yhv5.com/uploads/2014/04/3.jpg" alt="3"></p>
+<p>十分感谢这次能获取到门票，也感谢这美好的日子，希望到与会现场能面对面接触到业界的技术大牛，并将大会收获到的知识分享给大家。。。</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Pworld </tag>
+            
+            <tag> Qcon </tag>
+            
+            <tag> 门票 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[趣味逻辑面试题]]></title>
+      <url>/savor_question_961.html</url>
+      <content type="html"><![CDATA[<p>虽然笔者是做程序猿、攻城狮的，但最近面试有个HR问到了一些逻辑趣味题，最终还是推断出正确的结果，我觉得挺有意思的，现在分享给大家！</p>
+<p><img src="http://yhv5.com/uploads/2014/04/think.jpg" alt="think"></p>
+<p>第一个问题是：有一个国王他有四个王子，分别称作老大，老二，老三和老四，国王临终前将四个王子叫到床前，并让侍从拿来六顶皇冠，其中红色的三顶、蓝色的两顶、黄色的一顶让四个王子过目，之后让四个王子闭上眼睛，让侍从把六顶皇冠中的四顶分别给四个王子戴上，并让他们四个人纵向站成一列，将剩余的两顶藏起来。老大最前面，其次是老二，再是老三，最后是老四，然后让四个王子都睁开眼睛。每个人都只能看见前边人的皇冠颜色，老大看不见自己的皇冠颜色，也看不见老二、老三、老四的皇冠颜色；老二能看见老大的皇冠颜色，但是看不见自己和老三、老四的皇冠颜色；老三能看见老大和老二的皇冠颜色，但看不见自己和老四的皇冠颜色，老四能看见老大、老二、老三的皇冠颜色，但是看不见自己的皇冠颜色。这时候国王开始问老四：“你知道自己头上皇冠的颜色吗？” 四王子回答道：“不知道。” 国王又开始问老三：“你知道自己头上皇冠的颜色吗？” 三王子回答道：“不知道。” 国王又开始问老二：“你知道自己头上皇冠的颜色吗？” 二王子回答道：“不知道。” 国王又开始问老大：“你知道自己头上皇冠的颜色吗？” 大王子回答道：“知道。” 就这样的一个趣味逻辑题，请让你分析大王子头上戴的皇冠颜色，并给出逻辑推论。</p>
+<p>第二个问题要简单一些：有三个盒子各装两个球，分别是两个黑球、两个白球、一个黑球和一个白球。封装后，发现三个盒子的标签全部贴错。如果只允许打开一个盒子，拿出其中一个球看，那么能把标签全部纠正过来吗？</p>
+<p>现在大家可以思考这两个问题了。。</p>
+<p>冥思苦想中。。。。。。。</p>
+<p>呵呵大家看看想出来了吗？</p>
+<p>下面是我的第一个解题思路：</p>
+<p>如图所示四个人站成一列，依次编号老大为1号，老二为2号，老三为3号，老四为4号。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">++++++++</div><div class="line">+  ①   +</div><div class="line">++++++++</div><div class="line">+  ②   +</div><div class="line">++++++++</div><div class="line">+  ③   +</div><div class="line">++++++++</div><div class="line">+  ④   +</div><div class="line">++++++++</div></pre></td></tr></table></figure></p>
+<p>首先国王问4号，4号不知道，自己的颜色，但是他知道1,2,3号的颜色，如果1,2,3号颜色是2蓝和1黄，那么他自己肯定知道自己是红色，这点是无法否认的对吧！现在他自己不知道，说明，1,2,3号中肯定不全是2蓝1黄，至少有一个红。到这里有一个很重要的线索，就是1,2,3号肯定有一个红色的；国王问3号，3号也不知道，分析一下现在3号也知道1,2,3至少有一个红色的，那么就有那些情况可以出现呢？分析前1,2,3中已经有1红，剩下两个可以是2红，2蓝，1蓝1黄，1红1蓝，1红1黄。3号不知道自己的颜色，那么说明前面1,2号肯定不是2蓝，1蓝1黄，不然自己就肯定是红。这里的得到的线索就是红色在1,2号中。国王问2号，2号也不知道，分析一下2号也知道1,2号中肯定有红色，如果1号不是红色，那么自己肯定就知道自己是红色，因此自己不是红色。这里得到的线索就是1号是红色的。<br>国王问1号，1号知道就很明了了。因此答案是红色。</p>
+<p>我的第二个解题思路：</p>
+<p>还是如下图可以看出，盒子有三个标签，分别标记是2黑色、2白色、1黑1白。但是现在标签都是错的，说明里面没有一个放正确了，那么放错的方式有哪些呢？可以拆分一下题意可以简单的分为如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</div><div class="line">+ 正确 +    标签    +    2黑色      +     2白色     +     1黑1白    +</div><div class="line">+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</div><div class="line">+ 错误 +   第一种   +    1黑1白     +     2黑色     +     2白色     +</div><div class="line">+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</div><div class="line">+ 错误 +   第二种   +    2白色      +    1黑1白     +     2黑色     +</div><div class="line">+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</div></pre></td></tr></table></figure></p>
+<p>如果从2黑色的盒子拿出一个，拿到白色就无法判断是那种错误的情况，拿着黑色当然ok!<br>如果从2白色的盒子拿出一个，拿到黑色就无法判断是那种错误的情况，拿着白色当然ok!<br>如果从1黑1白的盒子拿出一个，那么拿到黑色或者白色都能判断是那种情况！<br>因此解题就清晰了，从1黑1白盒子拿出一个就能把标签全部纠正过来。</p>
+<p>笔者感觉这种面试挺有意思的！在此分享给大家。。。</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 逻辑 </tag>
+            
+            <tag> 面试 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[弹窗垃圾广告引发的思绪]]></title>
+      <url>/pop_up_spam_triggered_thoughts_951.html</url>
+      <content type="html"><![CDATA[<p><img src="http://yhv5.com/uploads/2014/04/trouble.png" alt="trouble">现如今网络发达，广告也在各种网络上大肆传播。游戏、美女、购物、减肥、医院等无处不在。现本已是见怪不怪了，但最让我受不了的就是游戏和各种美女广告。</p>
+<p>就本人安装的酷我播放软件来说，在这之前听歌都转换到手机上去了，电脑软件基本上未开启。就这几天突然心血来潮打开电脑，打开了音乐播放器。一首歌未完，就是游戏小弹窗，紧接着就是美女视频聊天弹窗。于是今天开始了卸载工作，重新安装了天天动听、酷狗音乐，但也发现和酷我音乐一样。播放器分类里面都有一块有关美女直播的模块。顿时很纳闷，听歌和美女有什么关系？最终我选择了QQ音乐。</p>
+<p>当然我没有将每一款播放器一一比较。并不一定所有播放器都是如此。排除音乐播放器，很多软件第一次启动时候的新闻弹窗，就布满了有关美女模块、游戏模块。</p>
+<p>这让我想起来了一个词“色情营销”。色情营销是指利用色情图片或文字吸引网民的注意以达到提高点击量或销售量的营销手段。表现形式主要有网络广告、网络游戏、网站、及时通讯。我相信只要有互联网经历的人都经历过这几种形式。这种行为背后的各种目的，相信大家也知道一二。在这种营销模式的疯狂乱炸下，不担保一个思想成熟的成年人也不会动动鼠标。那么我们的青少年呢？</p>
+<p>随着性器官的发育和第二性征的出现，青少年对性产生了兴趣，开始关注有关性方面的事。良性的各种广告也许对他们的性心理能够起到一定的引导和教育意义。但是在这种色情营销模式下，各种色情诱惑图片宣扬的是各种畸形的性行为如性变态、同性恋、恋童癖、乱伦等。这对青少年们形成正确的性观念、性行为都会产生冲击。</p>
+<p>随着青春期期的到来，青少年身体外形的变化，使他们产生了对成熟的强烈追求和感受，但其在认知能力、思维方式、人格特点及社会经验上还不够成熟。因此制止能力、辨别能力也不够成熟。但这种成熟感促使他们自认为能够接受各种冲击，但心里的不成熟却让他们难以抵制和克制外界的各种刺激的诱惑。</p>
+<p>同时青少年发展过程中，烦恼突然增多，孤独、压抑心里等的产生。他们也需要宣泄的途径，但是其情绪表现具有内向性的特点，他们更倾向于将各种情绪隐藏于心中。现如今青少年的各种矛盾也越来越多，学习的压力、父母关系的不和谐等，常年的积压会让他们选择一种宣泄途径，如果在未正确引导下接触各种网游、色情网站，那么他们深陷其中的可能性将会大大增加。</p>
+<p>虽然中国政府已出台各种政策来制约，但由于互联网的开放性，这种行为一时还不能得到有效的控制。我相信制约只是一方面，真正想要杜绝也许是一个漫长的过程。我只是千千万万个网民中的一员。只能希望各种商家开发的软件能给用户更多的主动权和选择权。如果我们用户使用的软件、浏览的网页可以自由定制功能模块，也许相对而言会更好；如果商家们能更加自律也许相对而言也会更好。</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 弹窗 广告 青少年 色情营销 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[浅谈服务器访问量PV]]></title>
+      <url>/talkofpv_935.html</url>
+      <content type="html"><![CDATA[<p>最近一直有人问我：在给定的一台服务器上如何预知这台服务器能承受的访问量是多少，究竟应该怎么合理去均衡这个负载问题。趁着清明时节清闲之态撸撸。</p>
+<p>想要知道一台服务器能承受的访问量，首先有必要先了解一下常说的<a href="http://zh.wikipedia.org/wiki/IP%E5%9C%B0%E5%9D%80" target="_blank" rel="external"> IP </a>和<a href="http://zh.wikipedia.org/wiki/%E5%96%AE%E9%A0%81%E9%BB%9E%E9%96%B1%E7%8E%87" target="_blank" rel="external"> PV </a>的概念，所谓IP估计大家都知道，就是一个客户端的地址，无论这个客户端访问了服务器多少页面，都只计算为一个IP；另外一个概念是PV，它的意思是page view （页面访问量），简单理解也就是说当客户端访问服务器页面，只要有访问一个页面或者刷新就记录一次，因此这个就是人们常说的PV访问量。那么这个访问量究竟应该如何去计算，才能让我们的服务器在它能承受的范围内工作呢？</p>
+<p>对于计算一台服务器的承受量，其实这个有很多方面的因素影响，比如服务器本身的硬件方面：CPU处理能力问题，内存利用率问题，IO问题，网卡问题，磁盘以及转速的问题，这些方面直接影响到一台服务器的性能问题；另外还有个网络方面的问题就是带宽，如果再好的服务器，带宽太小，仍然是无法支撑较高的访问量。总之，在我们宏观上面能理解到的这些因素都在考虑范围内，仍然还有很多细微的因素（如应用程序）也会直接影响到服务器的性能（这里就不做具体介绍和说明）。根据我们对于互联网的常规推论，日常的访问量有80%都集中在白天的8-9个小时内，也就是一天中的40%小时左右，因此就可以得出一个大致的推导公式：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">每台服务器每秒处理请求的数量 = ((80%*站点总PV量)/(24小时*60分*60秒*40%)) / 服务器数量</div></pre></td></tr></table></figure></p>
+<p>根据这个公式不难看出，一台服务器每秒处理请求的数量，假设在不考虑其他因素的情况下，某一站点日访问量1000W PV ，根据上面的推导公式可以得出：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">QPS = ((80% * 1000W) / (24小时 * 60分 * 60秒 * 40%)) / 服务器数量</div></pre></td></tr></table></figure></p>
+<p>如果服务器只有一台承担，则这台服务器至少需要每秒处理231.4个请求，也就是当其他条件都符合，如果服务器每秒能够处理231.4个请求，差不多可以承受一天1000W的访问量。但是这个值只是一个理想值，实际中是比这个值更小，因此如果单台服务器每秒CPU能处理300个请求，那么一天1000W访问量应该没有问题（这个值是在其他条件都满足的条件下，下面会介绍另外一个因素会影响这个值）。</p>
+<p>现在就来介绍另一个限制因素-带宽，也需要先了解一下<a href="http://zh.wikipedia.org/wiki/%E5%B8%A6%E5%AE%BD" target="_blank" rel="external"> 带宽 </a> 的概念，带宽简单理解就是指单位时间能通过链路的数据量。为什么会说带宽会影响访问量呢？原因很简单，当我们访问一个页面时，需要从服务器端去下载这个页面的内容，如果这个页面内容较大，超过了网络传输的数据量，那么就会出现延时或者丢包，导致这一次请求丢失或者超时而放弃。因此这个带宽大小直接制约了服务器端能否接受到请求的数量。那么这个带宽应该如何来计算才能让服务器合理的利用资源呢？这里又需要引入一个公式：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">站点一天总流量 = 请求页面大小（k字节）* 站点总PV量 / 1024</div></pre></td></tr></table></figure></p>
+<p>假如上面所讲到的一个站点一天有1000W PV，那么利用这个公式可以计算出这个站点一天的流量:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">流量 = 20KB（我们假定访问页面平均大小20KB）* 1000W / 1024 = 195312.5MB = 195GB</div></pre></td></tr></table></figure></p>
+<p>那么换算为带宽 则195GB /（3600 * 24 * 40%） = 5.65MB/s = 5.65 * 8 =  45Mb 带宽（B 是字节，b是位 ，8位为1字节），因此在日访问量为1000W的单台服务器还需要带宽为45M才能满足这样的要求，但是实际上也有误差，也就是说并不是每一次发送的请求都需要向服务器端获取页面内容（本地缓存），也并不是说页面平均大小为20KB，有时候一张图片都有好几百KB，所以这也是一个理想值，仅供参考。因此实际情况中，我们并不会用单台服务器来承担这么大的访问量，这也可以相对地减轻服务器压力，并提高性能（根据实际情况一台服务器利用80%CPU处理事务要比两台服务器各自利用40%CPU处理事务慢）。</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> Linux </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> PV </tag>
+            
+            <tag> 带宽 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[漫话坚持]]></title>
+      <url>/freetalkperseverance_881.html</url>
+      <content type="html"><![CDATA[<p><img src="http://yhv5.com/uploads/2014/04/6628711bjw1dji2ocgmauj.jpg" alt="6628711bjw1dji2ocgmauj"><br>还是高中时代看过这副漫画。今天又费经心思找到了这副漫画。不难看出就是一人掉下悬崖时抓住了树枝。为了能够逃生，这个人一直坚持到这颗树长大伸向悬崖的对岸。</p>
+<p>很多时候我会时不时的想起它，用以激励自己。我深知坚持的不易。坚持按时起床、坚持每天记单词、坚持每天看书学习……这一路走来，很多时候我只能说“臣妾做不到呀”。我常有很多想法，却缺乏持之以恒的决心。如果我们面对的也像漫画中一样，这是生与死的决策，那么我们会怎样呢？（仅以此漫画再次激励自己）</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 坚持 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[耐人寻味的三个小故事]]></title>
+      <url>/three_story_867.html</url>
+      <content type="html"><![CDATA[<p><strong>故事一</strong></p>
+<p>英国某小镇。这儿，有一个当地青年人，整日以沿街为小镇的人说唱为生；这儿，有一个华人妇女，远离家人，在这儿打工。他们总是在同一个小餐馆用餐，于是他们屡屡相遇。时间长了，彼此已十分的熟悉。</p>
+<p>有一日，我们的女同胞，关切地对那个小伙子说：“不要沿街卖唱了，去做一个正当的职业吧。我介绍你到中国去教书，在那儿，你完全可以拿到比你现在高得多的薪水。”小伙子听后，先是一愣，然后反问道：“难道我现在从事的不是正当的职业吗？我喜欢这个职业，它给我，也给其他人带来欢乐，有什么不好？我何必要远渡重洋，抛弃亲人，抛弃家园，去做我并不喜欢的工作？”邻桌的英国人，无论老人孩子，也都为之愕然。他们不明白，仅仅为了多挣几张钞票，抛弃家人，远离幸福，有什么可以值得羡慕的。在他们的眼中，家人团聚，平平安安，才是最大的幸福。它与财富的多少，地位的贵贱无关。</p>
+<p>于是，小镇上的人，开始可怜我们的女同胞了。</p>
+<hr>
+<p><strong>故事二</strong></p>
+<p>有一个美国商人坐在墨西哥海边一个小渔村的码头上，看着一个墨西哥渔夫划着一艘小船靠岸，小船上有好几尾大黄鳍鲔鱼。这个美国商人对墨西哥渔夫能抓这么高档的鱼恭维了一番，还问要多少时间才能抓这么多？墨西哥渔夫说，才一会儿功夫就抓到了。美国人再问，你为什么不待久一点，好多抓一些鱼？墨西哥渔夫觉得不以为然：“这些鱼已经足够我一家人生活所需啦！”美国人又问：“那么你一天剩下那么多时间都在干什么？”墨西哥渔夫解释：“我呀？我每天睡到自然醒，出海抓几条鱼，回来后跟孩子们玩一玩；再跟老婆睡个午觉，黄昏时晃到村子里喝点小酒，跟哥儿们玩玩吉他。我的日子可过得充实又忙碌呢！</p>
+<p>美国人不以为然，帮他出主意，他说：“我是美国哈佛大学企管硕士，我倒是可以帮你忙！你应该每天多花一些时间去抓鱼，到时候你就有钱去买条大一点的船。自然你就可以抓更多鱼，再买更多渔船。然后你就可以拥有一个渔船队。到时候你就不必把鱼卖给鱼贩子，而是直接卖给加工厂。然后你可以自己开一家罐头工厂。如此你就可以控制整个生产、加工处理和行销。然后你可以离开这个小渔村，搬到墨西哥城，再搬到洛杉矶，最后到纽约，在那经营你不断扩充的企业。”</p>
+<p>墨西哥渔夫问：“这又花多少时间呢？”</p>
+<p>美国人回答：“十五到二十年。”</p>
+<p>墨西哥渔夫问：“然后呢？”</p>
+<p>美国人大笑着说：“然后你就可以在家当皇帝啦！时机一到，你就可以宣布股票上市，把你的公司股份卖给投资大众；到时候你就发啦！你可以几亿几亿地赚！”</p>
+<p>“然后呢？”</p>
+<p>美国人说：“到那个时候你就可以退休啦！你可以搬到海边的小渔村去住。每天睡到自然醒，出海随便抓几条鱼，跟孩子们玩一玩，再跟老婆睡个午觉，黄昏时，晃到村子里喝点小酒，跟哥儿们玩玩吉他。”</p>
+<p>墨西哥渔夫疑惑的说：“我现在不就已经达到了吗？”</p>
+<hr>
+<p><strong>故事三</strong></p>
+<p>中国山东，有这样一对夫妇：刚刚结婚时，妻子在济宁，丈夫在枣庄；过了若干年，妻子调到了枣庄，丈夫却一纸调令到了菏泽；若干年后，妻子又费尽周折，调到了菏泽，但不久，丈夫又被提拔到了省城济南；妻子又托关系找熟人，好不容易调到了济南，可是不到一年，丈夫又被国家电业总公司调到重庆。于是，她所有的朋友，就给她开玩笑——你们俩呀，天生就是牛郎织女的命。要我们说呀，你也别追了，干脆辞职，跟着你们家老张算了。</p>
+<p>但是，她以及公婆、父母，都一致反对。“干了这么多年，马上就退休了，再说，你的单位效益这么好，辞职多可惜。要丢掉多少钱呀！再干几年吧，也给孩子多挣一些。”</p>
+<p>其实，他们家的经济条件已经非常优越。早已是中层阶级，但是他们仍然惦念着那一点退休金。于是，夫妻两个至今依然是牛郎织女。</p>
+<p>有些人追求功成名就；有的人追求腰缠满贯；有的人追求平淡充实；有的人追求新鲜挑战……那么你的追求又是什么呢？什么样的生活才是你真正想要的？</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 故事 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[我眼中的互联网]]></title>
+      <url>/nodejs_850.html</url>
+      <content type="html"><![CDATA[<p>就在众人追赶着互联网高速发展的浪潮，有些跟不上步伐的人倒下了，又有那么一些年轻的人站起来了。还没来得及熟悉这冲浪的生活节奏，移动互联网又来了，又一批批的躺枪倒下了；还没来得及学习应用云，大数据时代又来了（可以移步本博客的 <a href="http://yhv5.com/talkof_cloud_storage_1010.html">浅谈云存储</a>参阅），又一次次的选择放弃了，真的可以说互联网是把双刃剑，既能致富，也能致衰，既能造就人才，也能造就迷茫。</p>
+<p>话说运用LAMP做开发已经好多年头了，当看见<a href="http://www.infoq.com/news/2011/04/javascript-lamp" target="_blank" rel="external"> Will the Rise of Javascript Mean the End of LAMP </a> 这篇文章时，引用一下原文内容：”</p>
+<ul>
+<li>1991-1999: The HTML Age - The HTML Age was about documents,</li>
+<li>2000-2009: The LAMP Age - The LAMP Age was about databases.</li>
+<li>2010-??: The Javascript Age.The Javascript age is about event streams.<br>Modern web pages are not pages, they are event-driven applications through which information moves.“</li>
+</ul>
+<p>多少有很多的感触。虽然有不少扇风点火的评论说七说八，但终将成为历史。虽然Javascript(NodeJs)是时代的进步产物，但web架构黄金组合LAMP也是时代进步留下的结晶。一点点的衍变对于互联网来说也是致命的，这也将会送走那么一拨不愿意去冲浪的人们。</p>
+<p>社会也在衍变，也在蜕化，生活的点点滴滴都在跟着变化，虽然带来了新的事物，但是也将带来新的问题。没有绝对的好坏，所有东西都是在相对中改进；在改进中提升；在提升中取代；在取代中超越。</p>
+<p>虽然已经火热的Node被广泛运用于生产项目中，但是其中的问题还是值得关注的，截止到小编写作本文时，具体总结各大资源信息列出：</p>
+<p><strong>优点：</strong></p>
+<ul>
+<li><p>处理高并发场景性能更高，node.js官网解释是Evented I/O for V8 JavaScript。Evented IO实际上单线程epoll/kqueue模型，简单来说就是比select和poll等效率更高的事件驱动模型；而单线程主要是为了减少locking的开销。这两点使得node.js能够同时处理大量的高并发链接（这种模型与nginx，redis以及haproxy的结构也比较类似）。至于V8，则是相当出色的Javascript引擎，好处是熟悉的人多，人力成本低，开发效率高，同时不失语</p>
+</li>
+<li><p>入门简单，非常适合做 单页程序 + RESTfull API，Worktile就是采用Angular JS + Node.js实现的SPA，基本上完美配合。</p>
+</li>
+<li><p>互联网上 web 应用正在急速萎缩，而不需要web/html这张皮的应用正在疯长。node 和 erlang 是两个最适合这个潮流变迁的语言。</p>
+</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li><p>单线程，难以充分利用多核资源；</p>
+</li>
+<li><p>异步回调机制变成不是很容易；</p>
+</li>
+<li><p>API还在成熟过程中，各方面都还需要不断完善才能适应需要；</p>
+</li>
+<li><p>开源的组件库太多，更新太快，向下不兼容。</p>
+</li>
+</ul>
+<p>因此，在实际开发中还是取长补短，合理利用新技术，并不是滥用。。。。</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> LAMP </tag>
+            
+            <tag> NodeJs </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[MongoDB 分片集群部署]]></title>
+      <url>/mongodb_shard_821.html</url>
+      <content type="html"><![CDATA[<p>最近抽了点时间整理一年前做过的MongoDB分片集群部署，具体如有图并结合下述案例分析：</p>
+<p><img src="http://yhv5.com/uploads/2014/03/cluster.png" alt="cluster"></p>
+<h4 id="分片集群配置"><a href="#分片集群配置" class="headerlink" title="分片集群配置"></a>分片集群配置</h4><p>Shard Server: mongod实例，用于存储实际的数据块，实际生产环境中一个Shard Server角色可由几台机器组和一个Replica Set承担，防止主机单点故障。</p>
+<p>Config Server: mongod实例，存储了整个Cluster Metadata，其中包括Chunk信息。</p>
+<p>Route Server: mongos实例，前端路由，客户端由此接入，且让整个集群看上去像单一数据库，前端应用可以透明使用。</p>
+<p>主要思路如下：</p>
+<h5 id="分片"><a href="#分片" class="headerlink" title="分片"></a>分片</h5><p>3个分片Sharding，每一个分片由3个节点构成1主2备的Replica Set</p>
+<p>分片复本集shard1（三个分片节点构成一个复本集）：127.0.0.1:10001、127.0.0.1:10002、127.0.0.1:10003</p>
+<p>分片复本集shard2（三个分片节点构成一个复本集）：127.0.0.1:20001、127.0.0.1:20002、127.0.0.1:20003</p>
+<p>分片复本集shard3（三个分片节点构成一个复本集）：127.0.0.1:30001、 127.0.0.1:30002、 127.0.0.1:30003</p>
+<h5 id="配置节点"><a href="#配置节点" class="headerlink" title="配置节点"></a>配置节点</h5><p>Configsvr（三个配置服务器节点）：127.0.0.1:10004、127.0.0.1:20004、127.0.0.1:30004</p>
+<h5 id="路由节点"><a href="#路由节点" class="headerlink" title="路由节点"></a>路由节点</h5><p>1个路由节点Mongos<br>Mongos（一个路由节点）：127.0.0.1:27017</p>
+<h4 id="搭建集群"><a href="#搭建集群" class="headerlink" title="搭建集群"></a>搭建集群</h4><h5 id="创建Sharding和Replica-Set"><a href="#创建Sharding和Replica-Set" class="headerlink" title="创建Sharding和Replica Set"></a>创建Sharding和Replica Set</h5><h6 id="创建并配置第一组"><a href="#创建并配置第一组" class="headerlink" title="创建并配置第一组"></a>创建并配置第一组</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mongod --dbpath=H:\wamp\www\MongoDB_Cluster\MongoDB_1\db\shard11 --journal --logpath=H:\wamp\www\MongoDB_Cluster\MongoDB_1\logs\shard11.log --logappend --directoryperdb --port 10001 --replSet shard1/127.0.0.1:10002 --oplogSize 100 --rest --shardsvr &amp;amp;</div><div class="line">mongod --dbpath=H:\wamp\www\MongoDB_Cluster\MongoDB_1\db\shard12 --journal --logpath=H:\wamp\www\mongoDB_Cluster\MongoDB_1\logs\shard12.log --logappend --directoryperdb --port 10002 --replSet shard1/127.0.0.1:10003 --oplogSize 100 --rest --shardsvr &amp;amp;</div><div class="line">mongod --dbpath=H:\wamp\www\MongoDB_Cluster\MongoDB_1\db\shard13 --journal --logpath=H:\wamp\www\mongoDB_Cluster\MongoDB_1\logs\shard13.log --logappend --directoryperdb --port 10003 --replSet shard1/127.0.0.1:10001 --oplogSize 100 --rest --shardsvr &amp;amp;</div></pre></td></tr></table></figure>
+<p>启动并配置shard1<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mongo 127.0.0.1:10001/admin</div><div class="line">config=&#123;_id:<span class="string">'shard1'</span>,members:[&#123;_id:0,host:<span class="string">'127.0.0.1:10001'</span>&#125;,&#123;_id:1,host:<span class="string">'127.0.0.1:10002'</span>&#125;]&#125;//分片组配置信息</div><div class="line">rs.initiate(config);//初始化分片shard1</div><div class="line">rs.addArb(<span class="string">'127.0.0.1:10003'</span>);//添加仲裁机</div><div class="line">rs.status();服务器down机之后可以加上--logappend参数复写日志</div></pre></td></tr></table></figure></p>
+<h6 id="创建并配置第二组"><a href="#创建并配置第二组" class="headerlink" title="创建并配置第二组"></a>创建并配置第二组</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mongod --dbpath=H:\wamp\www\mongoDB_Cluster\MongoDB_2\db\shard21 --journal --logpath=H:\wamp\www\mongoDB_Cluster\MongoDB_2\logs\shard21.log --logappend --directoryperdb --port 20001 --replSet shard2/127.0.0.1:20002 --oplogSize 100 --rest --shardsvr &amp;amp;</div><div class="line">mongod --dbpath=H:\wamp\www\mongoDB_Cluster\MongoDB_2\db\shard22 --journal --logpath=H:\wamp\www\mongoDB_Cluster\MongoDB_2\logs\shard22.log --logappend --directoryperdb --port 20002 --replSet shard2/127.0.0.1:20003 --oplogSize 100 --rest --shardsvr &amp;amp;</div><div class="line">mongod --dbpath=H:\wamp\www\mongoDB_Cluster\MongoDB_2\db\shard23 --journal --logpath=H:\wamp\www\mongoDB_Cluster\MongoDB_2\logs\shard23.log --logappend --directoryperdb --port 20003 --replSet shard2/127.0.0.1:20001 --oplogSize 100 --rest --shardsvr &amp;amp;</div></pre></td></tr></table></figure>
+<p>启动并配置shard2<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mongo 127.0.0.1:20001/admin</div><div class="line">config=&#123;_id:<span class="string">'shard2'</span>,members:[&#123;_id:0,host:<span class="string">'127.0.0.1:20001'</span>&#125;,&#123;_id:1,host:<span class="string">'127.0.0.1:20002'</span>&#125;]&#125;//分片组配置信息</div><div class="line">rs.initiate(config);//初始化分片shard2</div><div class="line">rs.addArb(<span class="string">'127.0.0.1:20003'</span>);//添加仲裁机</div><div class="line">rs.status();//查看状态</div></pre></td></tr></table></figure></p>
+<h6 id="创建并配置第三组"><a href="#创建并配置第三组" class="headerlink" title="创建并配置第三组"></a>创建并配置第三组</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mongod --dbpath=H:\wamp\www\mongoDB_Cluster\MongoDB_3\db\shard31 --journal --logpath=H:\wamp\www\mongoDB_Cluster\MongoDB_3\logs\shard31.log --logappend --directoryperdb --port 30001 --replSet shard3/127.0.0.1:30002 --oplogSize 100 --rest --shardsvr &amp;amp;</div><div class="line">mongod --dbpath=H:\wamp\www\mongoDB_Cluster\MongoDB_3\db\shard32 --journal --logpath=H:\wamp\www\mongoDB_Cluster\MongoDB_3\logs\shard32.log --logappend --directoryperdb --port 30002 --replSet shard3/127.0.0.1:30003 --oplogSize 100 --rest --shardsvr &amp;amp;</div><div class="line">mongod --dbpath=H:\wamp\www\mongoDB_Cluster\MongoDB_3\db\shard33 --journal --logpath=H:\wamp\www\mongoDB_Cluster\MongoDB_3\logs\shard33.log --logappend --directoryperdb --port 30003 --replSet shard3/127.0.0.1:30001 --oplogSize 100 --rest --shardsvr &amp;amp;</div></pre></td></tr></table></figure>
+<p>启动并配置shard3<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mongo 127.0.0.1:30001/admin</div><div class="line">config=&#123;_id:<span class="string">'shard3'</span>,members:[&#123;_id:0,host:<span class="string">'127.0.0.1:30001'</span>&#125;,&#123;_id:1,host:<span class="string">'127.0.0.1:30002'</span>&#125;]&#125;//分片组配置信息</div><div class="line">rs.initiate(config);//初始化分片shard3</div><div class="line">rs.addArb(<span class="string">'127.0.0.1:30003'</span>);//添加仲裁机</div><div class="line">rs.status();</div></pre></td></tr></table></figure></p>
+<h5 id="启动三个配置服务节点Configsvr"><a href="#启动三个配置服务节点Configsvr" class="headerlink" title="启动三个配置服务节点Configsvr"></a>启动三个配置服务节点Configsvr</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mongod --dbpath=H:\wamp\www\mongoDB_Cluster\MongoDB_1\db\config --port 10004 --journal --logpath=H:\wamp\www\mongoDB_Cluster\MongoDB_1\logs\config.log --logappend --directoryperdb --oplogSize 100 --rest --configsvr &amp;amp;</div><div class="line">mongod --dbpath=H:\wamp\www\mongoDB_Cluster\MongoDB_2\db\config --port 20004 --journal --logpath=H:\wamp\www\mongoDB_Cluster\MongoDB_2\logs\config.log --logappend --directoryperdb --oplogSize 100 --rest --configsvr &amp;amp;</div><div class="line">mongod --dbpath=H:\wamp\www\mongoDB_Cluster\MongoDB_3\db\config --port 30004 --journal --logpath=H:\wamp\www\mongoDB_Cluster\MongoDB_3\logs\config.log --logappend --directoryperdb --oplogSize 100 --rest --configsvr &amp;amp;</div></pre></td></tr></table></figure>
+<h5 id="启动一个路由点Mongos"><a href="#启动一个路由点Mongos" class="headerlink" title="启动一个路由点Mongos"></a>启动一个路由点Mongos</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongos --configdb 127.0.0.1:10004,127.0.0.1:20004,127.0.0.1:30004 -port 27017 -chunkSize 100 --logpath=H:\wamp\www\mongoDB_Cluster\Mongos\logs\mongos.log --logappend &amp;amp;</div></pre></td></tr></table></figure>
+<h5 id="配置分片"><a href="#配置分片" class="headerlink" title="配置分片"></a>配置分片</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mongo 127.0.0.1:27017/admin</div><div class="line">db.runCommand(&#123;addshard:<span class="string">"shard1/127.0.0.1:10001,127.0.0.1:10002,127.0.0.1:10003"</span>,name:<span class="string">"shard1"</span>&#125;)</div><div class="line">db.runCommand(&#123;addshard:<span class="string">"shard2/127.0.0.1:20001,127.0.0.1:20002,127.0.0.1:20003"</span>,name:<span class="string">"shard2"</span>&#125;)</div><div class="line">db.runCommand(&#123;addshard:<span class="string">"shard3/127.0.0.1:30001,127.0.0.1:30002,127.0.0.1:30003"</span>,name:<span class="string">"shard3"</span>&#125;)</div></pre></td></tr></table></figure>
+<h5 id="查看配置结果"><a href="#查看配置结果" class="headerlink" title="查看配置结果"></a>查看配置结果</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.runCommand(&#123;listshards: 1&#125;)</div></pre></td></tr></table></figure>
+<p>如果不激活数据库分片，数据库只会存在一个Shard中，一旦激活数据库分片，数据库中不同的Collection将被存放在不同的Shard上，但一个Collection仍旧存放在同一个Shard上，要使单个Collection也分片，还需单独对Collection作些操作<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.runCommand(&#123;enablesharding:<span class="string">"mongotest"</span>&#125;)</div></pre></td></tr></table></figure></p>
+<p>要使单个Collection也分片存储，需要给Collection指定一个分片key，通过以下命令操作：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.runCommand(&#123;shardcollection:<span class="string">"mongotest.datatest"</span>,key:&#123;intdata:1&#125;&#125;)</div></pre></td></tr></table></figure></p>
+<p>查看Collection分片信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">use mongotest</div><div class="line"><span class="keyword">for</span> (var i = 1; i &amp;amp;lt;= 100000; i++) db.datatest.save(&#123;intdata:1,stringdata:<span class="string">'这是第'</span>+i+<span class="string">'条测试数据'</span>,time:new Date()&#125;);</div><div class="line">db.datatest.stats();</div></pre></td></tr></table></figure></p>
+<h4 id="集群中出现问题处理："><a href="#集群中出现问题处理：" class="headerlink" title="集群中出现问题处理："></a>集群中出现问题处理：</h4><h5 id="Mongos节点宕机"><a href="#Mongos节点宕机" class="headerlink" title="Mongos节点宕机"></a>Mongos节点宕机</h5><p>一个Mongos进程应该运行在每一个应用程序服务器上，这个服务器应该独占这个Mongos进程，并且通过它与分片集群来通讯。<br>Mongos进程不是持久化的，相反，它们在启动的时候从Config Server上收集所有必须的配置信息。这表明，任何一个应用程序服务器节点故障，对作为一个整体的分片集群来讲并没有什么影响，所有别的应用程序服务器将依然是继续正常工作。在这种情况下，恢复是一个相当简单的事情，我们只需要去启动一个新的应用程序服务器和一个新的Mongos进程即可。</p>
+<h5 id="分片中的某一个Mongod节点宕机"><a href="#分片中的某一个Mongod节点宕机" class="headerlink" title="分片中的某一个Mongod节点宕机"></a>分片中的某一个Mongod节点宕机</h5><p>每一个分片由n个服务器构成，这n个服务器被配置为一个复制集(replica set)。如果在复制集中的任何一个节点宕机，在这个分片上读与写操作任然是允许的。更加重要的是，宕机服务器上的数据都不会丢失，因为复制机制存在一个选项，那就是强制复制写操作到分片的其它节点上再返回，这与在Dynamo上设置write=2类似。在MongoDB v1.6以后版本中Replica sets才是可用的。</p>
+<h5 id="分片中的所有Mongod节点宕机"><a href="#分片中的所有Mongod节点宕机" class="headerlink" title="分片中的所有Mongod节点宕机"></a>分片中的所有Mongod节点宕机</h5><p>如果一个分片中的全部节点（replicas)都宕机了，在该分片内的数据将不能被访问。然而，操作任然是继续进行，只不过是由别的分片分担。看文档就可以弄清楚为什么这样。如果分片被配置为一个复制集（Replicas set)，至少一个成员应该在另外一个数据中心，那样的话，整个分片都宕机几乎是不可能的。为了有更大的冗余度，推荐这样进行配置。</p>
+<h5 id="一个Config-Server宕机"><a href="#一个Config-Server宕机" class="headerlink" title="一个Config Server宕机"></a>一个Config Server宕机</h5><p>一个产品级的分片集群需要有3个Config Server进程，每一个进程都在一台独立的机器上运行。对于Config server中的集群元数据的写操作使用一个两阶段提交，去确保是一个原子的并且是被复制的事务操作。<br>在任何一个配置服务器失效的时候，Mongodb集群的元数据都会变成为只读了。集群系统继续运行，但是chunks在一个分片中将会成为不可以被拆分或者是不可以跨分片进行迁移。对于大多数使用场景，这个不会导致问题，应为改变Chunk元数据进行的并不频繁。</p>
+<p>另外，使宕机的Config Server在一个合理的时间周期（一天）内恢复是相当重要的，这样可以避免分片由于缺乏迁移而变得负载不均衡（相对而言，对于大多数产品场景，这种现象也不是很严重的事情）。</p>
+<p>如需MongoDB客户端工具，强烈推荐MongoVUE，但由于高版本并不支持长期免费试用，因此只能破解原生版本，如有需要，可以移步<a href="http://yhv5.com/mongovue_480.html">mongoVUE1.5完全破解版赠送</a> 获取。</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> SQL </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> MongoDB </tag>
+            
+            <tag> 分片 </tag>
+            
+            <tag> 集群 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[MySQL5.6主从配置和定时备份]]></title>
+      <url>/mysql_master_slave_799.html</url>
+      <content type="html"><![CDATA[<h4 id="MySQL5-6-的-Master-Slave配置"><a href="#MySQL5-6-的-Master-Slave配置" class="headerlink" title="MySQL5.6 的 Master-Slave配置"></a>MySQL5.6 的 Master-Slave配置</h4><p>在预装好MySQL5.6版本的两台机器A(192.168.1.123)、B(192.168.1.124)之后，可按照下文的操作进行配置主从备份，关于非主从线程的MySQL同步机制可移步 <a href="http://yhv5.com/mysql_svn_598.html">Windows下面的MYSQL同步（非主从线程同步机制）</a>参考，本篇是基于MySQL内部机制的同步。希望可以帮你解决问题！</p>
+<p>由于MySQL5.5版本之后主从之间不能直接将主服务器信息写入从服务器配置文件中，这里需要注意！因此只需要在主配置文件master.cnf中加入必要的一些选项即可，找到[mysqld]段加入如下内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">sql-mode=NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION</div><div class="line">log-bin=mysql-bin #slave会基于此log-bin来做replication</div><div class="line">server-id=1 #master的标示</div><div class="line">read-only=0</div><div class="line">binlog-do-db=mydb #同步数据库，可以复制写多个</div><div class="line">binlog-ignore-db=mysql #忽略需要同步的数据库，可以复制写多个</div><div class="line">log-slave-updates=1 #这个参数一定要加上，否则不会给更新的记录写入到二进制文件中</div><div class="line">innodb_flush_log_at_trx_commit=1</div><div class="line">sync_binlog=1</div><div class="line">skip-external-locking #加上可以避免因资源锁引起MySQL服务停止</div><div class="line">skip-name-resolve #加上可以避免因资源锁引起MySQL服务停止</div></pre></td></tr></table></figure></p>
+<h5 id="启动mysql"><a href="#启动mysql" class="headerlink" title="启动mysql"></a>启动mysql</h5><p>首先在主服务器A(192.168.1.123)上使用root权限启动MySQL，这里可以使用Daemon守护进程方式进行，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/mysql/bin/mysqld --defaults-file=/usr/local/mysql/master.cnf --basedir=/usr/local/mysql --datadir=/var/mysql/data --plugin-dir=/usr/local/mysql/lib/plugin --user=root --log-error=/var/logs/mysql/master.err --pid-file=/var/mysql.pid --explicit_defaults_for_timestamp &amp;</div></pre></td></tr></table></figure></p>
+<h5 id="授权"><a href="#授权" class="headerlink" title="授权"></a>授权</h5><p>主服务器A(192.168.1.123)上登录MySQL（root）进行从服务器同步授权<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/mysql/bin/mysql -uroot -h192.168.1.123 -p</div></pre></td></tr></table></figure></p>
+<p>授权命令(只是刚搭建时需要执行，后面不再执行，相应属性可以根据实际情况更改) :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt; grant replication slave on *.* to &apos;kaifa&apos;@&apos;192.168.1.124&apos; identified by &apos;******&apos;;</div></pre></td></tr></table></figure></p>
+<h2 id="查看主服务器运行状态"><a href="#查看主服务器运行状态" class="headerlink" title="查看主服务器运行状态"></a>查看主服务器运行状态</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">mysql&gt; show master stauts;</div><div class="line">+------------------+------------+--------------+------------------+-------------------+</div><div class="line">| File             | Position   | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |</div><div class="line">+------------------+------------+--------------+------------------+------ ------------+</div><div class="line">| mysql-bin.000001 |         20 |         mydb |            mysql |                   |</div><div class="line">+------------------+------------+--------------+------------------+-------------------+</div><div class="line">1 row in set (0.00 sec)</div></pre></td></tr></table></figure>
+<p>记录File 和 Position 列对应值（从库使用）。</p>
+<h5 id="配置从库"><a href="#配置从库" class="headerlink" title="配置从库"></a>配置从库</h5><p>从服务器B(192.168.1.124)配置以及启动，在配置文件slave.cnf中加入必要的一些选项即可，找到[mysqld]段加入如下内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">sql-mode=NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION</div><div class="line">log_bin=mysql-bin</div><div class="line">server-id=2 #slave的标示</div><div class="line">replicate-do-db=mydb</div><div class="line">binlog-do-db=mydb</div><div class="line">binlog-ignore-db=mysql</div><div class="line">sync_binlog=1</div><div class="line">skip-external-locking</div></pre></td></tr></table></figure></p>
+<h5 id="启动从库"><a href="#启动从库" class="headerlink" title="启动从库"></a>启动从库</h5><p>使用守护进程启动从MySQL服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/mysql/bin/mysqld --defaults-file=/usr/local/mysql/slave.cnf --basedir=/usr/local/mysql --datadir=/var/mysql/data --plugin-dir=/usr/local/mysql/lib/plugin --user=root --log-error=/var/logs/mysql/slave.err --pid-file=/var/mysql.pid --explicit_defaults_for_timestamp &amp;</div></pre></td></tr></table></figure></p>
+<h5 id="登录从库"><a href="#登录从库" class="headerlink" title="登录从库"></a>登录从库</h5><p>从服务器B(192.168.1.124)上登录MYSQL（root）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/mysql/bin/mysql -uroot -h192.168.1.124 -p</div></pre></td></tr></table></figure></p>
+<p>从服务器也可以查看主服务器的状态:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt; show master status;</div></pre></td></tr></table></figure></p>
+<h5 id="主内存数据落盘"><a href="#主内存数据落盘" class="headerlink" title="主内存数据落盘"></a>主内存数据落盘</h5><p>停止从服务与主同步,然后再主服务器上MySQL执行 flush logs;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt; stop slave;</div></pre></td></tr></table></figure></p>
+<h5 id="设置同步点"><a href="#设置同步点" class="headerlink" title="设置同步点"></a>设置同步点</h5><p>在服务器上执行如下命令，重新配置主服务器信息同步起点，<br>其中参数说明如下:</p>
+<ul>
+<li>master_host 主服务器ip</li>
+<li>master_user 主服务器同步操作用户</li>
+<li>master_password 主服务器同步操作用户口令</li>
+<li>master_port 主服务器端口</li>
+<li>master_log_file 上面主服务器状态中File列的值，如：mysql-bin.000001</li>
+<li>master_log_pos 上面主服务器状态中Position列的值，如：20<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">mysql&gt; change master to</div><div class="line">&gt; master_host=&apos;192.168.1.123&apos;,</div><div class="line">&gt; master_user=&apos;kaifa&apos;,</div><div class="line">&gt; master_password=&apos;******&apos;,</div><div class="line">&gt; master_port=3306,</div><div class="line">&gt; master_log_file=&apos;mysql-bin.000001&apos;,</div><div class="line">&gt; master_log_pos=20;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="重新开启从服务同步"><a href="#重新开启从服务同步" class="headerlink" title="重新开启从服务同步;"></a>重新开启从服务同步;</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt; start slave;</div></pre></td></tr></table></figure>
+<h5 id="查看从运行状态"><a href="#查看从运行状态" class="headerlink" title="查看从运行状态"></a>查看从运行状态</h5><p>(其中Slave_IO_Running和Slave_SQL_Running 正常状态都是Yes)<br>如果状态非正常可以到下面错误列查看原因并解决，解决完错误信息重新配置，也可能需要重启MySQL服务，停止从同步服务，操作如上6-10步骤;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line">mysql&gt; show slave status\G;</div><div class="line">*************************** 1\. row ***************************</div><div class="line">Slave_IO_State: Waiting for master to send event</div><div class="line">Master_Host: 192.168.1.123</div><div class="line">Master_User: kaifa</div><div class="line">Master_Port: 3306</div><div class="line">Connect_Retry: 60</div><div class="line">Master_Log_File: mysql-bin.000001</div><div class="line">Read_Master_Log_Pos: 20</div><div class="line">Relay_Log_File: localhost-relay-bin.000001</div><div class="line">Relay_Log_Pos: 52197</div><div class="line">Relay_Master_Log_File: mysql-bin.000001</div><div class="line">Slave_IO_Running: Yes</div><div class="line">Slave_SQL_Running: Yes</div><div class="line">Replicate_Do_DB: mydb</div><div class="line">Replicate_Ignore_DB:</div><div class="line">Replicate_Do_Table:</div><div class="line">Replicate_Ignore_Table:</div><div class="line">Replicate_Wild_Do_Table:</div><div class="line">Replicate_Wild_Ignore_Table:</div><div class="line">Last_Errno: 0</div><div class="line">Last_Error:</div><div class="line">Skip_Counter: 0</div><div class="line">Exec_Master_Log_Pos: 20</div><div class="line">Relay_Log_Space: 25</div><div class="line">Until_Condition: None</div><div class="line">Until_Log_File:</div><div class="line">Until_Log_Pos: 0</div><div class="line">Master_SSL_Allowed: No</div><div class="line">Master_SSL_CA_File:</div><div class="line">Master_SSL_CA_Path:</div><div class="line">Master_SSL_Cert:</div><div class="line">Master_SSL_Cipher:</div><div class="line">Master_SSL_Key:</div><div class="line">Seconds_Behind_Master: 0</div><div class="line">Master_SSL_Verify_Server_Cert: No</div><div class="line">Last_IO_Errno: 0</div><div class="line">Last_IO_Error:</div><div class="line">Last_SQL_Errno: 0</div><div class="line">Last_SQL_Error:</div><div class="line">Replicate_Ignore_Server_Ids:</div><div class="line">Master_Server_Id: 1</div><div class="line">Master_UUID: c4b7b0d0-d87e-11dd-a697-6cf049644ef1</div><div class="line">Master_Info_File: /usr/local/mysql/data/master.info</div><div class="line">SQL_Delay: 0</div><div class="line">SQL_Remaining_Delay: NULL</div><div class="line">Slave_SQL_Running_State: Slave has read all relay log; waiting for the slave I/O thread to update it</div><div class="line">Master_Retry_Count: 125</div><div class="line">Master_Bind:</div><div class="line">Last_IO_Error_Timestamp:</div><div class="line">Last_SQL_Error_Timestamp:</div><div class="line">Master_SSL_Crl:</div><div class="line">Master_SSL_Crlpath:</div><div class="line">Retrieved_Gtid_Set:</div><div class="line">Executed_Gtid_Set:</div><div class="line">Auto_Position: 0</div><div class="line">1 row in set (0.00 sec)</div><div class="line">ERROR:</div><div class="line">No query specified</div></pre></td></tr></table></figure></p>
+<p>如果遇到Last_IO_Errno 1236错误可以认真分析并解决问题,必要时可以尝试关闭防火墙IPTABLES(/etc/init.d/iptables stop)和selinux，修改/etc/selinux/config,将SELINUX改为disabled即可永久禁用。</p>
+<h4 id="从库定时备份"><a href="#从库定时备份" class="headerlink" title="从库定时备份"></a>从库定时备份</h4><p>mysql备份在从服务上/var/mysql_bakup/ 目录下面，从机器B(192.168.1.124)MySQL每三小时定时备份。</p>
+<ul>
+<li><p>使用root权限创建mysql 导出任务脚本/usr/sbin/mysqlbak_shell 并将脚本写入定时任务（权限root）;</p>
+</li>
+<li><p>MYSQL备份目录位于/var/mysql_bakup/;</p>
+</li>
+<li><p>执行手工导出命令如下：导出文件已gzip压缩;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/mysql/bin/mysqldump -ukaifa -h192.168.1.124 -p******  --default-character-set=utf8 --opt --extended-insert=false --triggers -R --singe-transaction  mydb | gzip &amp;gt; /var/mysql_bakup/mydb_`date +%Y%m%d_%H-%M-%S`.sql.gz。</div></pre></td></tr></table></figure>
+</li>
+<li><p>执行手工导入命令如下：需先解压gzip包;</p>
+<ol>
+<li><p>gzip -d 对应时间段gz备份包;</p>
+</li>
+<li><p>再执行导入命令导入这个解压SQL文件（使用二进制模式）;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/mysql/bin/mysql --binary-mode=1 -ukaifa -h192.168.1.124 -p****** mydb &gt; /var/mysql_bakup/解压gz包文件。</div></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>按照理论上面备份是每天会备份8个压缩包，后期可以按照周计划删除一周前的压缩包;</p>
+</li>
+<li><p>定时任务 0 <em>/3 </em> <em> </em> /usr/sbin/mysqlbak_shell（3小时备份一次）。</p>
+</li>
+</ul>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> SQL </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> MySQL </tag>
+            
+            <tag> 主从配置 </tag>
+            
+            <tag> 定时备份 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[一个半朋友]]></title>
+      <url>/a_half_friend_790.html</url>
+      <content type="html"><![CDATA[<p>有一户人家，家里很有钱，父母只有一个儿子，他们非常爱他们的儿子，从小就把他视为宝贝。可是随着孩子慢慢长大了，他们却发现自己的儿子交上了一些酒肉朋友，整天不学无术，和那些人混在一起，每天都是这个男孩请客在一起吃饭，他的父母很着急。</p>
+<p>一天，父母找他们的儿子谈话，告诉他：“以后不要再接近那些人了，他们根本不是你的好朋友，他们只是看在你家里有钱才和你在一起，他们不是你真正的朋友，你出了什么事他们也不会帮你的。” 男孩听了不相信，说：“我交的这些朋友都是铁哥们，有什么事他们一定会帮我的，我们是好朋友。”男孩根本不相信父母的话，还责怪父母怎么能这样说他的朋友。 父亲见儿子不相信，于是说：“既然你不相信，那咱们来做个试验，看看你出了事他们到底帮不帮你。”男孩带着一脸的迷茫答应了。 按照父亲的办法，男孩一一给他的朋友打了电话，说是有事让他们来自己的家里。过的大约半个小时的时间，男孩的朋友一一都来了。</p>
+<p>父亲让孩子躲进另一个屋里，自己对男孩的朋友说：“今天把你们叫来，真是不好意思，你们是我儿子的朋友，我也只好找你们帮忙，” 父亲顿了顿又接着说“我儿子刚才和别人打架，一不小心杀人了，现在公安局正在抓他，我实在是没办法了，你们看有谁可以帮帮我儿子，我只有这一个儿子。”父亲说完就在一旁坐下了。 男孩的朋友一听，都楞住了，从门缝中看见男孩双手沾满鲜血的从客厅走过。过了一会，其中一个人说家中有事，先回去一趟，一会就回来，接着又有一个人借口说肚子痛，先去趟厕所。 不一会男孩的朋友陆续借口出去了，可是再也没有回来。男孩看到这里很沮丧，没想到自己认识的朋友竟会是这样的人。这时候，父亲语重心长的对男孩说：“孩子，你现在知道你认识的朋友是什么样的人了吧，下面我就让你看看什么才是真正的朋友。我的朋友不多，只有一个半。”</p>
+<p>于是，父亲带着男孩来到自己的一个朋友家里。父亲的这个朋友家里也很有钱，家里是两层楼。父亲敲开了那个朋友家的门。 相互寒喧了几句后，那位朋友问男孩的父亲有什么事。男孩的父亲就把事情告诉了他的朋友。 他的朋友听了之后就进了里屋。过了一会拿着一大包东西出来了，对男孩的父亲说：”对不起老朋友，你儿子有事我都帮不上忙，我只有这点钱，这是三十万块钱和支票，你先拿着，看看能不能找点关系，如果不够用再找我。真是太对不起了老朋友。”那位朋友说完，一脸的无奈。 父亲谢绝后，带着男孩离开了那位朋友的家。</p>
+<p>男孩走在路上不住的感叹：“这才是真正的朋友！”父亲对男孩说:“这只是我的半个朋友。” 父亲又带着男孩来到他的另一个朋友家里，这个朋友家里生活很拮据，家里有两个孩子，看样子不是什么有钱有势的大户人家。 父亲进屋之后说起了这件事，那位朋友听了之后也进了里屋，过了好长时间才出来，对男孩的父亲说：“老朋友你回去吧，这件事我会帮忙的。” 父亲很迷惑，就问他有什么办法，那位朋友说：“你不用问了，我保证给你办好，你儿子没事了，你们回家吧。” 在男孩父亲的再三要求下，那位朋友终于说出了自己的办法。 那位朋友家里很穷，没有钱，也不认识别的什么人，所以他刚才进里屋和他的两个儿子商量说：“外面的叔叔是我的一个好朋友，而他的儿子现在出事杀人了，他只有这一个儿子，我不能不帮他，你们两个商量一下，看谁去替他儿子做牢。” 父亲红着眼眶对男孩说：“这才是我的一个朋友！”</p>
+<p>父亲带着男孩回到家里，男孩感动而又伤心的流下了眼泪。 男孩明白了：在你患难的时刻，那个能够明哲保身、不落井下石加害你的人，可称做你的半个朋友；在你生死攸关的时刻，那个能与你肝胆相照，甚至不惜割舍自己亲生骨肉来搭救你的人，可以做你的一个朋友．</p>
+<p>人生有一个半朋友足矣．</p>
+<p><img src="http://yhv5.com/uploads/2014/03/pengyou.jpg" alt="pengyou"></p>
+<p>结语：你现在有这样的朋友吗？或许这篇文章真正交给我们的是如何选择自己的朋友。人生难免会接触到各色各样的人，任何的一个人都能称作为“朋友”，也许你将他作为内心的朋友，但也许你不是他内心的那个知心人。天朝的性质就这样。也就造就了这的社会。</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 朋友 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[未来的厨房]]></title>
+      <url>/futurehouse_729.html</url>
+      <content type="html"><![CDATA[<p>话说物联网这个词汇在我上大学的时候已经被炒的火热了，那时候还有用RFID做技术专利的大学同学，记得当时我也参加了。。。</p>
+<p>如今这个词汇再次出现在我的脑海里，今天在不小心点击综艺节目中的插播广告结果跳到了这个广告的网页，令我非常纳闷。难道这是传说中的电视购物吗？物联网走进了我们的生活了？</p>
+<p>果不其然，好些年没有关注物联网的发展，如今已经开始广泛进入了我们的周围，什么它真的来临了。。。最令人兴奋的是未来的厨房了，设想一下它有多么的方便。我们再也不用下班后忙碌的赶回家做晚餐了；再也不用为了厨房中的油烟而苦恼不堪；再也不用为了担心食物的健康问题。。。它将被一全套的设备指令所操控，而你就是它的主人，不敢想象吧！当你快要下班前，厨房设备会向你发送指令，让你选择晚餐菜系。当你选择好通过指令告知厨房设备后，冰箱会按照你指定的菜系将储藏在当中的菜进行消毒杀菌，并清洁干净供厨房设备待用；这同时你的米饭已经开始香喷喷的等着主人了，当你还有五分钟要到家门的时候，设备门会根据你平时最爱听的歌曲选择一首做预备工作，当你一踏进家门的时候，会给你带来一种轻松的感觉，也许这时候空调设备会自动给你报告室内的空气质量、温度和其他设备的状态是否正常，当然你可以视而不见的。但冰箱设备早已为你订了你最爱喝的牛奶，你一定会羡慕死的。屋内的所有设备将会相互协调工作，只要设备出现故障都会自动联系工作人员检查，而不是在你工作的百忙中接收到一系列的设备问题提醒。当你在吃完可口的晚餐后，你可以像在餐厅里面一样直接走人，剩下的工作将又是厨房设备的事了。当你拥有它的时候，它不但不会给你带了烦恼，而且还可以为你带来充足的时间做你喜欢做的事，它就是你未来家庭的一员。一些科学家提出了许多令人耳目一新的大胆设想，并正在将它们变成现实：比如免水洗衣机和洗碗机，它们可以通过发射声波将污垢震碎达到清洁的效果；再比如“智慧冰箱”，不仅可以分析并显示储藏菜肴的配方，甚至会自动将剩菜剩饭打包，将腐败的食物处理掉。</p>
+<p>不过，未来厨房里最具革命性的设施要算“自足式生物农场”了。<br><img src="http://yhv5.com/uploads/2014/01/futerhouse.jpg" alt="futerhouse"><br>这套外型有点像玻璃 橱柜的设备共分为两大部分：上半部是“菜田”，可以在营养液“土壤”中栽培瓜果蔬菜，顶部的照明系统将保证植物有充分的光照；下半部则是“池塘”，可以养殖鱼虾、藻类和其它水产品。只要厨房里有了这套设备，菜场和超市都不用去，全家人天天都能享用到最新鲜的鱼虾和蔬果。除了便捷外，“农场”还有一大特点就是节能，系统收集的氢气可以作为氢能汽车的燃料，来自“菜田”的氧气运输到“池塘”可以让鱼虾活得更欢畅。细心的你也许要问鱼缸脏了怎么办，别忘了里面还住着小虾，它们完全可以扮演“清道夫”的角色。</p>
+<p>科学家们表示，未来要在厨房使用这套设施，必须在房屋建造时就提前做好准备，而建筑师们已经在使用3D技术考虑相关设计。因此如今的社会已经进入高科技时代，未来将会一切皆有可能！大胆的你可以为你的创意发表任何意见了。。。你还等什么呢？</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> RFID </tag>
+            
+            <tag> 未来的厨房 </tag>
+            
+            <tag> 电视购物 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[MySQL之高性能分析一]]></title>
+      <url>/mysql_efficient_693.html</url>
+      <content type="html"><![CDATA[<p>就在NoSQL兴起的浪潮中，大小公司都跟随着”时代”的进步选择了非关系性数据库，而传统的关系型数据库呢？是否已经时过境迁？还是…… 但那都并不意味着关系型数据库已经失去了它的色彩。多数人并不了解关系型数据库，如何正确的使用关系型数据库是我们需要掌握的关键。由于笔者也在不断的学习中，下述也就自己对MySQL的高性能优化吐槽。</p>
+<p>使用MySQL都有遇到过慢的情况，无可厚非的是没有多数人能具体说明慢的真正原因，许多情况也是由于自我使用不当而引起的”慢”动作。其实数据库慢也就归根结底的说是由于查询（SELECT）的原因，查询是关系型数据库中非常重要的操作。</p>
+<p>SQL查询执行的基础：</p>
+<ul>
+<li><p>响应程序由客户端发起，客户端将SQL通过”MYSQL客户端/服务器通信协议”交付给服务器端MYSQL服务器；</p>
+</li>
+<li><p>MYSQL服务器根据接收到的SQL请求到”查询缓存”中查询结果，如果”查询缓存”命中该结果则直接返回给客户端，否则进入下一环节；</p>
+</li>
+<li><p>如果”查询缓存”没有命中，则将SQL查询请求发送给”解析器”，解析器将SQL语句分解为”解析树”再传递给”预处理器”进行处理；</p>
+</li>
+<li><p>预处理器再将处理的结果转化为查询优化器所需的解析树传递给”查询优化器”解析；</p>
+</li>
+<li><p>“查询优化器”根据请求生成”查询执行计划”，并将指令发送给”查询执行引擎”处理；</p>
+</li>
+<li><p>“查询执行引擎”根据调用不同类型的”存储引擎API”进行查询数据库DB,并最终将数据返回给存储引擎；</p>
+</li>
+</ul>
+<p>存储引擎得到查询结果并递归返回给”查询执行引擎”，最终由查询引擎将数据返回给客户端和缓存至查询缓存。</p>
+<p>大致流程图如下：</p>
+<p><img src="http://yhv5.com/uploads/2013/12/mysql.jpg" alt="mysql"></p>
+<p>其中”MYSQL客户端/服务器通信协议”之间采用半双工通信，即一方发送数据，另一方接收数据，不能同时发送数据和接收数据，也不能将一个数据包分割发送。这使得通信协议快速简单化但也使得MYSQL的通信受到限制，一个明显的限制则是流量控制，也就意味着，一旦一方开始发送数据，另外一方无论数据量多少都需要接收完整个数据才能响应它。这也就是常常看到的查询语句较长就会非常耗时，客户端只需要一个简单的数据包发送给服务器端，就一直等待返回结果；而服务器端处理得到的请求需要很复杂的过程，并最终返回较多的数据给客户端，客户端也必须将整个数据接收完。这也是为何查询语句需要加上LIMIT的原因。客户端也应该配置发送最大数据包的参数max_allowed_packet。</p>
+<p>“查询缓存”：多数连接MYSQL的库函数都会默认将返回的数据缓存到内存中，这样可以方便下次请求数据有效的回收链接资源和带宽。因此在遇到不同场景的情况下需要将查询结果进行缓存，这样既可以减小响应时间，也可以降低服务器压力。但情况往往也不是我们所想象的那么理想，缓存大量的数据也需要系统的开销和时间。因此缓存是根据不同的场景进行自定义。如PHP获取数据库数据一般情况下都是</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$link = mysql_connect(<span class="string">'localhost'</span>, <span class="string">'user'</span>, <span class="string">'passwd'</span>);</div><div class="line">$query = mysql_query(<span class="string">'SELECT * FROM db.table'</span>, $link);</div><div class="line"><span class="keyword">while</span>($rs = mysql_fetch_assoc($query))&#123;</div><div class="line">    var_dump($rs);<span class="comment">//查询结果集</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>再例如上述的实例中，并不是在我们进行打印结果集时才会取数据，而是在执行query查询时已经将整个结果集缓存至内存资源，在打印结果集只是从内存资源中一行一行的读取数据。因此默认情况下会将结果集进行缓存。如果我们不需要缓存结果集则只需要将mysql_query换成mysql_unbuffered_query即可。</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> SQL </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> MySQL </tag>
+            
+            <tag> NoSQL </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[MySQL同步机制以及SVN自动发布]]></title>
+      <url>/mysql_svn_598.html</url>
+      <content type="html"><![CDATA[<h3 id="Windows下面的MYSQL同步（非主从线程同步机制）"><a href="#Windows下面的MYSQL同步（非主从线程同步机制）" class="headerlink" title="Windows下面的MYSQL同步（非主从线程同步机制）"></a>Windows下面的MYSQL同步（非主从线程同步机制）</h3><p>大家都知道MySQL的主从同步机制，原理就是通过修改MySQL配置文件my.ini(Linux下面是my.cnf)进行设置相应的选项即可，这样就简单实现了MySQL的主从同步，但这样操作有好处也有坏处，好处是：可以直接使用MySQL内部机制进行数据同步，减少繁琐的事件驱动；坏处是：应用不方便如果需要更改同步机制，需要修改配置文件并重启数据库（即不能热机切换配置），因此如果需要了解主从同步可以移步各大论坛或者求助Google，另外关于MySQL的内部同步机制可以移步 <a href="http://yhv5.com/mysql_master_slave_799.html">MySQL5.6主从配置和定时备份</a> 参考。</p>
+<p>好了，了解了一点MySQL的同步机制，众所周知的是大家都知道Linux下面有crontab定时任务，这点可以方便我们定时执行某一些特定的任务。那相对应的Windows机器呢？它是否也有自己的定时任务处理呢？答案是有的。现在就让我们在Windows机器上来一起设置一个MySQL的同步脚本。</p>
+<p>脚本编写：首先我写了两个简单的脚本文件（文末附上链接，后缀是.bat文件,根据自己的需求更改文件）一个是自动同步数据库脚本（修改完配置参数，加入定时任务就能自动运行），另一个是手工同步脚本（即自己输入数据库信息并手动同步），脚本文件都很简单（里面有具体的命令解释说明，相信大家都能看明白），步骤大致分为以下六步：</p>
+<ul>
+<li><p>设置MySQL的安装路径；</p>
+</li>
+<li><p>设置导出SQL的临时存放目录；</p>
+</li>
+<li><p>设置导出MySQL服务器相关的配置信息；</p>
+</li>
+<li><p>设置导入MySQL服务器相关的配置信息；</p>
+</li>
+<li><p>执行导出任务；</p>
+</li>
+<li><p>执行导入任务；</p>
+</li>
+</ul>
+<p>完成上述六步即完成了整个同步脚本。</p>
+<p>好了，做到到这里时MySQL的同步机制并没有完成，手工同步则可以直接运行脚本，这里可以略过，现在只介绍自动同步的后续工作。</p>
+<p>设置定时任务：Windows机器大家都常用，按下win键（即Windows图徽，左Crtl右边这个键），点击“控制面板”，如下图：</p>
+<p><img src="http://yhv5.com/uploads/2013/09/controller.jpg" alt="222"></p>
+<p>在弹出的窗口中右上方选择“查看方式”为小图标，继而选择里面的“管理工具”，如下图所示：</p>
+<p><img src="http://yhv5.com/uploads/2013/09/2.png" alt="2"></p>
+<p>点击“管理工具”选择“任务计划程序”快捷图标进入任务计划控制台，在左侧的“任务计划程序库”右键选择“创建任务”，选择顶部菜单栏“常规”选项卡并如下图填写：</p>
+<p><img src="http://yhv5.com/uploads/2013/09/3.png" alt="3"></p>
+<p>选择顶部菜单栏“触发器”选项卡如下图填写：（我这里一分钟执行同步一次）</p>
+<p><img src="http://yhv5.com/uploads/2013/09/4.png" alt="4"></p>
+<p>点击确定，在选择顶部菜单栏“操作”选项卡，如下图填写：</p>
+<p><img src="http://yhv5.com/uploads/2013/09/5.png" alt="5"></p>
+<p>到这里为止，定时任务基本完成，如有容错机制，可以将顶部菜单栏后续的几个选项卡中设置调整为自己的模式即可。</p>
+<p>创建成功如下图：</p>
+<p><img src="http://yhv5.com/uploads/2013/09/6.png" alt="6"></p>
+<p>Tips：到这里，这个任务为挂起状态，我们如果需要关闭这个页面会报错，因此需要将这个任务结束才能关闭。</p>
+<h3 id="Linux主机上的SVN自动发布"><a href="#Linux主机上的SVN自动发布" class="headerlink" title="Linux主机上的SVN自动发布"></a>Linux主机上的SVN自动发布</h3><p>在linux主机上SVN仓库中修改hooks目录下面的post-commit.tmp钩子文件 并重命名为post-commit文件</p>
+<p>可以复制下面代码至文件中并修改相应程序路径：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">REPOS=<span class="string">"<span class="variable">$1</span>"</span>                          <span class="comment">#版本库</span></div><div class="line"></div><div class="line">REV=<span class="string">"<span class="variable">$2</span>"</span>                            <span class="comment">#版本号</span></div><div class="line"></div><div class="line"><span class="built_in">export</span> LANG=zh_CN.UTF-8             <span class="comment">#自动同步脚本防止乱码</span></div><div class="line"></div><div class="line">SVN=/usr/<span class="built_in">local</span>/svn/bin/svn          <span class="comment">#SVN程序路径，这里根据个人安装路径修改</span></div><div class="line"></div><div class="line">WEB=/usr/<span class="built_in">local</span>/web/hanggecrazy      <span class="comment">#SVN程序发布位置（项目路径），这里根据个人安装路径修改</span></div><div class="line"></div><div class="line"><span class="built_in">echo</span> `date`</div><div class="line"></div><div class="line"><span class="built_in">echo</span> <span class="string">"用户"</span>:`whoami`<span class="string">" 将版本库："</span><span class="variable">$REPOS</span><span class="string">" 更新至 "</span><span class="variable">$REV</span><span class="string">" 版本号"</span> &gt;&gt; /date1/logs/svn_hook.log   <span class="comment">#注:log文件路径，用于记录svn更新记录</span></div><div class="line"></div><div class="line"><span class="variable">$SVN</span> update --username ********** --password *********** <span class="variable">$WEB</span>  &gt;&gt; /date1/logs/svn_hook.log</div></pre></td></tr></table></figure></p>
+<p>#同步代码从SVN服务器到WEB服务器<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/bin/rsync -vaztpH  --timeout=60  <span class="variable">$WEB</span> *******@192.168.1.100:/www/hanggecrazy</div></pre></td></tr></table></figure></p>
+<p>但是最后同步操作还没有绕过不用输入用户和口令验证，这点待完善。。。</p>
+<p>分享一点小知识，希望大家了解一些。。。。</p>
+<p><a href="http://yhv5.com/software/SQL_auto_mallay.rar">SQL_auto_mallay</a></p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> MySQL </tag>
+            
+            <tag> SVN </tag>
+            
+            <tag> crontab </tag>
+            
+            <tag> Linux </tag>
+            
+            <tag> Shell </tag>
+            
+            <tag> Window </tag>
+            
+            <tag> 定时任务 </tag>
+            
+            <tag> 脚本 </tag>
+            
+            <tag> 钩子 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[存储过程和存储函数之间的差异]]></title>
+      <url>/procedures_and_functions_577.html</url>
+      <content type="html"><![CDATA[<p>本文译自CODE PROJECT的Differences between Stored Procedures and Functions，原作者： Sangunni。文章写得很好，很有学习意义，译的不好，还请大家指正。</p>
+<p>先说明一下本文主要讲了“存储过程和存储存储函数之间的差异”。介绍前科普一下两者的大致含义：大家都知道”存储过程”和”存储函数”都是在MYSQL5.0版本中才加入的，早期的MYSQL版本并不支持。存储过程（Stored Procedure）是一组为了完成特定功能的SQL语句集，经编译后存储在数据库中，用户通过指定存储过程的名字并给定参数（如果该存储过程带有参数）来调用执行它。一个存储过程是一个可编程的函数。存储函数是可以被存储在服务器中的一套SQL语句。一旦它被存储了，客户端不需要再重新发布单独的语句，而是可以引用存储函数来替代。这时二者含义上的差异。</p>
+<p>下面通过译文来具体介绍：<br>— 正文开始 —</p>
+<ul>
+<li>存储过程可以返回0值或数值n，而存储函数可以返回一个值，这是强制性的。</li>
+<li>存储过程可以有它的输入/输出参数，而存储函数可以有唯一的输入参数。</li>
+<li>存储过程允许SELECT作为DML(Data Manipulation Language 数据操纵语言）在其中声明,而存储方法只允许SELECT在方法体中声明。</li>
+<li>存储过程可以调用函数，而存储过程不能被存储函数调用。</li>
+<li>存储过程可以处理异常try-catch模块，而存储函数中不能使用try-catch模块。</li>
+<li>我们可以在存储过程中处理事务管理，而在存储函数中不能。</li>
+<li>存储过程不能被应用在SELECT声明的语句中，而存储函数可以嵌入一个SELECT声明中。</li>
+<li>UDF(User-Defined Function 用户自定义函数)可以使用在任何含有WHERE/HAVING/SELECT语句的SQL声明，而存储过程不能被使用。</li>
+<li>UDFs(用户自定义函数)返回表结构可以被视为行集（记录）。这可以用来与其它表中进行JOIN。</li>
+<li>内联UDFs可以通过视图作为参数被调用并用户JOIN其他行集操作。</li>
+</ul>
+<p>接下来深入介绍<br><strong>存储过程(Stored Procedures) </strong></p>
+<ul>
+<li><p>存储过程是一个程序（或过程）被物理地存储在数据库中。它们通常是指一个专有的数据库PostgreSQL的PL/SQL语言，如Oracle数据库或PL/PgSQL语言。一个存储过程的优点是，当它被执行时，响应用户的请求，由数据库引擎直接运行它，存储过程通常运行在单独的数据库服务器。因此，它可以直接访问操作它需要的数据，并只需要把结果返回给用户，常常用作处理来回传送大量数据的开销。<br>用户自定义函数(User-Defined Function)</p>
+</li>
+<li><p>用户定义的函数是一个常规的程序，通过一定的逻辑封装，并在其他查询请求中使用。然而视图被限制使用单个SELECT语句，用户定义函数可以有多个SELECT语句，并提供更有力的逻辑超过使用视图。<br>用户自定义函数主要有三种分类：</p>
+<p>  标值函数 - 返回一个标值，如整数或时间戳。可作为列名查询</p>
+<p>  内联函数 - 可以包含单个SELECT语句</p>
+<p>  表值函数 - 可以包含任意数量的语句执行结果作为变量返回。当你只需要返回多行，而不是将此行集作为在一个SELECT语句的逻辑处理。此时它们变得得心应手。</p>
+</li>
+</ul>
+<p>— 正文结束 —</p>
+<p>通过上面对存储过程和存储函数的区别，想必大家都有一个初步的认识和了解，作为MYSQL的新功能，它是数据库的一个比较重要组成部分并且能方便我们解决处理大数据，我们应该在开发和学习过程中多应用这方面的知识，而不是简单的了解。</p>
+<p>最后引用酷壳的一句话 ——真正让我们成为局域网的不是那个墙，而是我们自己的肤浅。</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> SQL </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> MySQL </tag>
+            
+            <tag> DML </tag>
+            
+            <tag> Oracle </tag>
+            
+            <tag> PL/PgSQL </tag>
+            
+            <tag> Stored Procedure </tag>
+            
+            <tag> UDFs </tag>
+            
+            <tag> User-Defined Function </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[GReader 之数据大迁移]]></title>
+      <url>/greader_migration_553.html</url>
+      <content type="html"><![CDATA[<p>3月13日随着Google宣布今年7月1日关闭Reader产品，人们都在怨气中寻找着它的替代产品，同时业界的资料也透露了一些相关的替代产品，如：Feedly、NewsBlur、The Old Reader、NetVibes、Pulse、Flipboard、Zite、Twitter等等（资料来源煎蛋）。</p>
+<p>GReader是大家都公认的从设计到用户体验都是最好的一款阅读器而深受大家喜爱，然而即将就戛然而止，许多人在背后议论中其中的渊源。<br><img src="http://yhv5.com/uploads/2013/06/googlereader.jpg" alt="googlereader"><br>GReader为何要死？这些话题都已成为茶余饭后的闲谈。目前最重要的找到其最终替代产品，网上很火的推荐都是Feedly，但是像GReader这个庞大的用户群体，要想转移到Feedly上面是需要很多的开销的，何况Feedly之前的用户比较少，随着用户群体的迁移，数据压力对Feedly是一个很大的挑战。</p>
+<p>当然我也是GReader的爱好者，这段期间也尝试了很多的替代产品，最终国内的产品还是无法被我接受，虽然像鲜果还是挺不错的，也需要支持，但是我觉得和国外的产品还是有很大的差距。在将目光投向国外的产品中虽然也随大众选择了Feedly，但总担忧这个产品做得不够好不够专业，但是目前也没有什么好的选择了。在Google刚宣布停止GReader服务的一周内，我测试了Feedly的性能，可以这么说几乎无法使用，我将自己的GReader订阅资料转移到Feedly就花了整整一天，本以为说是由于文章资料太多，但是在数据迁移之后，重新打开Feedly需要加载的时间竟然更让我很吃惊，一天都没有加载出来一个页面，这对我很失望。之后关注了一些舆论界的新闻，Feedly现在正在实行数据库扩容和性能提升，面对海量的数据来说，Feedly既是欢喜又是堪忧，从GReader上每天迁移的数据对于Feedly都是一个新的挑战，因此真正能做到完全替代GReader还需要时间。在即将要停止服务的GReader，Feedly你准备好了吗？能赶上7月1日之前将性能问题解决是现在最为关注的。</p>
+<p>最后留下一句 GoogleReader关闭的教训：“我们的”科技产品并不属于我们。带着遗憾挥手告别GReader！</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Feedly </tag>
+            
+            <tag> Google </tag>
+            
+            <tag> GoogleReader </tag>
+            
+            <tag> GReade </tag>
+            
+            <tag> Twitter </tag>
+            
+            <tag> 迁移 </tag>
+            
+            <tag> 阅读器 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[CakePhp在新浪SAE上搭建过程]]></title>
+      <url>/cakephp_sae_508.html</url>
+      <content type="html"><![CDATA[<p>由于SAE平台的特殊，为了网站的安全性，它不支持本地IO操作，因此这也使得对于一些常用的缓存机制都不能使用，必要的时候只能使用其提供的服务充当，当然这也是SAE的赚钱之道。</p>
+<p>CakePhp是比较成熟的轻量级框架，由于CakePhp原生程序不能在SAE上面直接运行，同时SAE也介绍了一些禁用的PHP类库函数，对于CakePhp底层框架依赖的这些函数就不能正常使用，为此一些大大就自行开源了支持SAE环境的CakePhp框架，虽然这其中只是更改底层的一些禁用函数和缓存引擎，但是也方便了很多的程序猿使用CakePhp在SAE上建站。</p>
+<p>对于使用SAE，我也才了解一段时间，不过它本身的稳定性还是值得屈指的，CakePhp原生使用写文件的方式来存储cache，而在SAE上面则更改这种方式为Memcache（MC）的方式存储，在SAE里面MC服务是收费的，另外在我们常用的上传文件功能，在SAE里面显得不那么自由了，它有好几种方式存储，当然我还是采用的Storage，Storage是SAE为开发者提供的分布式文件存储服务，用来存放用户的持久化存储的文件。具体的应用可以在自己的管理后台看到。首先使用SAE管理自己的代码，通常有两种方法，一种是常用的程序开发模式版本控制器（SVN），另外一种是它支持ZIP格式的压缩包上传到服务器的方式，这两种方式虽然后者方便，但是不利于管理，以至于在造成错误后无法回滚代码，所以还是推荐使用SVN方式，在使用SVN之前需要为网站创建二级域名和应用名，下面的SVN会用到。在后台左侧选择“应用设置”创建自己的二级域名和应用名，这个应用名同时是SVN项目名也是数据库名（具体后面会说到），然后点击左侧的 “代码管理”，这时你只需要创建一个版本它即为你生成一个SVN地址如下图：</p>
+<p><img src="http://yhv5.com/uploads/2013/05/1.png" alt="1"></p>
+<p>通过生成的SVN地址可以将自己的代码提交到服务器上面，刚才讲到了另外的一种方式提交代码，如上图中第2点后面操作部分“上传代码包”（只支持ZIP格式），上传完自动按照压缩包格式解压到服务器。待上传完毕代码之后即可在操作部分点击“编辑代码”，进入文件在线编辑工作区，在那里修改过的文件都会直接记录到SVN中。<br>其次是数据库的使用，在管理后台左侧选择MySQL，则可以对数据库进行配置，SAE和其他空间运营商有点不一样，它提供的数据库和网站应用名是相关联的，如创建了一个名为house的应用，则它会给你生成一个app_house的数据库，你只能对这个库进行操作，不能再创建数据库，如果需要创建数据库，只能从新定义应用名让其分配数据库进行操作，这点本人非常的不习惯，如下:</p>
+<p><img src="http://yhv5.com/uploads/2013/05/2.png" alt="2"></p>
+<p>点击上面的管理MySQL，则进入分配的数据库（和PhpMyAdmin一致），如下图：</p>
+<p><img src="http://yhv5.com/uploads/2013/05/3.png" alt="3"></p>
+<p>这也就是能对数据库进行管理的唯一入口了。这里需要说明一点，CakePhp程序中的database.php文件需要用SAE自己的数据库名常量并实例化数据库。数据库服务器上面截图处可以看到,直接上图：</p>
+<p><img src="http://yhv5.com/uploads/2013/05/4.png" alt="4"></p>
+<p>上面介绍在SAE上运行的CakePhp更改了缓存引擎为MC因此这里需要将MC服务开启，点击管理后台左侧的Memcache设置自己业务的配额激活即可，如下图:</p>
+<p><img src="http://yhv5.com/uploads/2013/05/5.png" alt="5"></p>
+<p>另外使用到的文件上传服务是Storage，SAE默认分配的空间为10G大小，这里只需要创建自己的domain文件夹就行了，权限可以自行设置（访问权限和防盗链），这里我创建了一个图片的domain，用来管理上传的图片和文件，废话少说直接上图:</p>
+<p><img src="http://yhv5.com/uploads/2013/05/6.png" alt="6"></p>
+<p>具体的文件上传的代码非常简单，直接上代码：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$sae = <span class="keyword">new</span> SaeStorage();</div><div class="line">$sae-&gt;upload( <span class="string">'domain名'</span>,<span class="string">'最终文件名'</span>,<span class="string">'源文件名'</span>);</div></pre></td></tr></table></figure></p>
+<p>调用完上传函数返回的就是该图片在服务器的路径了，操作非常简单，获取图片也很简单:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$sae-&gt;getUrl(<span class="string">'domain名'</span>,<span class="string">'最终文件名'</span>);</div></pre></td></tr></table></figure></p>
+<p>操作比php的图片上传更简单。最后还是提供一下MC引擎的CakePhp核心lib包和重定向文件config.yaml下载地址附后。<br>cake_lib下载地址:  <a href="http://yhv5.com/software/cakelib2.1.3">cake_lib_2.1.3</a><br>重定向文件下载地址：<a href="http://yhv5.com/software/config.yaml">config.yaml</a></p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> PHP </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> cache </tag>
+            
+            <tag> cakephp </tag>
+            
+            <tag> MC </tag>
+            
+            <tag> Memcache </tag>
+            
+            <tag> MySQL </tag>
+            
+            <tag> PhpMyAdmin </tag>
+            
+            <tag> SAE </tag>
+            
+            <tag> Storage </tag>
+            
+            <tag> SVN </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[MongoVUE1.5完全破解版赠送]]></title>
+      <url>/mongovue_480.html</url>
+      <content type="html"><![CDATA[<p>最近一直接触NoSQL中的mongoDB，但是在网上找了很多的客户端工具都不是很好用，其中好用的客户端如  mongoVUE却不是完全免费的（目前最高版本是1.5版本），最多免费使用15天，如图：</p>
+<p><img src="http://yhv5.com/uploads/2013/04/20121215135019.png" alt="20121215135019"></p>
+<p>目前只有1.3版本以下的mongoVUE才是免费的，但新的功能却不能使用。网上也有很多针对1.5版本mongoVUE进行破解的方式，但是治标不治本，如：修改注册表中查找B1159E65-821C3-21C5-CE21-34A484D54444中的子项4FF78130 ，删除其下的三个子项，之后MongoVUE又重置到15天的情况了，但过了15天又需要手动进行操作注册表，而且开启软件时一直都会提示如图：</p>
+<p><img src="http://yhv5.com/uploads/2014/03/zhuce.png" alt="zhuce"></p>
+<p>是不是很烦恼？现在小编在此提供一下mongoVUE1.5破解版，破解后效果如下图：</p>
+<p><img src="http://yhv5.com/uploads/2013/04/20121215140217.png" alt="20121215140217"></p>
+<p>操作方式可到本文尾部下载软件到本机解压（由于软件资源甚少，几乎找不到完全破解版，下载请支持一下小编），其中包含三个文件如图：</p>
+<p><img src="http://yhv5.com/uploads/2013/04/8.png" alt="8"></p>
+<p>其中Installer.msi为安装软件，点击安装到本机即可，安装完成之后并没结束，到这里只是和普通网上下载的mongVUE1.5安装程序一样，没有经过破解，因此需要用到另一个文件Crached.zip，解压该文件之后出现如图两个文件：</p>
+<p><img src="http://yhv5.com/uploads/2013/04/9.png" alt="9"></p>
+<p>其中只有MongoVUE.exe文件有作用。将其拷贝到安装mongoVUE的安装目录覆盖原有MongoVUE.exe文件即可。现在再次打开mongoVUE到顶端菜单栏中help-&gt;about中查看type已经改变为Licensed了（不会再次出现免费使用天数限制这个烦人的界面）。</p>
+<p>下载地址：<a href="http://yhv5.com/software/MongoVUE.v1.5.3.rar">MongoVUE.v1.5.3.rar</a></p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> MongoVUE </tag>
+            
+            <tag> NoSQL </tag>
+            
+            <tag> 破解 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[PHP执行效率问题]]></title>
+      <url>/phpexecution_469.html</url>
+      <content type="html"><![CDATA[<p>在前段时间项目开发过程中，经常遇到了一些PHP处理程序性能下降的问题，程序运行在centos+nginx环境，虽然这个有很多的原因如：服务器本身配置，运行环境nginx服务，php-fpm配置等等，还有一点仍然是phper的程序没有得到更好的优化。</p>
+<p>这些问题大致分类为：变量类型、函数类型、引用文件类型。</p>
+<p><strong>变量类型 </strong></p>
+<ul>
+<li><p>主要是使用未定义变量，而直接使用变量，做程序开发结束的时候，程序员都喜欢关闭debug，让一切Notice和Warning都影藏起来，但实质上php即使关闭debug也会记录日志，将所有的Notice和Warning信息全部写入日志文件中，无非是一件浪费性能的事，很多phper都有这个小习惯，包括我也一样。</p>
+</li>
+<li><p>另外在程序中应尽量注意变量的使用，如字符串最好使用单引号，而不是双引号，毕竟双引号还得PHP解析为单引号在执行。</p>
+</li>
+<li><p>说到这里数组中的键值索引一样也需要用单引号，不要不写引号这样的程序执行效率极低。</p>
+</li>
+</ul>
+<p><strong>函数类型 </strong> </p>
+<ul>
+<li><p>SESSION变量，大家都知道调用SESSION这个全局变量，往往大家在将值放入SESSION之后，直接就往下接着写自己的代码了，却忘记了SESSION变量会在页面执行完毕之后才会将值放入SESSION中供其他页面使用，这样如果这个页面执行时间过长，其他页面也调用这个SESSION就会等待这个写入SESSION的页面执行完毕之后，再往后执行其他程序，但是我们的程序要的不是这样的效果，因为我们只需要将值写入SESSION执行之后，就已经放在SESSION中了，而不是等待页面执行完毕，从PHP官网也能看到这个SESSION变量确实有这个问题，因此我们需要在写入SESSION之后关闭写入SESSION操作，加上session_write_close()函数则可以减少等待页面加载完毕的这些无用时间。</p>
+</li>
+<li><p>file_get_contents()函数，这个函数意思是获取远程URL的页面内容，但虽然这样写着，很多人都不会注意这样一个问题”超时”，如果获取不到页面内容，程序将一直卡在这里，很多人会联系到设置页面超时或者在php.ini文件中去设置max_execution_time最大执行超时时间，但如果使用的是php-fpm（也就是php-cgi）将对这个参数视为无效,而需要在php-fpm配置文件中设置最大执行超时时间，最终这样也无法起到作用，需要解决这个问题，仍然需要我们在至调用该函数的时候加上超时时间，这样才能从根本上解决问题。</p>
+</li>
+</ul>
+<p><strong>引用文件类型 </strong></p>
+<ul>
+<li>引用文件很多时间我们都习惯性的使用include ，但是这中间也隐含着一些使用技巧，如果经常使用框架开发程序的人就很熟悉，项目项目下面会有”include”字样类型的文件夹，程序在查找包含文件的顺序先是在当前工作目录根路径下include字样文件夹中下查找，然后再是当前该文件所在目录相对的include字样文件夹中查找。也就是这个include使用不当，程序将会按照这个方式在根路径下面依次查找，这样同样是一件很费解的事，所以大家应尽量将使用的文件写在最容易查找的位置，这样才有利于程序的执行效率。此外还有像echo输出多个字符串或变量的函数，使用”.”连接效率要比”,”连接执行效率低。</li>
+</ul>
+<p>上述都是一些最基本的程序优化问题。希望在以后少犯这样的低级错误。</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> PHP </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> PHP </tag>
+            
+            <tag> SESSION </tag>
+            
+            <tag> 变量 </tag>
+            
+            <tag> 执行效率 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[给自己的站点添加SSL证书]]></title>
+      <url>/ssl_300.html</url>
+      <content type="html"><![CDATA[<p>前段时间看了一点关于SSL的知识，给自己站也做了一个HTTPS的访问，当然这个是自行颁发不受浏览器信任的SSL证书，如果需要浏览器信任的证书需要向权威机构申请。整个设置大致流程如下：</p>
+<h4 id="生成秘钥"><a href="#生成秘钥" class="headerlink" title="生成秘钥"></a>生成秘钥</h4><p>秘钥Key，也称私钥,openssl会提示输入一个密码，可以输入，也可以不输，输入的话，以后每次使用这个key的时候都要输入密码，安全起见，还是应该有一个密码保护。使用命令如： openssl genrsa (可选-des3) -out server.key 2048/1024/4096等</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ openssl genrsa -des3 -out server.key 4096</div></pre></td></tr></table></figure>
+<p>执行回车后输入密码再次回车输入确认密码即可，则在当前目录生成了server.key文件，具体可参见如下图：</p>
+<p><img src="http://yhv5.com/uploads/2014/02/1.jpg" alt="1"></p>
+<h4 id="生成CSR证书"><a href="#生成CSR证书" class="headerlink" title="生成CSR证书"></a>生成CSR证书</h4><p>使用上面生成的Key，生成一个certificate signing request (CSR)。如果生成的key有密码保护，openssl首先会询问刚才设置的密码，然后需要你填写一系列问题,其中Common Name(CN)是最重要的，它代表你的证书要代表的目标，如果你为网站申请的证书，就要添你站点的域名。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ openssl req -new -key server.key -out server.csr</div></pre></td></tr></table></figure>
+<p>执行完成之后则在当前目录生成了server.csr文件，如下图所示</p>
+<p><img src="http://yhv5.com/uploads/2014/02/2.jpg" alt="2"></p>
+<p>上图中需要填写的信息也可以作为配置信息，不用每次都进行填写，于是可以将这些信息设置为默认信息，如下：<br>找到 /etc/pki/tls/openssl.cnf 配置文件(修改默认设置)<br>查找[ req_distinguished_name ] 模块下面的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">countryName_default = XX</div><div class="line">stateOrProvinceName_default = Default Province</div><div class="line">localityName_default = Default City</div><div class="line">0.organizationName_default = Default Company Ltd</div><div class="line">organizationalUnitName_default =</div></pre></td></tr></table></figure>
+<p>修改为<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">countryName_default = CN</div><div class="line">stateOrProvinceName_default = Beijing</div><div class="line">localityName_default = Beijing</div><div class="line">0.organizationName_default = YHV5.COM</div><div class="line">organizationalUnitName_default = YHV5.COM</div></pre></td></tr></table></figure></p>
+<p>除了上面CN需要认真填写，其他默认值都可随意填写没有要求限制。</p>
+<h4 id="生成Self-Signed证书"><a href="#生成Self-Signed证书" class="headerlink" title="生成Self Signed证书"></a>生成Self Signed证书</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt</div></pre></td></tr></table></figure>
+<p>server.crt就是我们生成的证书了，执行过程中直接输入y回车即可。到目前为止，生成了server.crt文件，就已经得到了整个SSL的秘钥文件。<br>另外一个比较简单的方法就是用下面的命令，一次生成key和证书</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout server.key -out server.crt</div></pre></td></tr></table></figure>
+<h4 id="配置nginx中ssl的模块"><a href="#配置nginx中ssl的模块" class="headerlink" title="配置nginx中ssl的模块"></a>配置nginx中ssl的模块</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">   server_name hostname;</div><div class="line">   listen 443;</div><div class="line">   ssl on;</div><div class="line">   ssl_certificate server.crt;</div><div class="line">   ssl_certificate_key server.key;</div><div class="line">   ssl_session_timeout 5m;</div><div class="line">   ssl_protocols SSLv3 TLSv1;</div><div class="line">   ssl_ciphers ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv3:+EXP;</div><div class="line">   ssl_prefer_server_ciphers on;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="开启443端口设置防火墙"><a href="#开启443端口设置防火墙" class="headerlink" title="开启443端口设置防火墙"></a>开启443端口设置防火墙</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ iptables -A INPUT -m state –state NEW -m tcp -p tcp –dport 443 -j ACCEPT</div><div class="line">$ service iptables save</div></pre></td></tr></table></figure>
+<h4 id="重启nginx服务"><a href="#重启nginx服务" class="headerlink" title="重启nginx服务"></a>重启nginx服务</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ /usr/<span class="built_in">local</span>/nginx/sbin/nginx <span class="_">-s</span> reload</div></pre></td></tr></table></figure>
+<p>最后浏览访问<a href="https://hostname" target="_blank" rel="external">https://hostname</a> 即可。<br>另外申请权威机构的证书文件可以向<a href="http://www.startssl.com/" target="_blank" rel="external">http://www.startssl.com/</a> 注册申请，过程有点麻烦，但最后还是可以实现。</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> HTTPS </tag>
+            
+            <tag> openssl </tag>
+            
+            <tag> SSL </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[ECSHOP源码解析]]></title>
+      <url>/ecshop_source_resolution_62.html</url>
+      <content type="html"><![CDATA[<p>前些天，寝室一朋友给我拿了一道ECSHOP的面试题，当时的我对商派EXSHOP还是有所了解的，于是答应帮他看看。但是一直都没时间做，等到昨天中午的时候才加紧看了一下源码，代码封装的还算不错的，结果前端页面样式弄好了但是功能没有得到实现。但是答应了别人的事还是的做好，于是到了晚上给加班弄好了。 例子是一个在ECSHOP 后台权限管理列表页面增加一个用户名和email邮箱搜索条件，并在列表下端显示分页效果。如下图所示。</p>
+<p><img src="http://yhv5.com/uploads/2012/09/7.png" alt="7"></p>
+<p>实现原理如下： </p>
+<h4 id="修改模板"><a href="#修改模板" class="headerlink" title="修改模板"></a>修改模板</h4><p>在修改安装目录upload/admin/templates文件夹下面的privilege_list.htm中的smarty模板页面第6行增加如下代码：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-div"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">"javascript:searchUser()"</span> <span class="attr">name</span>=<span class="string">"searchForm"</span> <span class="attr">accept-charset</span>=<span class="string">"utf-8"</span>&gt;</span></div><div class="line">		&#123;$lang.user_name&#125; <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"keywords"</span> <span class="attr">size</span>=<span class="string">"18"</span> /&gt;</span></div><div class="line">		&#123;$lang.email&#125; <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"email"</span> <span class="attr">size</span>=<span class="string">"18"</span> /&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">value</span>=<span class="string">"&#123;$lang.button_search&#125;"</span> /&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">form</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>修改第38行代码为<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;foreachelse&#125;</div><div class="line">	<span class="tag">&lt;<span class="name">tr</span>&gt;</span><span class="tag">&lt;<span class="name">td</span> <span class="attr">class</span>=<span class="string">"no-records"</span> <span class="attr">colspan</span>=<span class="string">"10"</span>&gt;</span>&#123;$lang.no_records&#125;<span class="tag">&lt;/<span class="name">td</span>&gt;</span><span class="tag">&lt;/<span class="name">tr</span>&gt;</span></div><div class="line">&#123;/foreach&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="修改脚本js"><a href="#修改脚本js" class="headerlink" title="修改脚本js"></a>修改脚本js</h4><p>找到页面下端的javascript中literal代码段，将其修改为如下代码：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">&#123;literal&#125;</div><div class="line">	</div><div class="line">	onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">		<span class="built_in">document</span>.forms[<span class="string">'searchForm'</span>].elements[<span class="string">'keywords'</span>].focus();</div><div class="line">		<span class="built_in">document</span>.forms[<span class="string">'searchForm'</span>].elements[<span class="string">'email'</span>].focus();</div><div class="line">		startCheckOrder();</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">function</span> <span class="title">searchUser</span>(<span class="params"></span>)</span>&#123;</div><div class="line">		listTable.filter[<span class="string">'keywords'</span>] =Utils.trim(<span class="built_in">document</span>.forms[<span class="string">'searchForm'</span>].elements[<span class="string">'keywords'</span>].value);</div><div class="line">		listTable.filter[<span class="string">'email'</span>] = Utils.trim(<span class="built_in">document</span>.forms[<span class="string">'searchForm'</span>].elements[<span class="string">'email'</span>].value);</div><div class="line">		listTable.filter[<span class="string">'page'</span>] = <span class="number">1</span>;</div><div class="line">		listTable.loadList();</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">function</span> <span class="title">confirm_bath</span>(<span class="params"></span>)</span>&#123;</div><div class="line">		userItems = <span class="built_in">document</span>.getElementsByName(<span class="string">'checkboxes[]'</span>);</div><div class="line">		cfm = <span class="string">'&#123;$lang.list_remove_confirm&#125;'</span>;</div><div class="line">		<span class="keyword">for</span> (i=<span class="number">0</span>; userItems[i]; i++)&#123;</div><div class="line">		<span class="keyword">if</span> (userItems[i].checked &amp;&amp; userItems[i].notice == <span class="number">1</span>)&#123;</div><div class="line">			cfm = <span class="string">'&#123;$lang.list_still_accounts&#125;'</span> + <span class="string">'&#123;$lang.list_remove_confirm&#125;'</span>;</div><div class="line">			<span class="keyword">break</span>;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> confirm(cfm);</div><div class="line">&#125;</div><div class="line">&#123;/literal&#125;</div></pre></td></tr></table></figure></p>
+<p>上面的方法 想必不用解释了吧，也就是获取到标记中的内容。这里有很多种方式的，但是为了整体一致，我还是采用源码中的方式进行。 </p>
+<h4 id="修改控制器"><a href="#修改控制器" class="headerlink" title="修改控制器"></a>修改控制器</h4><p>在修改安装目录upload/admin/文件夹下面的privilege.php中找到$_REQUEST[‘act’]==’list’并修改为如下代码：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">elseif</span> ($_REQUEST[<span class="string">'act'</span>] == <span class="string">'list'</span>)&#123;</div><div class="line">	<span class="comment">//模板赋值</span></div><div class="line">	$user_list = user_list();</div><div class="line">	$smarty-&gt;assign(<span class="string">'record_count'</span>, $user_list[<span class="string">'record_count'</span>]);</div><div class="line">	$smarty-&gt;assign(<span class="string">'page_count'</span>, $user_list[<span class="string">'page_count'</span>]);</div><div class="line">	$smarty-&gt;assign(<span class="string">'action_link'</span>, <span class="keyword">array</span>(<span class="string">'href'</span>=&gt;<span class="string">'privilege.php?act=add'</span>, <span class="string">'text'</span> =&gt;$_LANG[<span class="string">'admin_add'</span>]));</div><div class="line">	$smarty-&gt;assign(<span class="string">'full_page'</span>, <span class="number">1</span>);</div><div class="line">	$smarty-&gt;assign(<span class="string">'filter'</span>, $user_list[<span class="string">'filter'</span>]);</div><div class="line">	$smarty-&gt;assign(<span class="string">'admin_list'</span>, get_admin_userlist());</div><div class="line">	<span class="comment">//显示页面</span></div><div class="line">	assign_query_info();</div><div class="line">	$smarty-&gt;display(<span class="string">'privilege_list.htm'</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>找到$_REQUEST[‘act’]==’query’并修改为如下代码：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">elseif</span>($_REQUEST[<span class="string">'act'</span>]==<span class="string">'query'</span>)&#123;</div><div class="line">	$user_list = user_list();</div><div class="line">	$smarty-&gt;assign(<span class="string">'admin_list'</span>, $user_list[<span class="string">'user_list'</span>]);</div><div class="line">	$smarty-&gt;assign(<span class="string">'filter'</span>, $user_list[<span class="string">'filter'</span>]);</div><div class="line">	$smarty-&gt;assign(<span class="string">'record_count'</span>, $user_list[<span class="string">'record_count'</span>]);</div><div class="line">	$smarty-&gt;assign(<span class="string">'page_count'</span>, $user_list[<span class="string">'page_count'</span>]);</div><div class="line">	$sort_flag = sort_flag($user_list[<span class="string">'filter'</span>]);</div><div class="line">	$smarty-&gt;assign($sort_flag[<span class="string">'tag'</span>], $sort_flag[<span class="string">'img'</span>]);</div><div class="line">	make_json_result($smarty-&gt;fetch(<span class="string">'privilege_list.htm'</span>), <span class="string">''</span>,</div><div class="line">	<span class="keyword">array</span>(<span class="string">'filter'</span> =&gt;$user_list[<span class="string">'filter'</span>],<span class="string">'page_count'</span> =&gt; $user_list[<span class="string">'page_count'</span>]));</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这里是处理刚才javascript代码提交过来的数据，在这个判断结构中修改了原有的代码，需要传递的参数有用户列表数据分页数据等等。 所以我们将这些信息整合成数组形式传递过去使用。使用方法user_list()整个所有数据到数组中，下面介绍。 第四步：在页面末尾处增加一个方法<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">user_list</span><span class="params">()</span></span>&#123;</div><div class="line">	$result = get_filter();</div><div class="line">	<span class="keyword">if</span> ($result === <span class="keyword">false</span>)&#123;</div><div class="line">		$filter[<span class="string">'keywords'</span>] = <span class="keyword">empty</span>($_REQUEST[<span class="string">'keywords'</span>]) ? <span class="string">' '</span> : trim($_REQUEST[<span class="string">'keywords'</span>]);<span class="comment">//获取搜索词1</span></div><div class="line">		$filter[<span class="string">'email'</span>] = <span class="keyword">empty</span>($_REQUEST[<span class="string">'email'</span>]) ? <span class="string">' '</span> : trim($_REQUEST[<span class="string">'email'</span>]);<span class="comment">//获取搜索词2</span></div><div class="line">		<span class="keyword">if</span> (<span class="keyword">isset</span>($_REQUEST[<span class="string">'is_ajax'</span>]) &amp;&amp; $_REQUEST[<span class="string">'is_ajax'</span>] == <span class="number">1</span>)&#123;</div><div class="line">			$filter[<span class="string">'keywords'</span>] = json_str_iconv($filter[<span class="string">'keywords'</span>]);<span class="comment">//转码</span></div><div class="line">			$filter[<span class="string">'email'</span>] = json_str_iconv($filter[<span class="string">'email'</span>]);<span class="comment">//转码</span></div><div class="line">		&#125;</div><div class="line">		$filter[<span class="string">'sort_by'</span>] = <span class="keyword">empty</span>($_REQUEST[<span class="string">'sort_by'</span>]) ? <span class="string">'user_id'</span> : trim($_REQUEST[<span class="string">'sort_by'</span>]);</div><div class="line">		$filter[<span class="string">'sort_order'</span>] = <span class="keyword">empty</span>($_REQUEST[<span class="string">'sort_order'</span>]) ? <span class="string">'DESC'</span> : trim($_REQUEST[<span class="string">'sort_order'</span>]);</div><div class="line">		$ex_where = <span class="string">' WHERE 1 '</span>;</div><div class="line">		<span class="comment">//下面的判断语句是两个条件之间的关系判断。</span></div><div class="line">		<span class="keyword">if</span> ($filter[<span class="string">'keywords'</span>]&amp;&amp;$filter[<span class="string">'email'</span>])&#123;</div><div class="line">			$ex_where .= <span class="string">" AND user_name LIKE '%"</span> . mysql_like_quote($filter[<span class="string">'keywords'</span>]) .<span class="string">"%' AND email</span></div><div class="line">				LIKE '%" . mysql_like_quote($filter[<span class="string">'email'</span>]).<span class="string">"%' "</span>;</div><div class="line">		&#125;<span class="keyword">elseif</span>($filter[<span class="string">'keywords'</span>])&#123;</div><div class="line">			$ex_where .= <span class="string">" AND user_name LIKE '%"</span> . mysql_like_quote($filter[<span class="string">'keywords'</span>]) .<span class="string">"%'"</span>;</div><div class="line">		&#125;<span class="keyword">elseif</span>($filter[<span class="string">'email'</span>])&#123;</div><div class="line">			$ex_where .= <span class="string">" AND email LIKE '%"</span> . mysql_like_quote($filter[<span class="string">'email'</span>]) .<span class="string">"%'"</span>;</div><div class="line">		&#125;</div><div class="line">		$filter[<span class="string">'record_count'</span>] = $GLOBALS[<span class="string">'db'</span>]-&gt;getOne(<span class="string">"SELECT COUNT(*) FROM "</span> . $GLOBALS[<span class="string">'ecs'</span>]-&gt;</div><div class="line">		table(<span class="string">'admin_user'</span>) . $ex_where);<span class="comment">//获取总记录数</span></div><div class="line">		$filter = page_and_size($filter);</div><div class="line">		$sql = <span class="string">"SELECT user_id, user_name, email,add_time,last_login "</span>.</div><div class="line">			<span class="string">" FROM "</span> . $GLOBALS[<span class="string">'ecs'</span>]-&gt;table(<span class="string">'admin_user'</span>) . $ex_where .</div><div class="line">			<span class="string">" ORDER by "</span> . $filter[<span class="string">'sort_by'</span>] . <span class="string">' '</span> . $filter[<span class="string">'sort_order'</span>] .</div><div class="line">			<span class="string">" LIMIT "</span> . $filter[<span class="string">'start'</span>] . <span class="string">','</span> . $filter[<span class="string">'page_size'</span>];</div><div class="line">		$filter[<span class="string">'keywords'</span>] = stripslashes($filter[<span class="string">'keywords'</span>]);</div><div class="line">		set_filter($filter, $sql);</div><div class="line">	&#125;<span class="keyword">else</span>&#123;<span class="comment">//无任何条件时</span></div><div class="line">		$sql = $result[<span class="string">'sql'</span>];</div><div class="line">		$filter = $result[<span class="string">'filter'</span>];</div><div class="line">	&#125;</div><div class="line">	$user_list = $GLOBALS[<span class="string">'db'</span>]-&gt;getAll($sql);<span class="comment">//条件查询结果</span></div><div class="line">	<span class="keyword">foreach</span> ($user_list <span class="keyword">as</span> $key=&gt;$val)&#123;</div><div class="line">		<span class="comment">//格式化时间</span></div><div class="line">		$user_list[$key][<span class="string">'add_time'</span>] = local_date($GLOBALS[<span class="string">'_CFG'</span>][<span class="string">'time_format'</span>], $user_list[$key][<span class="string">'add_time'</span>]);</div><div class="line">		$user_list[$key][<span class="string">'last_login'</span>]=local_date($GLOBALS[<span class="string">'_CFG'</span>][<span class="string">'time_format'</span>], $user_list[$key][<span class="string">'last_login'</span>]);</div><div class="line">	&#125;</div><div class="line">	<span class="comment">//所有数据整合到数组中</span></div><div class="line">	$arr = <span class="keyword">array</span>(<span class="string">'user_list'</span> =&gt; $user_list, <span class="string">'filter'</span> =&gt; $filter,</div><div class="line">	<span class="string">'page_count'</span> =&gt; $filter[<span class="string">'page_count'</span>], <span class="string">'record_count'</span> =&gt; $filter[<span class="string">'record_count'</span>]);</div><div class="line">	<span class="keyword">return</span> $arr;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>上面这个方法整合了通过条件查询时的数据结果和一些分页信息。具体实现可以根据上面代码分析。上述功能就是对这次面试题的代码量。终于做完。睡觉!!!</p>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> PHP </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ECSHOP </tag>
+            
+            <tag> javascript </tag>
+            
+            <tag> smarty </tag>
+            
+            <tag> 源码 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+  
+  
+</search>
