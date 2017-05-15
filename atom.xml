@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yhv5.com/"/>
-  <updated>2017-05-14T14:33:24.149Z</updated>
+  <updated>2017-05-15T09:33:40.572Z</updated>
   <id>http://yhv5.com/</id>
   
   <author>
@@ -14,6 +14,53 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>CentOS编译安装mysql5.7.16</title>
+    <link href="http://yhv5.com/mysql_install_1867.html"/>
+    <id>http://yhv5.com/mysql_install_1867.html</id>
+    <published>2017-05-12T08:44:00.000Z</published>
+    <updated>2017-05-15T09:33:40.572Z</updated>
+    
+    <content type="html"><![CDATA[<p>说在前面的话：因为MySQL5.7版本和之前的版本安装过程会有一定的不同，因此专门整理了一下整个流程。</p>
+<h3 id="安装前准备工作"><a href="#安装前准备工作" class="headerlink" title="安装前准备工作"></a>安装前准备工作</h3><p>因MySQL我们通常采用跨平台编译cmake，而不是make编译，因此需要下载cmake包，另外从MySQL 5.7.5开始Boost库是必需的，因此也需要下载boost包：<br>cmake：wget <a href="https://cmake.org/files/v3.5/cmake-3.5.2.tar.gz" target="_blank" rel="external">https://cmake.org/files/v3.5/cmake-3.5.2.tar.gz</a><br>boost：wget <a href="https://jaist.dl.sourceforge.net/project/boost/boost/1.64.0/boost_1_64_0.tar.gz" target="_blank" rel="external">https://jaist.dl.sourceforge.net/project/boost/boost/1.64.0/boost_1_64_0.tar.gz</a><br>mysql5.7：wget <a href="https://dev.mysql.com/get/archives/mysql-5.7/mysql-boost-5.7.16.tar.gz" target="_blank" rel="external">https://dev.mysql.com/get/archives/mysql-5.7/mysql-boost-5.7.16.tar.gz</a></p>
+<h3 id="编译安装-cmake"><a href="#编译安装-cmake" class="headerlink" title="编译安装 cmake"></a>编译安装 cmake</h3><p>如果之前已经安装过cmake的可以跳过这步</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ tar -zxf cmake-3.5.2.tar.gz</div><div class="line">$ <span class="built_in">cd</span> cmake-3.5.2</div><div class="line">$ yum install -y make gcc gcc-c++ ncurses-devel</div><div class="line">$ ./bootstrap</div><div class="line">$ gmake &amp;&amp; gmake install</div></pre></td></tr></table></figure>
+<h3 id="编译安装-mysql"><a href="#编译安装-mysql" class="headerlink" title="编译安装 mysql"></a>编译安装 mysql</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">$ tar -zxf boost_1_64_0.tar.gz</div><div class="line">$ tar -zxf mysql-boost-5.7.16.tar.gz</div><div class="line">$ <span class="built_in">cd</span> mysql-boost-5.7.16</div><div class="line">$ yum install -y openssl openssl-devel</div><div class="line">$ cmake . -DCMAKE_INSTALL_PREFIX=/usr/<span class="built_in">local</span>/mysql \</div><div class="line">-DMYSQL_DATADIR=/mnt/mysql/data \</div><div class="line">-DSYSCONFDIR=/etc \</div><div class="line">-DWITH_INNOBASE_STORAGE_ENGINE=1 \</div><div class="line">-DWITH_ARCHIVE_STORAGE_ENGINE=1 \</div><div class="line">-DWITH_BLACKHOLE_STORAGE_ENGINE=1 \</div><div class="line">-DWITH_READLINE=1 \</div><div class="line">-DWITH_LIBWRAP=0 \</div><div class="line">-DMYSQL_UNIX_ADDR=/var/mysql/mysql.sock \</div><div class="line">-DWITH_SSL=system \</div><div class="line">-DWITH_ZLIB=system \</div><div class="line">-DWITH_BOOST=/usr/<span class="built_in">local</span>/boost_1_64_0 \</div><div class="line">-DDEFAULT_CHARSET=utf8 \</div><div class="line">-DDEFAULT_COLLATION=utf8_general_c</div><div class="line">$ make &amp;&amp; make install</div></pre></td></tr></table></figure>
+<ul>
+<li>-DCMAKE_INSTALL_PREFIX ： 表示MySQL的安装目录，可自定义</li>
+<li>-DMYSQL_DATADIR ： MySQL 数据存储目录，可自定义，如果不存在需要先创建</li>
+<li>-DMYSQL_UNIX_ADDR：sock文件存放路径，最好是/var/mysql/mysql.sock，其他定义路径，启动如出现找不到mysl.sock，则需要创建软连接指向这个路径。</li>
+<li>-DWITH_BOOST：boots解压路径。</li>
+</ul>
+<h3 id="初始化MySQL"><a href="#初始化MySQL" class="headerlink" title="初始化MySQL"></a>初始化MySQL</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/mysql</div><div class="line">$ cp ./support-files/mysql.server /etc/init.d/mysqld</div><div class="line">$ chmod +x /etc/init.d/mysqld</div><div class="line">$ chkconfig --add mysqld</div><div class="line">$ chkconfig mysqld on</div><div class="line">$ usermod <span class="_">-d</span> /home/mysql -p mysql <span class="_">-s</span> /bin/bash mysql</div><div class="line">$ mkdir mysql-files</div><div class="line">$ chmod 750 mysql-files</div><div class="line">$ chown -R mysql.mysql /usr/<span class="built_in">local</span>/mysql</div><div class="line">$ ./bin/mysql_ssl_rsa_setup</div><div class="line">$ ./bin/mysqld --initialize --user=mysql</div></pre></td></tr></table></figure>
+<ul>
+<li>注意：记住日志输出的初始化密码，下面登录root需要 </li>
+</ul>
+<h3 id="启动MySQL并授权用户"><a href="#启动MySQL并授权用户" class="headerlink" title="启动MySQL并授权用户"></a>启动MySQL并授权用户</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ /usr/<span class="built_in">local</span>/mysql/bin/mysqld_safe --skip-grant-tables --skip-networking &amp;</div><div class="line">$ mysql -u root -p</div><div class="line">mysql&gt; update mysql.user <span class="built_in">set</span> password_expired=<span class="string">'N'</span> <span class="built_in">where</span> user=<span class="string">'root'</span>;</div><div class="line">mysql&gt; <span class="built_in">exit</span></div><div class="line">$ service mysqld start</div><div class="line">$ mysql -u root -p</div><div class="line">mysql&gt; create user work identified by <span class="string">'123456'</span>;</div><div class="line">mysql&gt; create database mydb;</div><div class="line">mysql&gt; grant all on mydb.* to work</div></pre></td></tr></table></figure>
+<ul>
+<li>MySQL5.7安装后，初始化启动不能使用service mysqld start ,因为MySQL5.7默认开启了root密码过期功能，需要先使用 –skip-grant-tables –skip-networking 启动后MySQL后修改password_expired字段值为N(No)，后方可使用服务进行启动，同时如果–skip-grant-tables –skip-networking 启动窗口下也无法创建用户，需要退出使用服务登录后创建。</li>
+</ul>
+<p>(The End)</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;说在前面的话：因为MySQL5.7版本和之前的版本安装过程会有一定的不同，因此专门整理了一下整个流程。&lt;/p&gt;
+&lt;h3 id=&quot;安装前准备工作&quot;&gt;&lt;a href=&quot;#安装前准备工作&quot; class=&quot;headerlink&quot; title=&quot;安装前准备工作&quot;&gt;&lt;/a&gt;安装前准备工
+    
+    </summary>
+    
+      <category term="Linux" scheme="http://yhv5.com/categories/Linux/"/>
+    
+    
+      <category term="centos" scheme="http://yhv5.com/tags/centos/"/>
+    
+      <category term="mysql" scheme="http://yhv5.com/tags/mysql/"/>
+    
+      <category term="Linux" scheme="http://yhv5.com/tags/Linux/"/>
+    
+  </entry>
   
   <entry>
     <title>CentOS升级gcc</title>
@@ -937,57 +984,6 @@
       <category term="fiddle" scheme="http://yhv5.com/tags/fiddle/"/>
     
       <category term="前端" scheme="http://yhv5.com/tags/%E5%89%8D%E7%AB%AF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Win7笔记本虚拟WiFi热点</title>
-    <link href="http://yhv5.com/win7_wifi_1068.html"/>
-    <id>http://yhv5.com/win7_wifi_1068.html</id>
-    <published>2014-05-15T16:52:24.000Z</published>
-    <updated>2017-05-14T07:24:33.651Z</updated>
-    
-    <content type="html"><![CDATA[<p>以前在学校的时候，为了手机也能用无线网，因此自己就开始捣搞在自己的机器上面开一个热点给手机使用，那时候记得自己还专门去下载了一个开启WiFi的软件来创建这个热点，不过最近由于公司的WiFi网络实在不稳定可能是自己的手机信号本身就不好的原因（但感觉公司的WiFi是移动型的），因此自己又想在自己电脑上面创建一个热点，但是这回就没有这么麻烦了，无需任何软件win7系统本身就可以创建虚拟的WiFi热点，具体的操作如下介绍。</p>
-<ul>
-<li><p>首先确保电脑开启了无线网和操作者具有管理员权限，然后使用WIN键在对话框中输入cmd，查找到cmd.exe之后右键选择管理员权限启动。</p>
-</li>
-<li><p>使用命令：netsh wlan set hostednetwork mode=allow ssid=无线网名称 key=无线网口令</p>
-</li>
-</ul>
-<p>比如netsh wlan set hostednetwork mode=allow ssid=hanggecrazy key=hanggecrazy（其中mode可以设置热点的开启allow和禁用disallow）回车之后如下图则创建成功。</p>
-<p><img src="http://yhv5.com/uploads/2014/05/openwifi.jpg" alt="openwifi"></p>
-<ul>
-<li>运行成功后，打开网络和共享中心，点击左侧更改适配器设置。进入适配器设置就会发现多出了一个网卡为“Microsoft Virtual WiFi Miniport Adapter”的无线网络连接2并将其重命名（理论上面任意名字都行）。若没有，则尝试更新无线网卡驱动。如下图：</li>
-</ul>
-<p><img src="http://yhv5.com/uploads/2014/05/wifi.jpg" alt="wifi"></p>
-<ul>
-<li>选择一个需要共享的适配器（网络已连接）并右键单击选择“属性”，在弹出的对话框顶部选择“共享”选项卡，勾选上第一个选项，并选择，刚才创建的热点适配器，如下图</li>
-</ul>
-<p><img src="http://yhv5.com/uploads/2014/05/select.jpg" alt="select"></p>
-<ul>
-<li>确定之后，提供共享的网卡图标旁会出现“共享的”字样，表示该网络已共享至新创建的热点，然后回到DOS界面继续输入命令开启热点服务：netsh wlan start hostednetwork，按回车键运行。执行成功如下图所示：</li>
-</ul>
-<p><img src="http://yhv5.com/uploads/2014/05/success.jpg" alt="success"></p>
-<ul>
-<li>最后，新创建的热点WiFi红叉消失，WiFi基站已组建好并启动，用支持WiFi的设备搜索到自己建立的无线网络（如上面提到的hangecrazy）,输入自己设置的密码（如上面提到的hanggecrazy），即可使用其他设备连接WiFi热点上网了。</li>
-</ul>
-<p>(The End)</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;以前在学校的时候，为了手机也能用无线网，因此自己就开始捣搞在自己的机器上面开一个热点给手机使用，那时候记得自己还专门去下载了一个开启WiFi的软件来创建这个热点，不过最近由于公司的WiFi网络实在不稳定可能是自己的手机信号本身就不好的原因（但感觉公司的WiFi是移动型的），
-    
-    </summary>
-    
-      <category term="杂文" scheme="http://yhv5.com/categories/%E6%9D%82%E6%96%87/"/>
-    
-    
-      <category term="wifi" scheme="http://yhv5.com/tags/wifi/"/>
-    
-      <category term="win7" scheme="http://yhv5.com/tags/win7/"/>
-    
-      <category term="热点" scheme="http://yhv5.com/tags/%E7%83%AD%E7%82%B9/"/>
     
   </entry>
   

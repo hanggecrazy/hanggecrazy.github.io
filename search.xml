@@ -3,6 +3,50 @@
   
     
     <entry>
+      <title><![CDATA[CentOS编译安装mysql5.7.16]]></title>
+      <url>/mysql_install_1867.html</url>
+      <content type="html"><![CDATA[<p>说在前面的话：因为MySQL5.7版本和之前的版本安装过程会有一定的不同，因此专门整理了一下整个流程。</p>
+<h3 id="安装前准备工作"><a href="#安装前准备工作" class="headerlink" title="安装前准备工作"></a>安装前准备工作</h3><p>因MySQL我们通常采用跨平台编译cmake，而不是make编译，因此需要下载cmake包，另外从MySQL 5.7.5开始Boost库是必需的，因此也需要下载boost包：<br>cmake：wget <a href="https://cmake.org/files/v3.5/cmake-3.5.2.tar.gz" target="_blank" rel="external">https://cmake.org/files/v3.5/cmake-3.5.2.tar.gz</a><br>boost：wget <a href="https://jaist.dl.sourceforge.net/project/boost/boost/1.64.0/boost_1_64_0.tar.gz" target="_blank" rel="external">https://jaist.dl.sourceforge.net/project/boost/boost/1.64.0/boost_1_64_0.tar.gz</a><br>mysql5.7：wget <a href="https://dev.mysql.com/get/archives/mysql-5.7/mysql-boost-5.7.16.tar.gz" target="_blank" rel="external">https://dev.mysql.com/get/archives/mysql-5.7/mysql-boost-5.7.16.tar.gz</a></p>
+<h3 id="编译安装-cmake"><a href="#编译安装-cmake" class="headerlink" title="编译安装 cmake"></a>编译安装 cmake</h3><p>如果之前已经安装过cmake的可以跳过这步</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ tar -zxf cmake-3.5.2.tar.gz</div><div class="line">$ <span class="built_in">cd</span> cmake-3.5.2</div><div class="line">$ yum install -y make gcc gcc-c++ ncurses-devel</div><div class="line">$ ./bootstrap</div><div class="line">$ gmake &amp;&amp; gmake install</div></pre></td></tr></table></figure>
+<h3 id="编译安装-mysql"><a href="#编译安装-mysql" class="headerlink" title="编译安装 mysql"></a>编译安装 mysql</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">$ tar -zxf boost_1_64_0.tar.gz</div><div class="line">$ tar -zxf mysql-boost-5.7.16.tar.gz</div><div class="line">$ <span class="built_in">cd</span> mysql-boost-5.7.16</div><div class="line">$ yum install -y openssl openssl-devel</div><div class="line">$ cmake . -DCMAKE_INSTALL_PREFIX=/usr/<span class="built_in">local</span>/mysql \</div><div class="line">-DMYSQL_DATADIR=/mnt/mysql/data \</div><div class="line">-DSYSCONFDIR=/etc \</div><div class="line">-DWITH_INNOBASE_STORAGE_ENGINE=1 \</div><div class="line">-DWITH_ARCHIVE_STORAGE_ENGINE=1 \</div><div class="line">-DWITH_BLACKHOLE_STORAGE_ENGINE=1 \</div><div class="line">-DWITH_READLINE=1 \</div><div class="line">-DWITH_LIBWRAP=0 \</div><div class="line">-DMYSQL_UNIX_ADDR=/var/mysql/mysql.sock \</div><div class="line">-DWITH_SSL=system \</div><div class="line">-DWITH_ZLIB=system \</div><div class="line">-DWITH_BOOST=/usr/<span class="built_in">local</span>/boost_1_64_0 \</div><div class="line">-DDEFAULT_CHARSET=utf8 \</div><div class="line">-DDEFAULT_COLLATION=utf8_general_c</div><div class="line">$ make &amp;&amp; make install</div></pre></td></tr></table></figure>
+<ul>
+<li>-DCMAKE_INSTALL_PREFIX ： 表示MySQL的安装目录，可自定义</li>
+<li>-DMYSQL_DATADIR ： MySQL 数据存储目录，可自定义，如果不存在需要先创建</li>
+<li>-DMYSQL_UNIX_ADDR：sock文件存放路径，最好是/var/mysql/mysql.sock，其他定义路径，启动如出现找不到mysl.sock，则需要创建软连接指向这个路径。</li>
+<li>-DWITH_BOOST：boots解压路径。</li>
+</ul>
+<h3 id="初始化MySQL"><a href="#初始化MySQL" class="headerlink" title="初始化MySQL"></a>初始化MySQL</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/mysql</div><div class="line">$ cp ./support-files/mysql.server /etc/init.d/mysqld</div><div class="line">$ chmod +x /etc/init.d/mysqld</div><div class="line">$ chkconfig --add mysqld</div><div class="line">$ chkconfig mysqld on</div><div class="line">$ usermod <span class="_">-d</span> /home/mysql -p mysql <span class="_">-s</span> /bin/bash mysql</div><div class="line">$ mkdir mysql-files</div><div class="line">$ chmod 750 mysql-files</div><div class="line">$ chown -R mysql.mysql /usr/<span class="built_in">local</span>/mysql</div><div class="line">$ ./bin/mysql_ssl_rsa_setup</div><div class="line">$ ./bin/mysqld --initialize --user=mysql</div></pre></td></tr></table></figure>
+<ul>
+<li>注意：记住日志输出的初始化密码，下面登录root需要 </li>
+</ul>
+<h3 id="启动MySQL并授权用户"><a href="#启动MySQL并授权用户" class="headerlink" title="启动MySQL并授权用户"></a>启动MySQL并授权用户</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ /usr/<span class="built_in">local</span>/mysql/bin/mysqld_safe --skip-grant-tables --skip-networking &amp;</div><div class="line">$ mysql -u root -p</div><div class="line">mysql&gt; update mysql.user <span class="built_in">set</span> password_expired=<span class="string">'N'</span> <span class="built_in">where</span> user=<span class="string">'root'</span>;</div><div class="line">mysql&gt; <span class="built_in">exit</span></div><div class="line">$ service mysqld start</div><div class="line">$ mysql -u root -p</div><div class="line">mysql&gt; create user work identified by <span class="string">'123456'</span>;</div><div class="line">mysql&gt; create database mydb;</div><div class="line">mysql&gt; grant all on mydb.* to work</div></pre></td></tr></table></figure>
+<ul>
+<li>MySQL5.7安装后，初始化启动不能使用service mysqld start ,因为MySQL5.7默认开启了root密码过期功能，需要先使用 –skip-grant-tables –skip-networking 启动后MySQL后修改password_expired字段值为N(No)，后方可使用服务进行启动，同时如果–skip-grant-tables –skip-networking 启动窗口下也无法创建用户，需要退出使用服务登录后创建。</li>
+</ul>
+<p>(The End)</p>
+]]></content>
+      
+        <categories>
+            
+            <category> Linux </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> centos </tag>
+            
+            <tag> mysql </tag>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[CentOS升级gcc]]></title>
       <url>/update_gcc_1866.html</url>
       <content type="html"><![CDATA[<p>升级前准备工作：<br>因gcc依赖mpc、gmp、mpfr三个包，因此需要先下载依赖包进行升级(可以选择不同的依赖包版本)<br>mpc： wget ftp://ftp.gnu.org/gnu/mpc/mpc-1.0.3.tar.gz<br>gmp： wget ftp://ftp.gnu.org/gnu/gmp/gmp-5.0.0.tar.gz<br>mpfr： wget ftp://ftp.gnu.org/gnu/mpfr/mpfr-3.0.0.tar.gz<br>gcc： wget <a href="http://ftp.gnu.org/gnu/gcc/gcc-4.9.2/gcc-4.9.2.tar.bz2" target="_blank" rel="external">http://ftp.gnu.org/gnu/gcc/gcc-4.9.2/gcc-4.9.2.tar.bz2</a></p>
@@ -1594,9 +1638,9 @@
             
             <tag> SVN </tag>
             
-            <tag> crontab </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> crontab </tag>
             
             <tag> Shell </tag>
             
