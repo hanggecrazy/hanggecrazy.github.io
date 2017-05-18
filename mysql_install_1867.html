@@ -97,7 +97,7 @@
 <meta property="og:url" content="http://yhv5.com/mysql_install_1867.html">
 <meta property="og:site_name" content="Crazy&#39;s Blog">
 <meta property="og:description" content="说在前面的话：因为MySQL5.7版本和之前的版本安装过程会有一定的不同，因此专门整理了一下整个流程。 安装前准备工作因MySQL我们通常采用跨平台编译cmake，而不是make编译，因此需要下载cmake包，另外从MySQL 5.7.5开始Boost库是必需的，因此也需要下载boost包：cmake：wget https://cmake.org/files/v3.5/cmake-3.5.2.ta">
-<meta property="og:updated_time" content="2017-05-15T09:33:40.572Z">
+<meta property="og:updated_time" content="2017-05-15T09:38:43.224Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CentOS编译安装mysql5.7.16">
 <meta name="twitter:description" content="说在前面的话：因为MySQL5.7版本和之前的版本安装过程会有一定的不同，因此专门整理了一下整个流程。 安装前准备工作因MySQL我们通常采用跨平台编译cmake，而不是make编译，因此需要下载cmake包，另外从MySQL 5.7.5开始Boost库是必需的，因此也需要下载boost包：cmake：wget https://cmake.org/files/v3.5/cmake-3.5.2.ta">
@@ -406,14 +406,14 @@
 <ul>
 <li>-DCMAKE_INSTALL_PREFIX ： 表示MySQL的安装目录，可自定义</li>
 <li>-DMYSQL_DATADIR ： MySQL 数据存储目录，可自定义，如果不存在需要先创建</li>
-<li>-DMYSQL_UNIX_ADDR：sock文件存放路径，最好是/var/mysql/mysql.sock，其他定义路径，启动如出现找不到mysl.sock，则需要创建软连接指向这个路径。</li>
-<li>-DWITH_BOOST：boots解压路径。</li>
+<li>-DMYSQL_UNIX_ADDR：sock文件存放路径，最好是/var/mysql/mysql.sock，其他定义路径，启动如出现找不到mysl.sock，则需要创建软连接指向这个路径</li>
+<li>-DWITH_BOOST：boots解压路径</li>
 </ul>
 <h3 id="初始化MySQL"><a href="#初始化MySQL" class="headerlink" title="初始化MySQL"></a>初始化MySQL</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/mysql</div><div class="line">$ cp ./support-files/mysql.server /etc/init.d/mysqld</div><div class="line">$ chmod +x /etc/init.d/mysqld</div><div class="line">$ chkconfig --add mysqld</div><div class="line">$ chkconfig mysqld on</div><div class="line">$ usermod <span class="_">-d</span> /home/mysql -p mysql <span class="_">-s</span> /bin/bash mysql</div><div class="line">$ mkdir mysql-files</div><div class="line">$ chmod 750 mysql-files</div><div class="line">$ chown -R mysql.mysql /usr/<span class="built_in">local</span>/mysql</div><div class="line">$ ./bin/mysql_ssl_rsa_setup</div><div class="line">$ ./bin/mysqld --initialize --user=mysql</div></pre></td></tr></table></figure>
 <ul>
 <li>注意：记住日志输出的初始化密码，下面登录root需要 </li>
 </ul>
-<h3 id="启动MySQL并授权用户"><a href="#启动MySQL并授权用户" class="headerlink" title="启动MySQL并授权用户"></a>启动MySQL并授权用户</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ /usr/<span class="built_in">local</span>/mysql/bin/mysqld_safe --skip-grant-tables --skip-networking &amp;</div><div class="line">$ mysql -u root -p</div><div class="line">mysql&gt; update mysql.user <span class="built_in">set</span> password_expired=<span class="string">'N'</span> <span class="built_in">where</span> user=<span class="string">'root'</span>;</div><div class="line">mysql&gt; <span class="built_in">exit</span></div><div class="line">$ service mysqld start</div><div class="line">$ mysql -u root -p</div><div class="line">mysql&gt; create user work identified by <span class="string">'123456'</span>;</div><div class="line">mysql&gt; create database mydb;</div><div class="line">mysql&gt; grant all on mydb.* to work</div></pre></td></tr></table></figure>
+<h3 id="启动MySQL并授权用户"><a href="#启动MySQL并授权用户" class="headerlink" title="启动MySQL并授权用户"></a>启动MySQL并授权用户</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">$ /usr/<span class="built_in">local</span>/mysql/bin/mysqld_safe --skip-grant-tables --skip-networking &amp;</div><div class="line">$ mysql -u root -p</div><div class="line">mysql&gt; update mysql.user <span class="built_in">set</span> password_expired=<span class="string">'N'</span> <span class="built_in">where</span> user=<span class="string">'root'</span>;</div><div class="line">mysql&gt; <span class="built_in">exit</span></div><div class="line">$ service mysqld start</div><div class="line">$ mysql -u root -p</div><div class="line">mysql&gt; create user work identified by <span class="string">'123456'</span>;</div><div class="line">mysql&gt; create database mydb;</div><div class="line">mysql&gt; grant all on mydb.* to work</div><div class="line">mysql&gt; flush privileges;</div><div class="line">mysql&gt; <span class="built_in">exit</span></div><div class="line">$ mysql -u work -p</div><div class="line">mysql&gt; show databases;</div></pre></td></tr></table></figure>
 <ul>
 <li>MySQL5.7安装后，初始化启动不能使用service mysqld start ,因为MySQL5.7默认开启了root密码过期功能，需要先使用 –skip-grant-tables –skip-networking 启动后MySQL后修改password_expired字段值为N(No)，后方可使用服务进行启动，同时如果–skip-grant-tables –skip-networking 启动窗口下也无法创建用户，需要退出使用服务登录后创建。</li>
 </ul>
@@ -495,6 +495,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/update_python_1868.html" rel="prev" title="Mac10.12升级Python3.6后遇到的坑">
+                Mac10.12升级Python3.6后遇到的坑 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -540,8 +544,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/avatar.png"
@@ -556,7 +569,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">45</span>
+                <span class="site-state-item-count">46</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -578,7 +591,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">120</span>
+                <span class="site-state-item-count">122</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -624,6 +637,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装前准备工作"><span class="nav-number">1.</span> <span class="nav-text">安装前准备工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译安装-cmake"><span class="nav-number">2.</span> <span class="nav-text">编译安装 cmake</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译安装-mysql"><span class="nav-number">3.</span> <span class="nav-text">编译安装 mysql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化MySQL"><span class="nav-number">4.</span> <span class="nav-text">初始化MySQL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动MySQL并授权用户"><span class="nav-number">5.</span> <span class="nav-text">启动MySQL并授权用户</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

@@ -558,8 +558,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/avatar.png"
@@ -574,7 +583,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">45</span>
+                <span class="site-state-item-count">46</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -596,7 +605,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">120</span>
+                <span class="site-state-item-count">122</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -642,6 +651,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#分片集群配置"><span class="nav-number">1.</span> <span class="nav-text">分片集群配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#分片"><span class="nav-number">1.1.</span> <span class="nav-text">分片</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#配置节点"><span class="nav-number">1.2.</span> <span class="nav-text">配置节点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#路由节点"><span class="nav-number">1.3.</span> <span class="nav-text">路由节点</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#搭建集群"><span class="nav-number">2.</span> <span class="nav-text">搭建集群</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#创建Sharding和Replica-Set"><span class="nav-number">2.1.</span> <span class="nav-text">创建Sharding和Replica Set</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#创建并配置第一组"><span class="nav-number">2.1.1.</span> <span class="nav-text">创建并配置第一组</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#创建并配置第二组"><span class="nav-number">2.1.2.</span> <span class="nav-text">创建并配置第二组</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#创建并配置第三组"><span class="nav-number">2.1.3.</span> <span class="nav-text">创建并配置第三组</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#启动三个配置服务节点Configsvr"><span class="nav-number">2.2.</span> <span class="nav-text">启动三个配置服务节点Configsvr</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#启动一个路由点Mongos"><span class="nav-number">2.3.</span> <span class="nav-text">启动一个路由点Mongos</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#配置分片"><span class="nav-number">2.4.</span> <span class="nav-text">配置分片</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查看配置结果"><span class="nav-number">2.5.</span> <span class="nav-text">查看配置结果</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集群中出现问题处理："><span class="nav-number">3.</span> <span class="nav-text">集群中出现问题处理：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Mongos节点宕机"><span class="nav-number">3.1.</span> <span class="nav-text">Mongos节点宕机</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#分片中的某一个Mongod节点宕机"><span class="nav-number">3.2.</span> <span class="nav-text">分片中的某一个Mongod节点宕机</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#分片中的所有Mongod节点宕机"><span class="nav-number">3.3.</span> <span class="nav-text">分片中的所有Mongod节点宕机</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#一个Config-Server宕机"><span class="nav-number">3.4.</span> <span class="nav-text">一个Config Server宕机</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
