@@ -1,0 +1,880 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <!--<link href="fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">-->
+    <link href="/googleapis.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content=",,,,,,,,," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Crazy's Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="由于SAE平台的特殊，为了网站的安全性，它不支持本地IO操作，因此这也使得对于一些常用的缓存机制都不能使用，必要的时候只能使用其提供的服务充当，当然这也是SAE的赚钱之道。 CakePhp是比较成熟的轻量级框架，由于CakePhp原生程序不能在SAE上面直接运行，同时SAE也介绍了一些禁用的PHP类库函数，对于CakePhp底层框架依赖的这些函数就不能正常使用，为此一些大大就自行开源了支持SAE环">
+<meta name="keywords" content="cache,cakephp,MC,Memcache,MySQL,PhpMyAdmin,SAE,Storage,SVN">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CakePhp在新浪SAE上搭建过程">
+<meta property="og:url" content="http://yhv5.com/post/cakephp_sae.html">
+<meta property="og:site_name" content="Crazy&#39;s Blog">
+<meta property="og:description" content="由于SAE平台的特殊，为了网站的安全性，它不支持本地IO操作，因此这也使得对于一些常用的缓存机制都不能使用，必要的时候只能使用其提供的服务充当，当然这也是SAE的赚钱之道。 CakePhp是比较成熟的轻量级框架，由于CakePhp原生程序不能在SAE上面直接运行，同时SAE也介绍了一些禁用的PHP类库函数，对于CakePhp底层框架依赖的这些函数就不能正常使用，为此一些大大就自行开源了支持SAE环">
+<meta property="og:image" content="http://yhv5.com/uploads/2013/05/1.png">
+<meta property="og:image" content="http://yhv5.com/uploads/2013/05/2.png">
+<meta property="og:image" content="http://yhv5.com/uploads/2013/05/3.png">
+<meta property="og:image" content="http://yhv5.com/uploads/2013/05/4.png">
+<meta property="og:image" content="http://yhv5.com/uploads/2013/05/5.png">
+<meta property="og:image" content="http://yhv5.com/uploads/2013/05/6.png">
+<meta property="og:updated_time" content="2017-05-14T07:24:30.675Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CakePhp在新浪SAE上搭建过程">
+<meta name="twitter:description" content="由于SAE平台的特殊，为了网站的安全性，它不支持本地IO操作，因此这也使得对于一些常用的缓存机制都不能使用，必要的时候只能使用其提供的服务充当，当然这也是SAE的赚钱之道。 CakePhp是比较成熟的轻量级框架，由于CakePhp原生程序不能在SAE上面直接运行，同时SAE也介绍了一些禁用的PHP类库函数，对于CakePhp底层框架依赖的这些函数就不能正常使用，为此一些大大就自行开源了支持SAE环">
+<meta name="twitter:image" content="http://yhv5.com/uploads/2013/05/1.png">
+
+
+
+  <link rel="canonical" href="http://yhv5.com/post/cakephp_sae.html"/>
+
+
+
+
+
+  <title>
+  
+
+  
+    CakePhp在新浪SAE上搭建过程 | Crazy's Blog
+  
+</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left  ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Crazy's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            Commonweal 404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+  <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline">CakePhp在新浪SAE上搭建过程</h1>
+
+
+
+</header>
+
+    
+    
+      <p>由于SAE平台的特殊，为了网站的安全性，它不支持本地IO操作，因此这也使得对于一些常用的缓存机制都不能使用，必要的时候只能使用其提供的服务充当，当然这也是SAE的赚钱之道。</p>
+<p>CakePhp是比较成熟的轻量级框架，由于CakePhp原生程序不能在SAE上面直接运行，同时SAE也介绍了一些禁用的PHP类库函数，对于CakePhp底层框架依赖的这些函数就不能正常使用，为此一些大大就自行开源了支持SAE环境的CakePhp框架，虽然这其中只是更改底层的一些禁用函数和缓存引擎，但是也方便了很多的程序猿使用CakePhp在SAE上建站。</p>
+<p>对于使用SAE，我也才了解一段时间，不过它本身的稳定性还是值得屈指的，CakePhp原生使用写文件的方式来存储cache，而在SAE上面则更改这种方式为Memcache（MC）的方式存储，在SAE里面MC服务是收费的，另外在我们常用的上传文件功能，在SAE里面显得不那么自由了，它有好几种方式存储，当然我还是采用的Storage，Storage是SAE为开发者提供的分布式文件存储服务，用来存放用户的持久化存储的文件。具体的应用可以在自己的管理后台看到。首先使用SAE管理自己的代码，通常有两种方法，一种是常用的程序开发模式版本控制器（SVN），另外一种是它支持ZIP格式的压缩包上传到服务器的方式，这两种方式虽然后者方便，但是不利于管理，以至于在造成错误后无法回滚代码，所以还是推荐使用SVN方式，在使用SVN之前需要为网站创建二级域名和应用名，下面的SVN会用到。在后台左侧选择“应用设置”创建自己的二级域名和应用名，这个应用名同时是SVN项目名也是数据库名（具体后面会说到），然后点击左侧的 “代码管理”，这时你只需要创建一个版本它即为你生成一个SVN地址如下图：</p>
+<p><img src="http://yhv5.com/uploads/2013/05/1.png" alt="1"></p>
+<p>通过生成的SVN地址可以将自己的代码提交到服务器上面，刚才讲到了另外的一种方式提交代码，如上图中第2点后面操作部分“上传代码包”（只支持ZIP格式），上传完自动按照压缩包格式解压到服务器。待上传完毕代码之后即可在操作部分点击“编辑代码”，进入文件在线编辑工作区，在那里修改过的文件都会直接记录到SVN中。<br>其次是数据库的使用，在管理后台左侧选择MySQL，则可以对数据库进行配置，SAE和其他空间运营商有点不一样，它提供的数据库和网站应用名是相关联的，如创建了一个名为house的应用，则它会给你生成一个app_house的数据库，你只能对这个库进行操作，不能再创建数据库，如果需要创建数据库，只能从新定义应用名让其分配数据库进行操作，这点本人非常的不习惯，如下:</p>
+<p><img src="http://yhv5.com/uploads/2013/05/2.png" alt="2"></p>
+<p>点击上面的管理MySQL，则进入分配的数据库（和PhpMyAdmin一致），如下图：</p>
+<p><img src="http://yhv5.com/uploads/2013/05/3.png" alt="3"></p>
+<p>这也就是能对数据库进行管理的唯一入口了。这里需要说明一点，CakePhp程序中的database.php文件需要用SAE自己的数据库名常量并实例化数据库。数据库服务器上面截图处可以看到,直接上图：</p>
+<p><img src="http://yhv5.com/uploads/2013/05/4.png" alt="4"></p>
+<p>上面介绍在SAE上运行的CakePhp更改了缓存引擎为MC因此这里需要将MC服务开启，点击管理后台左侧的Memcache设置自己业务的配额激活即可，如下图:</p>
+<p><img src="http://yhv5.com/uploads/2013/05/5.png" alt="5"></p>
+<p>另外使用到的文件上传服务是Storage，SAE默认分配的空间为10G大小，这里只需要创建自己的domain文件夹就行了，权限可以自行设置（访问权限和防盗链），这里我创建了一个图片的domain，用来管理上传的图片和文件，废话少说直接上图:</p>
+<p><img src="http://yhv5.com/uploads/2013/05/6.png" alt="6"></p>
+<p>具体的文件上传的代码非常简单，直接上代码：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$sae = <span class="keyword">new</span> SaeStorage();</div><div class="line">$sae-&gt;upload( <span class="string">'domain名'</span>,<span class="string">'最终文件名'</span>,<span class="string">'源文件名'</span>);</div></pre></td></tr></table></figure></p>
+<p>调用完上传函数返回的就是该图片在服务器的路径了，操作非常简单，获取图片也很简单:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$sae-&gt;getUrl(<span class="string">'domain名'</span>,<span class="string">'最终文件名'</span>);</div></pre></td></tr></table></figure></p>
+<p>操作比php的图片上传更简单。最后还是提供一下MC引擎的CakePhp核心lib包和重定向文件config.yaml下载地址附后。<br>cake_lib下载地址:  <a href="http://yhv5.com/software/cakelib2.1.3">cake_lib_2.1.3</a><br>重定向文件下载地址：<a href="http://yhv5.com/software/config.yaml">config.yaml</a></p>
+<p>(The End)</p>
+
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="hanggecrazy" />
+          <p class="site-author-name" itemprop="name">hanggecrazy</p>
+           
+              <p class="site-description motion-element" itemprop="description">成功的你面对冒险,看到的是机会<br> 失败的你面对机,会看到的是冒险</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">47</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">122</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://lntianda.name/" title="天大的博客" target="_blank">天大的博客</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2012 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hanggecrazy</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+京ICP备13031338号-1
+<!--<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>-->
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+  
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?79aa0e47f7b13661aa7fe4baaf77abdd";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("QLjfbfIGjEODdlEtcHeAaaF2-gzGzoHsz", "J1HoW04r6xBf4ivzbrIEl0a1");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
