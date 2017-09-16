@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yhv5.com/"/>
-  <updated>2017-06-03T10:10:20.632Z</updated>
+  <updated>2017-09-15T10:52:20.457Z</updated>
   <id>http://yhv5.com/</id>
   
   <author>
@@ -20,12 +20,12 @@
     <link href="http://yhv5.com/pixel2char_1868.html"/>
     <id>http://yhv5.com/pixel2char_1868.html</id>
     <published>2017-06-03T08:56:19.000Z</published>
-    <updated>2017-06-03T10:10:20.632Z</updated>
+    <updated>2017-09-15T10:52:20.457Z</updated>
     
     <content type="html"><![CDATA[<p><strong>准备工作</strong><br>因如下介绍的Python均是3.x版本，PIL（Python Image Library）目前并不支持3.x版本，因此我们需要用到pillow模块。</p>
-<h4 id="原始图片处理"><a href="#原始图片处理" class="headerlink" title="原始图片处理"></a>原始图片处理</h4><p>对原始图片大小等进行缩放，以便达到需要输出的合适尺寸<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">output_width = <span class="number">180</span> <span class="comment">#终端展现的大小</span></div><div class="line">output_height = <span class="number">180</span>  <span class="comment">#终端展现的大小</span></div><div class="line"><span class="comment">#获取图片资源</span></div><div class="line">image_path = <span class="string">'2.png'</span></div><div class="line">image = Image.open(image_path)</div><div class="line"><span class="comment">#图像模式转换为3色RGB，包括RGBA/P等</span></div><div class="line"><span class="keyword">if</span> image.mode <span class="keyword">is</span> <span class="keyword">not</span> <span class="string">'RGB'</span>:</div><div class="line">    image = image.convert(<span class="string">'RGB'</span>)</div><div class="line"><span class="comment">#获取原始图片尺寸</span></div><div class="line">image_width, image_height = image.size</div><div class="line"><span class="comment">#获取图片缩放宽高比例</span></div><div class="line">w_scale = output_width * <span class="number">1.0</span> / image_width</div><div class="line">h_scale = output_height * <span class="number">1.0</span> / image_height</div><div class="line"></div><div class="line"><span class="comment">#防止输入尺寸比例造成图片变形，等比缩放获取缩放值处理</span></div><div class="line">scale = w_scale <span class="keyword">if</span> w_scale &lt; h_scale <span class="keyword">else</span> h_scale</div><div class="line"><span class="comment">#等到最终宽高值</span></div><div class="line">res_width = int(scale * image_width)</div><div class="line">res_height = int(scale * image_height)</div><div class="line"><span class="comment">#图片重置 并且做防锯齿过滤，取值0-5</span></div><div class="line">image = image.resize((res_width, res_height), Image.HAMMING)</div></pre></td></tr></table></figure></p>
+<h4 id="原始图片处理"><a href="#原始图片处理" class="headerlink" title="原始图片处理"></a>原始图片处理</h4><p>对原始图片大小等进行缩放，以便达到需要输出的合适尺寸<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">output_width = <span class="number">180</span> <span class="comment">#终端展现的大小</span></div><div class="line">output_height = <span class="number">180</span>  <span class="comment">#终端展现的大小</span></div><div class="line"><span class="comment">#获取图片资源</span></div><div class="line">image_path = <span class="string">'source.png'</span></div><div class="line">image = Image.open(image_path)</div><div class="line"><span class="comment">#图像模式转换为3色RGB，包括RGBA/P等</span></div><div class="line"><span class="keyword">if</span> image.mode <span class="keyword">is</span> <span class="keyword">not</span> <span class="string">'RGB'</span>:</div><div class="line">    image = image.convert(<span class="string">'RGB'</span>)</div><div class="line"><span class="comment">#获取原始图片尺寸</span></div><div class="line">image_width, image_height = image.size</div><div class="line"><span class="comment">#获取图片缩放宽高比例</span></div><div class="line">w_scale = output_width * <span class="number">1.0</span> / image_width</div><div class="line">h_scale = output_height * <span class="number">1.0</span> / image_height</div><div class="line"></div><div class="line"><span class="comment">#防止输入尺寸比例造成图片变形，等比缩放获取缩放值处理</span></div><div class="line">scale = w_scale <span class="keyword">if</span> w_scale &lt; h_scale <span class="keyword">else</span> h_scale</div><div class="line"><span class="comment">#等到最终宽高值</span></div><div class="line">res_width = int(scale * image_width)</div><div class="line">res_height = int(scale * image_height)</div><div class="line"><span class="comment">#图片重置 并且做防锯齿过滤，取值0-5</span></div><div class="line">image = image.resize((res_width, res_height), Image.HAMMING)</div></pre></td></tr></table></figure></p>
 <h4 id="像素转换"><a href="#像素转换" class="headerlink" title="像素转换"></a>像素转换</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#定义替换像素的字符串，注意最后有个空格，原因是需要保留空白区域的输出</span></div><div class="line">replace_chars = <span class="string">'0123456789 '</span></div><div class="line">terminal_chars = <span class="string">''</span></div><div class="line"><span class="comment">#循环替换像素点</span></div><div class="line"><span class="keyword">for</span> h <span class="keyword">in</span> range(image_height):</div><div class="line">    <span class="keyword">for</span> w <span class="keyword">in</span> range(image_width):</div><div class="line">        <span class="comment">#RGB值转换为对应数字</span></div><div class="line">        point_pixel = image_pixels[w, h]</div><div class="line">        <span class="comment">#3色值求和并求色值对应的单位值（0-255）</span></div><div class="line">        terminal_chars += replace_chars[int(sum(point_pixel) / <span class="number">3.0</span> / <span class="number">256.0</span> * len(replace_chars))]</div><div class="line">    terminal_chars += <span class="string">'\n'</span></div></pre></td></tr></table></figure>
-<p>最终效果<br><img src="http://yhv5.com/uploads/2017/06/pix.png" alt="pix"><br>原图<br><img src="http://yhv5.com/uploads/2017/06/source.png" alt="source"></p>
+<p>最终效果<br><img src="https://yhv5.com/uploads/2017/06/pix.png" alt="pix"><br>原图<br><img src="https://yhv5.com/uploads/2017/06/source.png" alt="source"></p>
 <h4 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h4><p>文件名pixel2Char.py<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/python3 </span></div><div class="line"><span class="comment"># coding:utf-8</span></div><div class="line"><span class="keyword">import</span> sys</div><div class="line"><span class="keyword">from</span> imp <span class="keyword">import</span> reload</div><div class="line">reload(sys)</div><div class="line"><span class="comment">#需要安装pillow模块</span></div><div class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">pixel2Char</span><span class="params">()</span>:</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, image, output_width = <span class="number">150</span>, output_height = <span class="number">150</span>)</span>:</span></div><div class="line">        self.image = image</div><div class="line">        self.output_width = output_width</div><div class="line">        self.output_height = output_height</div><div class="line">    </div><div class="line">    <span class="comment">#原始图像按照输入尺寸缩放处理</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">resizeImg</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="comment">#打开图片，默认是以只读打开，且pillow目前只支持只读打开</span></div><div class="line">        image = Image.open(self.image)</div><div class="line">        <span class="comment">#图像模式转换，RGBA/P/</span></div><div class="line">        <span class="keyword">if</span> image.mode <span class="keyword">is</span> <span class="keyword">not</span> <span class="string">'RGB'</span>:</div><div class="line">            image = image.convert(<span class="string">'RGB'</span>)</div><div class="line">        <span class="comment">#获取原始图片尺寸</span></div><div class="line">        image_width, image_height = image.size</div><div class="line">        <span class="comment">#获取图片缩放宽高比例</span></div><div class="line">        w_scale = self.output_width * <span class="number">1.0</span> / image_width</div><div class="line">        h_scale = self.output_height * <span class="number">1.0</span> / image_height</div><div class="line">        </div><div class="line">        <span class="comment">#防止输入尺寸比例造成图片变形，等比缩放获取缩放值处理</span></div><div class="line">        scale = w_scale <span class="keyword">if</span> w_scale &lt; h_scale <span class="keyword">else</span> h_scale</div><div class="line">        <span class="comment">#等到最终宽高值</span></div><div class="line">        res_width = int(scale * image_width)</div><div class="line">        res_height = int(scale * image_height)</div><div class="line">        <span class="comment">#图片重置 并且做防锯齿过滤，取值0-5</span></div><div class="line">        image = image.resize((res_width, res_height), Image.HAMMING)</div><div class="line">        <span class="keyword">return</span> image</div><div class="line">    </div><div class="line">    <span class="comment">#图像像素转换</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pixel2Chars</span><span class="params">(self, image_pixels, image_width, image_height)</span>:</span></div><div class="line">        <span class="comment">#定义替换的字符串字符或数字，自定义，注意因为空白地方需要“ ”空</span></div><div class="line">        replace_chars = <span class="string">'0123456789 '</span></div><div class="line">        terminal_chars = <span class="string">''</span></div><div class="line">        <span class="keyword">for</span> h <span class="keyword">in</span> range(image_height):</div><div class="line">            <span class="keyword">for</span> w <span class="keyword">in</span> range(image_width):</div><div class="line">                <span class="comment">#RGB值转换为对应数字</span></div><div class="line">                point_pixel = image_pixels[w, h]</div><div class="line">                terminal_chars += replace_chars[int(sum(point_pixel) / <span class="number">3.0</span> / <span class="number">256.0</span> * len(replace_chars))]</div><div class="line">            terminal_chars += <span class="string">'\n'</span></div><div class="line">        <span class="keyword">return</span> terminal_chars</div><div class="line"></div><div class="line">    <span class="comment">#输出显示</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(self)</span>:</span></div><div class="line">        image = self.resizeImg()</div><div class="line">        image_pixels = image.load()</div><div class="line">        out_width ,out_height = image.size</div><div class="line">        <span class="comment">#RGB转化字符或数字</span></div><div class="line">        <span class="keyword">return</span> self.pixel2Chars(image_pixels, out_width, out_height)</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">    </div><div class="line">    <span class="keyword">if</span> len(sys.argv) &lt; <span class="number">2</span> :</div><div class="line">        print(<span class="string">'python '</span> + sys.argv[<span class="number">0</span>] + <span class="string">' image_path'</span>)</div><div class="line">        exit(<span class="number">0</span>)</div><div class="line"></div><div class="line">    image = sys.argv[<span class="number">1</span>]</div><div class="line">    </div><div class="line">    output_width = int(sys.argv[<span class="number">2</span>]) <span class="keyword">if</span> len(sys.argv) &gt; <span class="number">3</span> <span class="keyword">else</span> <span class="number">150</span></div><div class="line">    output_height = int(sys.argv[<span class="number">3</span>]) <span class="keyword">if</span> len(sys.argv) &gt; <span class="number">4</span> <span class="keyword">else</span> <span class="number">150</span></div><div class="line"></div><div class="line">    img = pixel2Char(image, output_width, output_height).show()</div><div class="line">    print(img)</div></pre></td></tr></table></figure></p>
 <p>(The End)</p>
 ]]></content>
@@ -51,7 +51,7 @@
     <link href="http://yhv5.com/update_python_1868.html"/>
     <id>http://yhv5.com/update_python_1868.html</id>
     <published>2017-05-18T06:50:00.000Z</published>
-    <updated>2017-06-03T09:24:03.169Z</updated>
+    <updated>2017-08-17T11:17:08.406Z</updated>
     
     <content type="html"><![CDATA[<h3 id="安装Homebrew"><a href="#安装Homebrew" class="headerlink" title="安装Homebrew"></a>安装Homebrew</h3><p>Mac最好能安装Homebrew，这样你安装软件会方便得多，当然也可以手工类似Linux下进行编译安装，这个看个人喜好。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ /usr/bin/ruby <span class="_">-e</span> <span class="string">"<span class="variable">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)</span>"</span></div></pre></td></tr></table></figure>
@@ -111,9 +111,9 @@
       <category term="杂文" scheme="http://yhv5.com/categories/%E6%9D%82%E6%96%87/"/>
     
     
-      <category term="Python" scheme="http://yhv5.com/tags/Python/"/>
-    
       <category term="Mac" scheme="http://yhv5.com/tags/Mac/"/>
+    
+      <category term="Python" scheme="http://yhv5.com/tags/Python/"/>
     
   </entry>
   
@@ -122,7 +122,7 @@
     <link href="http://yhv5.com/mysql_install_1867.html"/>
     <id>http://yhv5.com/mysql_install_1867.html</id>
     <published>2017-05-12T08:44:00.000Z</published>
-    <updated>2017-06-03T09:24:03.167Z</updated>
+    <updated>2017-08-17T11:17:08.385Z</updated>
     
     <content type="html"><![CDATA[<p>说在前面的话：因为MySQL5.7版本和之前的版本安装过程会有一定的不同，因此专门整理了一下整个流程。</p>
 <h3 id="安装前准备工作"><a href="#安装前准备工作" class="headerlink" title="安装前准备工作"></a>安装前准备工作</h3><p>因MySQL我们通常采用跨平台编译cmake，而不是make编译，因此需要下载cmake包，另外从MySQL 5.7.5开始Boost库是必需的，因此也需要下载boost包：<br>cmake：wget <a href="https://cmake.org/files/v3.5/cmake-3.5.2.tar.gz" target="_blank" rel="external">https://cmake.org/files/v3.5/cmake-3.5.2.tar.gz</a><br>boost：wget <a href="https://jaist.dl.sourceforge.net/project/boost/boost/1.64.0/boost_1_64_0.tar.gz" target="_blank" rel="external">https://jaist.dl.sourceforge.net/project/boost/boost/1.64.0/boost_1_64_0.tar.gz</a><br>mysql5.7：wget <a href="https://dev.mysql.com/get/archives/mysql-5.7/mysql-boost-5.7.16.tar.gz" target="_blank" rel="external">https://dev.mysql.com/get/archives/mysql-5.7/mysql-boost-5.7.16.tar.gz</a></p>
@@ -169,7 +169,7 @@
     <link href="http://yhv5.com/update_gcc_1866.html"/>
     <id>http://yhv5.com/update_gcc_1866.html</id>
     <published>2017-05-10T10:02:00.000Z</published>
-    <updated>2017-06-03T09:24:03.169Z</updated>
+    <updated>2017-08-17T11:17:08.405Z</updated>
     
     <content type="html"><![CDATA[<p>升级前准备工作：<br>因gcc依赖mpc、gmp、mpfr三个包，因此需要先下载依赖包进行升级(可以选择不同的依赖包版本)<br>mpc： wget ftp://ftp.gnu.org/gnu/mpc/mpc-1.0.3.tar.gz<br>gmp： wget ftp://ftp.gnu.org/gnu/gmp/gmp-5.0.0.tar.gz<br>mpfr： wget ftp://ftp.gnu.org/gnu/mpfr/mpfr-3.0.0.tar.gz<br>gcc： wget <a href="http://ftp.gnu.org/gnu/gcc/gcc-4.9.2/gcc-4.9.2.tar.bz2" target="_blank" rel="external">http://ftp.gnu.org/gnu/gcc/gcc-4.9.2/gcc-4.9.2.tar.bz2</a></p>
 <h2 id="编译安装-mpc"><a href="#编译安装-mpc" class="headerlink" title="编译安装 mpc"></a>编译安装 mpc</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ tar -zxf mpc-1.0.3.tar.gz</div><div class="line">$ <span class="built_in">cd</span> mpc-1.0.3</div><div class="line">$ ./configure &amp;&amp; make &amp;&amp; make install</div></pre></td></tr></table></figure>
@@ -213,7 +213,7 @@
     <link href="http://yhv5.com/centos_of_vpn_1733.html"/>
     <id>http://yhv5.com/centos_of_vpn_1733.html</id>
     <published>2015-10-25T09:02:28.000Z</published>
-    <updated>2017-06-03T09:24:03.166Z</updated>
+    <updated>2017-08-17T11:17:08.371Z</updated>
     
     <content type="html"><![CDATA[<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><h3 id="检查机器是否支持VPN"><a href="#检查机器是否支持VPN" class="headerlink" title="检查机器是否支持VPN"></a>检查机器是否支持VPN</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ modprobe ppp-compress-18 &amp;&amp; <span class="built_in">echo</span> ok </div><div class="line">ok</div></pre></td></tr></table></figure>
 <p>如果返回OK则说明内核支持 MPPE，否则内核就没有集成，需要升级内核高于2.6.15。</p>
@@ -260,7 +260,7 @@
     <link href="http://yhv5.com/hp_mac_10_11_1720.html"/>
     <id>http://yhv5.com/hp_mac_10_11_1720.html</id>
     <published>2015-10-25T04:50:10.000Z</published>
-    <updated>2017-06-03T09:24:03.166Z</updated>
+    <updated>2017-08-17T11:17:08.379Z</updated>
     
     <content type="html"><![CDATA[<p>终于闲下来吃口黑苹果了，hp(9470)最终完美驱动10.11，现在呈给各位看客朋友，勿喷。<br><strong>机器配置</strong></p>
 <blockquote>
@@ -324,7 +324,7 @@
     <link href="http://yhv5.com/redis_cluster_1670.html"/>
     <id>http://yhv5.com/redis_cluster_1670.html</id>
     <published>2015-09-30T07:37:11.000Z</published>
-    <updated>2017-06-03T09:24:03.168Z</updated>
+    <updated>2017-08-17T11:17:08.396Z</updated>
     
     <content type="html"><![CDATA[<p>Redis Cluster 分布式集群，牺牲了数据的强一致性，来保证数据的可用性。也就是所谓的Redis从一个单纯的NoSQL内存数据库变成了分布式NoSQL数据库，CAP（Consistency &amp; Availability &amp; Partition-Tolerancy）模型也从CP变成了AP，三者只能取其二。</p>
 <h3 id="redis安装"><a href="#redis安装" class="headerlink" title="redis安装"></a>redis安装</h3><p>下载地址可以到官方下载或者下载本站地址<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /home/work/soft/</div><div class="line">wget http://yhv5.com/soft/redis-3.0.3.tar.gz</div><div class="line">tar -zxvf redis-3.0.3.tar.gz</div><div class="line"><span class="built_in">cd</span> redis-3.0.3</div><div class="line">configure --prefix=/home/work/redis</div><div class="line">make &amp;&amp; make install</div></pre></td></tr></table></figure></p>
@@ -392,7 +392,7 @@
     <link href="http://yhv5.com/travel_1615.html"/>
     <id>http://yhv5.com/travel_1615.html</id>
     <published>2014-10-08T11:24:55.000Z</published>
-    <updated>2017-06-03T09:24:03.169Z</updated>
+    <updated>2017-08-17T11:17:08.405Z</updated>
     
     <content type="html"><![CDATA[<p>想必在这个黄金周没有各位看客都没有空闲吧！是个好机会出去放松放松长期工作的疲惫身躯了，于是就有了下面的内容….</p>
 <p>这个长假对于我来说还是比较充实的，本次旅行的终点便是大家熟悉而又不陌生的五岳之首-泰山。下面看看泰山的位置吧</p>
@@ -462,7 +462,7 @@
     <link href="http://yhv5.com/mysql_skill_1601.html"/>
     <id>http://yhv5.com/mysql_skill_1601.html</id>
     <published>2014-08-09T18:08:03.000Z</published>
-    <updated>2017-06-03T09:24:03.167Z</updated>
+    <updated>2017-08-17T11:17:08.387Z</updated>
     
     <content type="html"><![CDATA[<p>熬夜看代码已经养成了习惯，如果看看优秀的代码还是值得的，但是如果是烂代码就太浪费时间了，总结下大致看到的一些问题，主要是关于MySQL中的SQL语句问题，下面一起来看看吧！ 第一个问题，关于分页处理，在一般情况下面我们都会使用如下语句来进行分页查询</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> TABLENAME <span class="keyword">LIMIT</span> x,y;</div></pre></td></tr></table></figure>
@@ -507,7 +507,7 @@
     <link href="http://yhv5.com/mystat_1575.html"/>
     <id>http://yhv5.com/mystat_1575.html</id>
     <published>2014-08-04T02:01:44.000Z</published>
-    <updated>2017-06-03T09:24:03.167Z</updated>
+    <updated>2017-08-17T11:17:08.389Z</updated>
     
     <content type="html"><![CDATA[<p>说起这款mystat，其实它就是一个Perl脚本，但是用来监测mysql还是足够了，下面我们来介绍一下这款利器。 因为是perl脚本，所以首先需要机器支持Perl，如果你的机器没有安装那么可以直接执行yum install perl，它会帮你安装各种Perl的依赖lib，如果你喜欢编译安装，那么可以去 perl官方(<a href="http://www.perl.org/get.html" target="_blank" rel="external">http://www.perl.org/get.html</a>) 下载编译安装，具体编译细节本文不做介绍。 好了已经安装或者已经有perl的小伙伴就可以去下载perl的mysql包了，首先需要安装的是<a href="http://www.cpan.org/modules/by-module/DBD/" target="_blank" rel="external">DBI</a>，Perl连接数据库需要安装DBI模块和相应数据库的DBD驱动，Linux上默认安装的Perl是没有该模块的,所以要手动安装。</p>
 <h3 id="安装DBI"><a href="#安装DBI" class="headerlink" title="安装DBI"></a>安装DBI</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">wget http://cpan.metacpan.org/authors/id/T/TI/TIMB/DBI-1.631.tar.gz</div><div class="line">tar -zxvf DBI-1.631.tar.gz</div><div class="line"><span class="built_in">cd</span> DBI-1.631</div><div class="line">perl Makefile.PL</div><div class="line">make</div><div class="line">make install</div></pre></td></tr></table></figure>
@@ -543,7 +543,7 @@
     <link href="http://yhv5.com/zabbix_1552.html"/>
     <id>http://yhv5.com/zabbix_1552.html</id>
     <published>2014-08-03T10:36:42.000Z</published>
-    <updated>2017-06-03T09:24:03.169Z</updated>
+    <updated>2017-08-17T11:17:08.410Z</updated>
     
     <content type="html"><![CDATA[<p>zabbix是一款基于WEB界面的提供分布式系统监视以及网络监视功能的企业级开源解决方案，源码是用PHP写的，官方地址可以移步<a href="http://www.zabbix.com" target="_blank" rel="external">zabbix</a>观摩。</p>
 <p>其实市场上的监控工具已经多得数不胜数了，现在比较流行的都是站长利用第三方进行监控自己的站点，很少自己来维护一套监控方案了，但是我觉得zabbix还是有必要了解和知道的，因为它的确很优秀，不仅能监视各种网络参数，保证服务器系统的安全运营；还能提供柔软的通知机制以让系统管理员快速定位/解决存在的各种问题。不管你是否关心，但是它真的做到了。</p>
@@ -609,7 +609,7 @@
     <link href="http://yhv5.com/token_1532.html"/>
     <id>http://yhv5.com/token_1532.html</id>
     <published>2014-07-20T11:21:35.000Z</published>
-    <updated>2017-06-03T09:24:03.168Z</updated>
+    <updated>2017-08-17T11:17:08.403Z</updated>
     
     <content type="html"><![CDATA[<p>随着去年“棱镜门”事件曝光，人们才开始发现自己的隐私都被NSA监听，无论是生活中用到的通讯设备，还是工作中用到的PC，以及现在流行的各种端设备，都一一被指出安全问题，越来越多的个人或者企业也意识到了自己的安全工作没有做到位，当然也不排除那种有带有私心的范儿们。其实这一切都归咎于科技的高速发展，促使着人们学会去改进，而不是停滞不前。唠叨了这么多还是说明一点问题安全对于人们是多么的重要，IT是一个信息化时代，少不了的红黑帽之间的较量，正是由于这个原因就造就了各种大牛级的人物出现。</p>
 <p>接下来提到的Token（令牌）使用的RSA加密无非就是一种安全钥匙，目前也广泛的运用在各种企业，比如国家银行、私企、事业单位等等。下面我们就来一起探讨一下这个神奇的令牌是怎样实现安全认证的。</p>
@@ -638,7 +638,7 @@
     <link href="http://yhv5.com/make_error_1519.html"/>
     <id>http://yhv5.com/make_error_1519.html</id>
     <published>2014-07-17T15:12:29.000Z</published>
-    <updated>2017-06-03T09:24:03.166Z</updated>
+    <updated>2017-08-17T11:17:08.380Z</updated>
     
     <content type="html"><![CDATA[<p>首先说明写作本文的用意，大致是昨天凌晨5点左右，我手机接到阿里云的短信报警提示–服务器宕机了，开始以为几分钟之内就能恢复正常，但是没有自己想象的那样，基础服务在重启之后都正常了，但是自己的一些作业被耽搁了，于是小编上准备上阿里云提交工单求解释。</p>
 <p>话说到官方提交完工单之后，顺便浏览了一下官方最近的活动，心想能遇有什么优惠政策。于是就在站内各种扫描，确实看到有一些令人心痒的活动，比如说官方推出的“<a href="http://free.aliyun.com/?spm=5176.383338.3.2.nHMQNT&amp;tracelog=shybanner" target="_blank" rel="external">0元拥抱云计算</a>”，看着就点进去了。进去之后里面做的很花哨啊！各种养眼的惠民政策，看着就顺势往下走，由于个人习惯喜欢在触摸板左右滑动，结果偶然屏幕右侧多出一块空白区域（下面给出），觉得很好奇啊~，想一下不应该啊，毕竟是阿里云，前端工作应该还是比较到位的，于是刷新了几下在看，仍然出现该情况，这下我就好奇了，于是去看源码发现，不知道那个粗心大意的攻城狮把宽度写错了（本来是100%的宽度，结果不知道啥情况手抖了一下增加了一个0，变成1000%），也许犯着糊涂的时候他本身不是故意的，但就是不知怎么回事儿的情况下就成这样了（我们这一行经常这样说），好吧说了这么多还是上一张图为证吧！</p>
@@ -671,7 +671,7 @@
     <link href="http://yhv5.com/mysql_efficient_2_1260.html"/>
     <id>http://yhv5.com/mysql_efficient_2_1260.html</id>
     <published>2014-07-06T07:39:04.000Z</published>
-    <updated>2017-06-03T09:24:03.167Z</updated>
+    <updated>2017-08-17T11:17:08.384Z</updated>
     
     <content type="html"><![CDATA[<p>话说上一篇 <a href="http://yhv5.com/mysql_efficient_693.html">MySQL高性能分析一</a> 写于半年以前了，现在继续聊聊下一部分-索引类型的相关知识。</p>
 <p>在写作本文之前有必要说明一下索引的优缺点，使用索引本身是为了解决问题，但是如果使用者滥用索引或者使用不当，索引也会让你付出惨痛的代价，因此我们有必要合理正确的使用索引，来解决遇到的问题，而不是带来新的问题。简单的说使用索引可以帮助我们：</p>
@@ -751,7 +751,7 @@
     <link href="http://yhv5.com/xy_plot_to_add_a_text_label_1239.html"/>
     <id>http://yhv5.com/xy_plot_to_add_a_text_label_1239.html</id>
     <published>2014-07-03T10:13:59.000Z</published>
-    <updated>2017-06-03T09:24:03.169Z</updated>
+    <updated>2017-08-17T11:17:08.409Z</updated>
     
     <content type="html"><![CDATA[<p>亲爱的小伙伴们，还在愁给EXCEL或者PPT内的XY散点图加文字标签吗？当你百度一下的时候，网上主要讲到两种方法：一、用宏（VBA编程）；二、用专业插件（XYChartLabeler下载地址见文末）。</p>
 <p>个人谈谈这两种方法的弊端吧，对于第一种，如果你是VB高手，那就十分方便，如果你是VB小白，那么也许你会选择第二种。第二种使用非常方便，但唯一的缺点此款插件只能在EXCEL内使用，不能用于幻灯片内；如果你是调研行业的小伙伴也许公司会要求PPT内的图表不能直接从EXCEL粘贴，要从PPT内直接插图表（这主要是方便客户提取或编辑数据）。苦于这种原因，那么你也许就会通过手动插入文本框自己一个个添加标签或者选择数据→添加→选择系列名称、X轴、Y轴，一个一个的添加。如下图所示：<br><img src="http://yhv5.com/uploads/2014/07/12.png" alt="1"></p>
@@ -795,7 +795,7 @@
     <link href="http://yhv5.com/spss_batch_tagging_1211.html"/>
     <id>http://yhv5.com/spss_batch_tagging_1211.html</id>
     <published>2014-07-01T06:30:42.000Z</published>
-    <updated>2017-06-03T09:24:03.168Z</updated>
+    <updated>2017-08-17T11:17:08.397Z</updated>
     
     <content type="html"><![CDATA[<p>最近因为合作方数据统计报表出的太频繁，少不了使用到SPSS，但每次处理问卷标签值赋值都有种崩溃的绝望，看着就眼晕，小伙伴们有木有！然而各位看客朋友的福音到了，小编特意将平生所学、所用”批量加注标签”的方式总结了一番，分享给各位看客朋友，需要能帮互大家提高工作效率，欢迎吐槽，请勿喷水~</p>
 <h3 id="第一部分——Excel内预处理"><a href="#第一部分——Excel内预处理" class="headerlink" title="第一部分——Excel内预处理"></a>第一部分——Excel内预处理</h3><p>一般调研问卷是以WORD或者EXCEL的文档形式保存，这主要是方便整理和可视化管理。因此首先可以将问卷中选项的数值和标签整理出来（当然问卷一般有不同的格式，可以根据问卷规律整理，blablabla，如果对EXCEL非常熟悉，可以直接跳楼到第二部分-SPSS）。</p>
@@ -844,7 +844,7 @@
     <link href="http://yhv5.com/aliqin_1189.html"/>
     <id>http://yhv5.com/aliqin_1189.html</id>
     <published>2014-06-21T14:53:14.000Z</published>
-    <updated>2017-06-03T09:24:03.166Z</updated>
+    <updated>2017-08-17T11:17:08.368Z</updated>
     
     <content type="html"><![CDATA[<p>话说，这都已经半个月前的事儿了，阿里、TX（JD）都在为筹办618活动大肆宣扬惠民政策，遇到这么好的事儿，或许你也没错过吧~</p>
 <p>当然这种互联网的活动也不是头一回了，就像小米F码一样，阿里这次来效仿了一个T码，具体活动可移步其<a href="http://aliqin.tmall.com/" target="_blank" rel="external"> 官网 </a>，活动期间使用这个T码可以用来购买阿里通信（虚拟运营商）170号卡，不过在头一个月前，要是你能预约，也就不用抢这个T码了，那时候小编没有这么好的运气遇上，这次正好赶上抢T码，抢了T码可以绑定一款手机，在6月18日的时候进行提前优惠选购亲心号卡和购买手机，也许大家看中的都不是神马手机之类的，只是对它的号卡感兴趣。不过这次惠民活动最早开始在一线和不多的二线城市进行，其他城市就要等候佳音了，当然也不是全国所有城市都发售的（因为阿里本次虚拟运营竞标，只获得全国不到40个地区和城市，苏宁竞标虚拟运营城市获得高达61个之多），具体的发行城市如下图:</p>
@@ -882,7 +882,7 @@
     <link href="http://yhv5.com/wonderful_tech_1173.html"/>
     <id>http://yhv5.com/wonderful_tech_1173.html</id>
     <published>2014-06-21T04:26:13.000Z</published>
-    <updated>2017-06-03T09:24:03.169Z</updated>
+    <updated>2017-08-17T11:17:08.408Z</updated>
     
     <content type="html"><![CDATA[<p>也许当你看到标题就已经想入非非了，是的，科技总会给人们带来无穷的新鲜感，让你欲罢无能~，下面就一起来看看这些创意吧！写作本文并不代表小编的主观态度，只是分享乐趣哈，请勿喷水，欢迎各种吐槽~</p>
 <p>哈尔滨一家以机器人为主题的餐厅里，煮水饺、煮面、炒菜、地面送餐、空中传菜、迎宾都由机器人来完成，18种长相各异、个头不等、讲着简单语言的机器人是这家餐厅的“主力员工”。有图有真相，见下图：</p>
@@ -912,7 +912,7 @@
     <link href="http://yhv5.com/to_be_an_ordinary_person_full_of_energy_1166.html"/>
     <id>http://yhv5.com/to_be_an_ordinary_person_full_of_energy_1166.html</id>
     <published>2014-06-18T07:49:24.000Z</published>
-    <updated>2017-06-03T09:24:03.168Z</updated>
+    <updated>2017-08-17T11:17:08.402Z</updated>
     
     <content type="html"><![CDATA[<p>前段时间出地铁正好遇到一群卖艺的小乐队，他们有自己的乐队名称（桶子鼓乐队），有自己的专辑出售（每张20元）。于是也加入人群欣赏了一会儿。临走之时还有一点小感触，本就打算写点什么，但却一直被耽搁。</p>
 <p>昨晚小罗罗突然说在地铁里遇到一枚帅哥弹琴卖艺，于是我们开始了一波的讨论。在小罗罗眼里，他始终对这类人群表示深深的不理解。而我却有着不一样的看法和理解。</p>
@@ -943,7 +943,7 @@
     <link href="http://yhv5.com/php_vendor_login_1155.html"/>
     <id>http://yhv5.com/php_vendor_login_1155.html</id>
     <published>2014-06-13T17:07:43.000Z</published>
-    <updated>2017-06-03T09:24:03.167Z</updated>
+    <updated>2017-08-17T11:17:08.390Z</updated>
     
     <content type="html"><![CDATA[<p>话说，这都是一年以前就想写的，一直都没想起这件事了，最近发现很多人都在做关于这个方面应用（虽然RR都黯然神伤了，陌陌已经整装待发了），但还是将自己的心得总结一下，分享给有需要的小伙伴们吧！其实也是比较简单的操作，老鸟可飞过，只为新手指路。</p>
 <h3 id="同步登录之QQ"><a href="#同步登录之QQ" class="headerlink" title="同步登录之QQ"></a>同步登录之QQ</h3><ul>
