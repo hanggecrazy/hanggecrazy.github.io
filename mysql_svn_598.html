@@ -97,17 +97,17 @@
 <meta property="og:url" content="http://yhv5.com/mysql_svn_598.html">
 <meta property="og:site_name" content="Crazy&#39;s Blog">
 <meta property="og:description" content="Windows下面的MYSQL同步（非主从线程同步机制）大家都知道MySQL的主从同步机制，原理就是通过修改MySQL配置文件my.ini(Linux下面是my.cnf)进行设置相应的选项即可，这样就简单实现了MySQL的主从同步，但这样操作有好处也有坏处，好处是：可以直接使用MySQL内部机制进行数据同步，减少繁琐的事件驱动；坏处是：应用不方便如果需要更改同步机制，需要修改配置文件并重启数据库（">
-<meta property="og:image" content="http://yhv5.com/uploads/2013/09/controller.jpg">
-<meta property="og:image" content="http://yhv5.com/uploads/2013/09/2.png">
-<meta property="og:image" content="http://yhv5.com/uploads/2013/09/3.png">
-<meta property="og:image" content="http://yhv5.com/uploads/2013/09/4.png">
-<meta property="og:image" content="http://yhv5.com/uploads/2013/09/5.png">
-<meta property="og:image" content="http://yhv5.com/uploads/2013/09/6.png">
-<meta property="og:updated_time" content="2017-08-17T11:17:08.388Z">
+<meta property="og:image" content="https://yhv5.com/uploads/2013/09/controller.jpg">
+<meta property="og:image" content="https://yhv5.com/uploads/2013/09/2.png">
+<meta property="og:image" content="https://yhv5.com/uploads/2013/09/3.png">
+<meta property="og:image" content="https://yhv5.com/uploads/2013/09/4.png">
+<meta property="og:image" content="https://yhv5.com/uploads/2013/09/5.png">
+<meta property="og:image" content="https://yhv5.com/uploads/2013/09/6.png">
+<meta property="og:updated_time" content="2017-09-16T09:31:39.541Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL同步机制以及SVN自动发布">
 <meta name="twitter:description" content="Windows下面的MYSQL同步（非主从线程同步机制）大家都知道MySQL的主从同步机制，原理就是通过修改MySQL配置文件my.ini(Linux下面是my.cnf)进行设置相应的选项即可，这样就简单实现了MySQL的主从同步，但这样操作有好处也有坏处，好处是：可以直接使用MySQL内部机制进行数据同步，减少繁琐的事件驱动；坏处是：应用不方便如果需要更改同步机制，需要修改配置文件并重启数据库（">
-<meta name="twitter:image" content="http://yhv5.com/uploads/2013/09/controller.jpg">
+<meta name="twitter:image" content="https://yhv5.com/uploads/2013/09/controller.jpg">
 
 
 
@@ -405,7 +405,7 @@
       
 
       
-        <h3 id="Windows下面的MYSQL同步（非主从线程同步机制）"><a href="#Windows下面的MYSQL同步（非主从线程同步机制）" class="headerlink" title="Windows下面的MYSQL同步（非主从线程同步机制）"></a>Windows下面的MYSQL同步（非主从线程同步机制）</h3><p>大家都知道MySQL的主从同步机制，原理就是通过修改MySQL配置文件my.ini(Linux下面是my.cnf)进行设置相应的选项即可，这样就简单实现了MySQL的主从同步，但这样操作有好处也有坏处，好处是：可以直接使用MySQL内部机制进行数据同步，减少繁琐的事件驱动；坏处是：应用不方便如果需要更改同步机制，需要修改配置文件并重启数据库（即不能热机切换配置），因此如果需要了解主从同步可以移步各大论坛或者求助Google，另外关于MySQL的内部同步机制可以移步 <a href="http://yhv5.com/mysql_master_slave_799.html">MySQL5.6主从配置和定时备份</a> 参考。</p>
+        <h3 id="Windows下面的MYSQL同步（非主从线程同步机制）"><a href="#Windows下面的MYSQL同步（非主从线程同步机制）" class="headerlink" title="Windows下面的MYSQL同步（非主从线程同步机制）"></a>Windows下面的MYSQL同步（非主从线程同步机制）</h3><p>大家都知道MySQL的主从同步机制，原理就是通过修改MySQL配置文件my.ini(Linux下面是my.cnf)进行设置相应的选项即可，这样就简单实现了MySQL的主从同步，但这样操作有好处也有坏处，好处是：可以直接使用MySQL内部机制进行数据同步，减少繁琐的事件驱动；坏处是：应用不方便如果需要更改同步机制，需要修改配置文件并重启数据库（即不能热机切换配置），因此如果需要了解主从同步可以移步各大论坛或者求助Google，另外关于MySQL的内部同步机制可以移步 <a href="https://yhv5.com/mysql_master_slave_799.html">MySQL5.6主从配置和定时备份</a> 参考。</p>
 <p>好了，了解了一点MySQL的同步机制，众所周知的是大家都知道Linux下面有crontab定时任务，这点可以方便我们定时执行某一些特定的任务。那相对应的Windows机器呢？它是否也有自己的定时任务处理呢？答案是有的。现在就让我们在Windows机器上来一起设置一个MySQL的同步脚本。</p>
 <p>脚本编写：首先我写了两个简单的脚本文件（文末附上链接，后缀是.bat文件,根据自己的需求更改文件）一个是自动同步数据库脚本（修改完配置参数，加入定时任务就能自动运行），另一个是手工同步脚本（即自己输入数据库信息并手动同步），脚本文件都很简单（里面有具体的命令解释说明，相信大家都能看明白），步骤大致分为以下六步：</p>
 <ul>
@@ -425,25 +425,25 @@
 <p>完成上述六步即完成了整个同步脚本。</p>
 <p>好了，做到到这里时MySQL的同步机制并没有完成，手工同步则可以直接运行脚本，这里可以略过，现在只介绍自动同步的后续工作。</p>
 <p>设置定时任务：Windows机器大家都常用，按下win键（即Windows图徽，左Crtl右边这个键），点击“控制面板”，如下图：</p>
-<p><img src="http://yhv5.com/uploads/2013/09/controller.jpg" alt="222"></p>
+<p><img src="https://yhv5.com/uploads/2013/09/controller.jpg" alt="222"></p>
 <p>在弹出的窗口中右上方选择“查看方式”为小图标，继而选择里面的“管理工具”，如下图所示：</p>
-<p><img src="http://yhv5.com/uploads/2013/09/2.png" alt="2"></p>
+<p><img src="https://yhv5.com/uploads/2013/09/2.png" alt="2"></p>
 <p>点击“管理工具”选择“任务计划程序”快捷图标进入任务计划控制台，在左侧的“任务计划程序库”右键选择“创建任务”，选择顶部菜单栏“常规”选项卡并如下图填写：</p>
-<p><img src="http://yhv5.com/uploads/2013/09/3.png" alt="3"></p>
+<p><img src="https://yhv5.com/uploads/2013/09/3.png" alt="3"></p>
 <p>选择顶部菜单栏“触发器”选项卡如下图填写：（我这里一分钟执行同步一次）</p>
-<p><img src="http://yhv5.com/uploads/2013/09/4.png" alt="4"></p>
+<p><img src="https://yhv5.com/uploads/2013/09/4.png" alt="4"></p>
 <p>点击确定，在选择顶部菜单栏“操作”选项卡，如下图填写：</p>
-<p><img src="http://yhv5.com/uploads/2013/09/5.png" alt="5"></p>
+<p><img src="https://yhv5.com/uploads/2013/09/5.png" alt="5"></p>
 <p>到这里为止，定时任务基本完成，如有容错机制，可以将顶部菜单栏后续的几个选项卡中设置调整为自己的模式即可。</p>
 <p>创建成功如下图：</p>
-<p><img src="http://yhv5.com/uploads/2013/09/6.png" alt="6"></p>
+<p><img src="https://yhv5.com/uploads/2013/09/6.png" alt="6"></p>
 <p>Tips：到这里，这个任务为挂起状态，我们如果需要关闭这个页面会报错，因此需要将这个任务结束才能关闭。</p>
 <h3 id="Linux主机上的SVN自动发布"><a href="#Linux主机上的SVN自动发布" class="headerlink" title="Linux主机上的SVN自动发布"></a>Linux主机上的SVN自动发布</h3><p>在linux主机上SVN仓库中修改hooks目录下面的post-commit.tmp钩子文件 并重命名为post-commit文件</p>
 <p>可以复制下面代码至文件中并修改相应程序路径：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">REPOS=<span class="string">"<span class="variable">$1</span>"</span>                          <span class="comment">#版本库</span></div><div class="line"></div><div class="line">REV=<span class="string">"<span class="variable">$2</span>"</span>                            <span class="comment">#版本号</span></div><div class="line"></div><div class="line"><span class="built_in">export</span> LANG=zh_CN.UTF-8             <span class="comment">#自动同步脚本防止乱码</span></div><div class="line"></div><div class="line">SVN=/usr/<span class="built_in">local</span>/svn/bin/svn          <span class="comment">#SVN程序路径，这里根据个人安装路径修改</span></div><div class="line"></div><div class="line">WEB=/usr/<span class="built_in">local</span>/web/hanggecrazy      <span class="comment">#SVN程序发布位置（项目路径），这里根据个人安装路径修改</span></div><div class="line"></div><div class="line"><span class="built_in">echo</span> `date`</div><div class="line"></div><div class="line"><span class="built_in">echo</span> <span class="string">"用户"</span>:`whoami`<span class="string">" 将版本库："</span><span class="variable">$REPOS</span><span class="string">" 更新至 "</span><span class="variable">$REV</span><span class="string">" 版本号"</span> &gt;&gt; /date1/logs/svn_hook.log   <span class="comment">#注:log文件路径，用于记录svn更新记录</span></div><div class="line"></div><div class="line"><span class="variable">$SVN</span> update --username ********** --password *********** <span class="variable">$WEB</span>  &gt;&gt; /date1/logs/svn_hook.log</div></pre></td></tr></table></figure></p>
 <p>#同步代码从SVN服务器到WEB服务器<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/bin/rsync -vaztpH  --timeout=60  <span class="variable">$WEB</span> *******@192.168.1.100:/www/hanggecrazy</div></pre></td></tr></table></figure></p>
 <p>但是最后同步操作还没有绕过不用输入用户和口令验证，这点待完善。。。</p>
 <p>分享一点小知识，希望大家了解一些。。。。</p>
-<p><a href="http://yhv5.com/software/SQL_auto_mallay.rar">SQL_auto_mallay</a></p>
+<p><a href="https://yhv5.com/software/SQL_auto_mallay.rar">SQL_auto_mallay</a></p>
 <p>(The End)</p>
 
       

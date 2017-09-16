@@ -97,17 +97,17 @@
 <meta property="og:url" content="http://yhv5.com/cakephp_sae_508.html">
 <meta property="og:site_name" content="Crazy&#39;s Blog">
 <meta property="og:description" content="由于SAE平台的特殊，为了网站的安全性，它不支持本地IO操作，因此这也使得对于一些常用的缓存机制都不能使用，必要的时候只能使用其提供的服务充当，当然这也是SAE的赚钱之道。 CakePhp是比较成熟的轻量级框架，由于CakePhp原生程序不能在SAE上面直接运行，同时SAE也介绍了一些禁用的PHP类库函数，对于CakePhp底层框架依赖的这些函数就不能正常使用，为此一些大大就自行开源了支持SAE环">
-<meta property="og:image" content="http://yhv5.com/uploads/2013/05/1.png">
-<meta property="og:image" content="http://yhv5.com/uploads/2013/05/2.png">
-<meta property="og:image" content="http://yhv5.com/uploads/2013/05/3.png">
-<meta property="og:image" content="http://yhv5.com/uploads/2013/05/4.png">
-<meta property="og:image" content="http://yhv5.com/uploads/2013/05/5.png">
-<meta property="og:image" content="http://yhv5.com/uploads/2013/05/6.png">
-<meta property="og:updated_time" content="2017-08-17T11:17:08.370Z">
+<meta property="og:image" content="https://yhv5.com/uploads/2013/05/1.png">
+<meta property="og:image" content="https://yhv5.com/uploads/2013/05/2.png">
+<meta property="og:image" content="https://yhv5.com/uploads/2013/05/3.png">
+<meta property="og:image" content="https://yhv5.com/uploads/2013/05/4.png">
+<meta property="og:image" content="https://yhv5.com/uploads/2013/05/5.png">
+<meta property="og:image" content="https://yhv5.com/uploads/2013/05/6.png">
+<meta property="og:updated_time" content="2017-09-16T09:31:39.538Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CakePhp在新浪SAE上搭建过程">
 <meta name="twitter:description" content="由于SAE平台的特殊，为了网站的安全性，它不支持本地IO操作，因此这也使得对于一些常用的缓存机制都不能使用，必要的时候只能使用其提供的服务充当，当然这也是SAE的赚钱之道。 CakePhp是比较成熟的轻量级框架，由于CakePhp原生程序不能在SAE上面直接运行，同时SAE也介绍了一些禁用的PHP类库函数，对于CakePhp底层框架依赖的这些函数就不能正常使用，为此一些大大就自行开源了支持SAE环">
-<meta name="twitter:image" content="http://yhv5.com/uploads/2013/05/1.png">
+<meta name="twitter:image" content="https://yhv5.com/uploads/2013/05/1.png">
 
 
 
@@ -408,20 +408,20 @@
         <p>由于SAE平台的特殊，为了网站的安全性，它不支持本地IO操作，因此这也使得对于一些常用的缓存机制都不能使用，必要的时候只能使用其提供的服务充当，当然这也是SAE的赚钱之道。</p>
 <p>CakePhp是比较成熟的轻量级框架，由于CakePhp原生程序不能在SAE上面直接运行，同时SAE也介绍了一些禁用的PHP类库函数，对于CakePhp底层框架依赖的这些函数就不能正常使用，为此一些大大就自行开源了支持SAE环境的CakePhp框架，虽然这其中只是更改底层的一些禁用函数和缓存引擎，但是也方便了很多的程序猿使用CakePhp在SAE上建站。</p>
 <p>对于使用SAE，我也才了解一段时间，不过它本身的稳定性还是值得屈指的，CakePhp原生使用写文件的方式来存储cache，而在SAE上面则更改这种方式为Memcache（MC）的方式存储，在SAE里面MC服务是收费的，另外在我们常用的上传文件功能，在SAE里面显得不那么自由了，它有好几种方式存储，当然我还是采用的Storage，Storage是SAE为开发者提供的分布式文件存储服务，用来存放用户的持久化存储的文件。具体的应用可以在自己的管理后台看到。首先使用SAE管理自己的代码，通常有两种方法，一种是常用的程序开发模式版本控制器（SVN），另外一种是它支持ZIP格式的压缩包上传到服务器的方式，这两种方式虽然后者方便，但是不利于管理，以至于在造成错误后无法回滚代码，所以还是推荐使用SVN方式，在使用SVN之前需要为网站创建二级域名和应用名，下面的SVN会用到。在后台左侧选择“应用设置”创建自己的二级域名和应用名，这个应用名同时是SVN项目名也是数据库名（具体后面会说到），然后点击左侧的 “代码管理”，这时你只需要创建一个版本它即为你生成一个SVN地址如下图：</p>
-<p><img src="http://yhv5.com/uploads/2013/05/1.png" alt="1"></p>
+<p><img src="https://yhv5.com/uploads/2013/05/1.png" alt="1"></p>
 <p>通过生成的SVN地址可以将自己的代码提交到服务器上面，刚才讲到了另外的一种方式提交代码，如上图中第2点后面操作部分“上传代码包”（只支持ZIP格式），上传完自动按照压缩包格式解压到服务器。待上传完毕代码之后即可在操作部分点击“编辑代码”，进入文件在线编辑工作区，在那里修改过的文件都会直接记录到SVN中。<br>其次是数据库的使用，在管理后台左侧选择MySQL，则可以对数据库进行配置，SAE和其他空间运营商有点不一样，它提供的数据库和网站应用名是相关联的，如创建了一个名为house的应用，则它会给你生成一个app_house的数据库，你只能对这个库进行操作，不能再创建数据库，如果需要创建数据库，只能从新定义应用名让其分配数据库进行操作，这点本人非常的不习惯，如下:</p>
-<p><img src="http://yhv5.com/uploads/2013/05/2.png" alt="2"></p>
+<p><img src="https://yhv5.com/uploads/2013/05/2.png" alt="2"></p>
 <p>点击上面的管理MySQL，则进入分配的数据库（和PhpMyAdmin一致），如下图：</p>
-<p><img src="http://yhv5.com/uploads/2013/05/3.png" alt="3"></p>
+<p><img src="https://yhv5.com/uploads/2013/05/3.png" alt="3"></p>
 <p>这也就是能对数据库进行管理的唯一入口了。这里需要说明一点，CakePhp程序中的database.php文件需要用SAE自己的数据库名常量并实例化数据库。数据库服务器上面截图处可以看到,直接上图：</p>
-<p><img src="http://yhv5.com/uploads/2013/05/4.png" alt="4"></p>
+<p><img src="https://yhv5.com/uploads/2013/05/4.png" alt="4"></p>
 <p>上面介绍在SAE上运行的CakePhp更改了缓存引擎为MC因此这里需要将MC服务开启，点击管理后台左侧的Memcache设置自己业务的配额激活即可，如下图:</p>
-<p><img src="http://yhv5.com/uploads/2013/05/5.png" alt="5"></p>
+<p><img src="https://yhv5.com/uploads/2013/05/5.png" alt="5"></p>
 <p>另外使用到的文件上传服务是Storage，SAE默认分配的空间为10G大小，这里只需要创建自己的domain文件夹就行了，权限可以自行设置（访问权限和防盗链），这里我创建了一个图片的domain，用来管理上传的图片和文件，废话少说直接上图:</p>
-<p><img src="http://yhv5.com/uploads/2013/05/6.png" alt="6"></p>
+<p><img src="https://yhv5.com/uploads/2013/05/6.png" alt="6"></p>
 <p>具体的文件上传的代码非常简单，直接上代码：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$sae = <span class="keyword">new</span> SaeStorage();</div><div class="line">$sae-&gt;upload( <span class="string">'domain名'</span>,<span class="string">'最终文件名'</span>,<span class="string">'源文件名'</span>);</div></pre></td></tr></table></figure></p>
 <p>调用完上传函数返回的就是该图片在服务器的路径了，操作非常简单，获取图片也很简单:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$sae-&gt;getUrl(<span class="string">'domain名'</span>,<span class="string">'最终文件名'</span>);</div></pre></td></tr></table></figure></p>
-<p>操作比php的图片上传更简单。最后还是提供一下MC引擎的CakePhp核心lib包和重定向文件config.yaml下载地址附后。<br>cake_lib下载地址:  <a href="http://yhv5.com/software/cakelib2.1.3">cake_lib_2.1.3</a><br>重定向文件下载地址：<a href="http://yhv5.com/software/config.yaml">config.yaml</a></p>
+<p>操作比php的图片上传更简单。最后还是提供一下MC引擎的CakePhp核心lib包和重定向文件config.yaml下载地址附后。<br>cake_lib下载地址:  <a href="https://yhv5.com/software/cakelib2.1.3">cake_lib_2.1.3</a><br>重定向文件下载地址：<a href="https://yhv5.com/software/config.yaml">config.yaml</a></p>
 <p>(The End)</p>
 
       

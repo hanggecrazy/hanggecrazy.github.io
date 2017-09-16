@@ -97,12 +97,12 @@
 <meta property="og:url" content="http://yhv5.com/mysql_efficient_2_1260.html">
 <meta property="og:site_name" content="Crazy&#39;s Blog">
 <meta property="og:description" content="话说上一篇 MySQL高性能分析一 写于半年以前了，现在继续聊聊下一部分-索引类型的相关知识。 在写作本文之前有必要说明一下索引的优缺点，使用索引本身是为了解决问题，但是如果使用者滥用索引或者使用不当，索引也会让你付出惨痛的代价，因此我们有必要合理正确的使用索引，来解决遇到的问题，而不是带来新的问题。简单的说使用索引可以帮助我们：  索引大大减少了服务器需要扫描的数据量；  索引可以帮助服务器避免">
-<meta property="og:image" content="http://yhv5.com/uploads/2014/07/1.jpg">
-<meta property="og:updated_time" content="2017-08-17T11:17:08.384Z">
+<meta property="og:image" content="https://yhv5.com/uploads/2014/07/1.jpg">
+<meta property="og:updated_time" content="2017-09-16T09:31:39.540Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL之高性能分析二">
 <meta name="twitter:description" content="话说上一篇 MySQL高性能分析一 写于半年以前了，现在继续聊聊下一部分-索引类型的相关知识。 在写作本文之前有必要说明一下索引的优缺点，使用索引本身是为了解决问题，但是如果使用者滥用索引或者使用不当，索引也会让你付出惨痛的代价，因此我们有必要合理正确的使用索引，来解决遇到的问题，而不是带来新的问题。简单的说使用索引可以帮助我们：  索引大大减少了服务器需要扫描的数据量；  索引可以帮助服务器避免">
-<meta name="twitter:image" content="http://yhv5.com/uploads/2014/07/1.jpg">
+<meta name="twitter:image" content="https://yhv5.com/uploads/2014/07/1.jpg">
 
 
 
@@ -400,7 +400,7 @@
       
 
       
-        <p>话说上一篇 <a href="http://yhv5.com/mysql_efficient_693.html">MySQL高性能分析一</a> 写于半年以前了，现在继续聊聊下一部分-索引类型的相关知识。</p>
+        <p>话说上一篇 <a href="https://yhv5.com/mysql_efficient_693.html">MySQL高性能分析一</a> 写于半年以前了，现在继续聊聊下一部分-索引类型的相关知识。</p>
 <p>在写作本文之前有必要说明一下索引的优缺点，使用索引本身是为了解决问题，但是如果使用者滥用索引或者使用不当，索引也会让你付出惨痛的代价，因此我们有必要合理正确的使用索引，来解决遇到的问题，而不是带来新的问题。简单的说使用索引可以帮助我们：</p>
 <ul>
 <li><p>索引大大减少了服务器需要扫描的数据量；</p>
@@ -412,7 +412,7 @@
 </ul>
 <p>本文主要介绍关于索引的类型，索引可分为：B-Tree、哈希索引（hash index）、空间数据索引（R-Tree）、全文索引、其他索引类型。</p>
 <h4 id="B-Tree"><a href="#B-Tree" class="headerlink" title="B-Tree"></a>B-Tree</h4><p>如果在没有指定索引类型的情况下，多数都是指B-Tree索引（实际情况下是使用的B+Tree），不同的存储引擎之间B-Tree性能也是各有不同，如MyISAM使用的前缀压缩技术使得索引变小，但是InnoDB则按照原数据格式进行存储，再如MyISAM索引通过数据的物理位置引用被索引的行，而InnoDB则根据主键引用被索引的行。如下图所示：</p>
-<p><img src="http://yhv5.com/uploads/2014/07/1.jpg" alt="1"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/1.jpg" alt="1"></p>
 <p>由上图可知，B-Tree对索引是按照顺序组织数据存储的，所以很适合查找范围数据，例如一个基于文本域的索引树上，按照字母顺序传递连续的值进行查找非常适合，所以像查找以某个字母开头的方式效率非常高。通常这种B-Tree索引有如下六种查询方式（这里主要介绍联合索引的形式）：</p>
 <ul>
 <li><p>全值匹配：和索引中的所有列进行匹配，联合索引或者单列索引；</p>

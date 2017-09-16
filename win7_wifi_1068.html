@@ -97,15 +97,15 @@
 <meta property="og:url" content="http://yhv5.com/win7_wifi_1068.html">
 <meta property="og:site_name" content="Crazy&#39;s Blog">
 <meta property="og:description" content="以前在学校的时候，为了手机也能用无线网，因此自己就开始捣搞在自己的机器上面开一个热点给手机使用，那时候记得自己还专门去下载了一个开启WiFi的软件来创建这个热点，不过最近由于公司的WiFi网络实在不稳定可能是自己的手机信号本身就不好的原因（但感觉公司的WiFi是移动型的），因此自己又想在自己电脑上面创建一个热点，但是这回就没有这么麻烦了，无需任何软件win7系统本身就可以创建虚拟的WiFi热点，具">
-<meta property="og:image" content="http://yhv5.com/uploads/2014/05/openwifi.jpg">
-<meta property="og:image" content="http://yhv5.com/uploads/2014/05/wifi.jpg">
-<meta property="og:image" content="http://yhv5.com/uploads/2014/05/select.jpg">
-<meta property="og:image" content="http://yhv5.com/uploads/2014/05/success.jpg">
-<meta property="og:updated_time" content="2017-08-17T11:17:08.407Z">
+<meta property="og:image" content="https://yhv5.com/uploads/2014/05/openwifi.jpg">
+<meta property="og:image" content="https://yhv5.com/uploads/2014/05/wifi.jpg">
+<meta property="og:image" content="https://yhv5.com/uploads/2014/05/select.jpg">
+<meta property="og:image" content="https://yhv5.com/uploads/2014/05/success.jpg">
+<meta property="og:updated_time" content="2017-09-16T09:31:39.546Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Win7笔记本虚拟WiFi热点">
 <meta name="twitter:description" content="以前在学校的时候，为了手机也能用无线网，因此自己就开始捣搞在自己的机器上面开一个热点给手机使用，那时候记得自己还专门去下载了一个开启WiFi的软件来创建这个热点，不过最近由于公司的WiFi网络实在不稳定可能是自己的手机信号本身就不好的原因（但感觉公司的WiFi是移动型的），因此自己又想在自己电脑上面创建一个热点，但是这回就没有这么麻烦了，无需任何软件win7系统本身就可以创建虚拟的WiFi热点，具">
-<meta name="twitter:image" content="http://yhv5.com/uploads/2014/05/openwifi.jpg">
+<meta name="twitter:image" content="https://yhv5.com/uploads/2014/05/openwifi.jpg">
 
 
 
@@ -411,19 +411,19 @@
 </li>
 </ul>
 <p>比如netsh wlan set hostednetwork mode=allow ssid=hanggecrazy key=hanggecrazy（其中mode可以设置热点的开启allow和禁用disallow）回车之后如下图则创建成功。</p>
-<p><img src="http://yhv5.com/uploads/2014/05/openwifi.jpg" alt="openwifi"></p>
+<p><img src="https://yhv5.com/uploads/2014/05/openwifi.jpg" alt="openwifi"></p>
 <ul>
 <li>运行成功后，打开网络和共享中心，点击左侧更改适配器设置。进入适配器设置就会发现多出了一个网卡为“Microsoft Virtual WiFi Miniport Adapter”的无线网络连接2并将其重命名（理论上面任意名字都行）。若没有，则尝试更新无线网卡驱动。如下图：</li>
 </ul>
-<p><img src="http://yhv5.com/uploads/2014/05/wifi.jpg" alt="wifi"></p>
+<p><img src="https://yhv5.com/uploads/2014/05/wifi.jpg" alt="wifi"></p>
 <ul>
 <li>选择一个需要共享的适配器（网络已连接）并右键单击选择“属性”，在弹出的对话框顶部选择“共享”选项卡，勾选上第一个选项，并选择，刚才创建的热点适配器，如下图</li>
 </ul>
-<p><img src="http://yhv5.com/uploads/2014/05/select.jpg" alt="select"></p>
+<p><img src="https://yhv5.com/uploads/2014/05/select.jpg" alt="select"></p>
 <ul>
 <li>确定之后，提供共享的网卡图标旁会出现“共享的”字样，表示该网络已共享至新创建的热点，然后回到DOS界面继续输入命令开启热点服务：netsh wlan start hostednetwork，按回车键运行。执行成功如下图所示：</li>
 </ul>
-<p><img src="http://yhv5.com/uploads/2014/05/success.jpg" alt="success"></p>
+<p><img src="https://yhv5.com/uploads/2014/05/success.jpg" alt="success"></p>
 <ul>
 <li>最后，新创建的热点WiFi红叉消失，WiFi基站已组建好并启动，用支持WiFi的设备搜索到自己建立的无线网络（如上面提到的hangecrazy）,输入自己设置的密码（如上面提到的hanggecrazy），即可使用其他设备连接WiFi热点上网了。</li>
 </ul>

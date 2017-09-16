@@ -97,12 +97,12 @@
 <meta property="og:url" content="http://yhv5.com/mystat_1575.html">
 <meta property="og:site_name" content="Crazy&#39;s Blog">
 <meta property="og:description" content="说起这款mystat，其实它就是一个Perl脚本，但是用来监测mysql还是足够了，下面我们来介绍一下这款利器。 因为是perl脚本，所以首先需要机器支持Perl，如果你的机器没有安装那么可以直接执行yum install perl，它会帮你安装各种Perl的依赖lib，如果你喜欢编译安装，那么可以去 perl官方(http://www.perl.org/get.html) 下载编译安装，具体编译">
-<meta property="og:image" content="http://yhv5.com/uploads/2014/08/mystat.jpg">
-<meta property="og:updated_time" content="2017-08-17T11:17:08.389Z">
+<meta property="og:image" content="https://yhv5.com/uploads/2014/08/mystat.jpg">
+<meta property="og:updated_time" content="2017-09-16T09:31:39.542Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mystat 数据库监测">
 <meta name="twitter:description" content="说起这款mystat，其实它就是一个Perl脚本，但是用来监测mysql还是足够了，下面我们来介绍一下这款利器。 因为是perl脚本，所以首先需要机器支持Perl，如果你的机器没有安装那么可以直接执行yum install perl，它会帮你安装各种Perl的依赖lib，如果你喜欢编译安装，那么可以去 perl官方(http://www.perl.org/get.html) 下载编译安装，具体编译">
-<meta name="twitter:image" content="http://yhv5.com/uploads/2014/08/mystat.jpg">
+<meta name="twitter:image" content="https://yhv5.com/uploads/2014/08/mystat.jpg">
 
 
 
@@ -405,10 +405,10 @@
 <h3 id="安装DBD-mysql"><a href="#安装DBD-mysql" class="headerlink" title="安装DBD-mysql"></a>安装DBD-mysql</h3><p>具体可以到官方(<a href="http://search.cpan.org/~capttofu/DBD-mysql-4.020/" target="_blank" rel="external">http://search.cpan.org/~capttofu/DBD-mysql-4.020/</a>) 选择版本下载，我这里选择的是截止目前为止的最高版本DBD-mysql-4.020，好了下载我们一如既往的编译安装</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">wget http://search.cpan.org/CPAN/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.020.tar.gz</div><div class="line">tar -zxvf DBD-mysql-4.011.tar.gz</div><div class="line"><span class="built_in">cd</span> DBD-mysql-4.011</div><div class="line">perl Makefile.PL --mysql_config=/usr/<span class="built_in">local</span>/mysql/bin/mysql_config</div><div class="line">make</div><div class="line">make install</div></pre></td></tr></table></figure>
 <p>安装完成之后，我们就可以去下载mystat脚本了，可以到本文末下载或者去作者博客(<a href="http://www.penglixun.com/" target="_blank" rel="external">http://www.penglixun.com/</a>) 站下载，下载好脚本到我们的服务器上即可运行它,执行脚本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./mystat.pl -hlocalhost -uusername -ppassword</div></pre></td></tr></table></figure></p>
-<p>结果如下图：<img src="http://yhv5.com/uploads/2014/08/mystat.jpg" alt="mystat"></p>
-<p><a href="http://yhv5.com/software/DBD-mysql-4.020.tar.gz">DBD-mysql-4.020.tar.gz</a> 下载</p>
-<p><a href="http://yhv5.com/software/DBI-1.631.tar.gz">DBI-1.631.tar.gz</a> 下载</p>
-<p><a href="http://yhv5.com/software/mystat.pl">mystat.pl</a> 下载</p>
+<p>结果如下图：<img src="https://yhv5.com/uploads/2014/08/mystat.jpg" alt="mystat"></p>
+<p><a href="https://yhv5.com/software/DBD-mysql-4.020.tar.gz">DBD-mysql-4.020.tar.gz</a> 下载</p>
+<p><a href="https://yhv5.com/software/DBI-1.631.tar.gz">DBI-1.631.tar.gz</a> 下载</p>
+<p><a href="https://yhv5.com/software/mystat.pl">mystat.pl</a> 下载</p>
 <p>(The End)</p>
 
       

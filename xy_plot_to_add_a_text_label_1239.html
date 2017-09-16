@@ -97,17 +97,17 @@
 <meta property="og:url" content="http://yhv5.com/xy_plot_to_add_a_text_label_1239.html">
 <meta property="og:site_name" content="Crazy&#39;s Blog">
 <meta property="og:description" content="亲爱的小伙伴们，还在愁给EXCEL或者PPT内的XY散点图加文字标签吗？当你百度一下的时候，网上主要讲到两种方法：一、用宏（VBA编程）；二、用专业插件（XYChartLabeler下载地址见文末）。 个人谈谈这两种方法的弊端吧，对于第一种，如果你是VB高手，那就十分方便，如果你是VB小白，那么也许你会选择第二种。第二种使用非常方便，但唯一的缺点此款插件只能在EXCEL内使用，不能用于幻灯片内；如">
-<meta property="og:image" content="http://yhv5.com/uploads/2014/07/12.png">
-<meta property="og:image" content="http://yhv5.com/uploads/2014/07/21.png">
-<meta property="og:image" content="http://yhv5.com/uploads/2014/07/31.png">
-<meta property="og:image" content="http://yhv5.com/uploads/2014/07/61.png">
-<meta property="og:image" content="http://yhv5.com/uploads/2014/07/71.png">
-<meta property="og:image" content="http://yhv5.com/uploads/2014/07/81.png">
-<meta property="og:updated_time" content="2017-08-17T11:17:08.409Z">
+<meta property="og:image" content="https://yhv5.com/uploads/2014/07/12.png">
+<meta property="og:image" content="https://yhv5.com/uploads/2014/07/21.png">
+<meta property="og:image" content="https://yhv5.com/uploads/2014/07/31.png">
+<meta property="og:image" content="https://yhv5.com/uploads/2014/07/61.png">
+<meta property="og:image" content="https://yhv5.com/uploads/2014/07/71.png">
+<meta property="og:image" content="https://yhv5.com/uploads/2014/07/81.png">
+<meta property="og:updated_time" content="2017-09-16T09:31:39.547Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="XY散点图添加文字标签">
 <meta name="twitter:description" content="亲爱的小伙伴们，还在愁给EXCEL或者PPT内的XY散点图加文字标签吗？当你百度一下的时候，网上主要讲到两种方法：一、用宏（VBA编程）；二、用专业插件（XYChartLabeler下载地址见文末）。 个人谈谈这两种方法的弊端吧，对于第一种，如果你是VB高手，那就十分方便，如果你是VB小白，那么也许你会选择第二种。第二种使用非常方便，但唯一的缺点此款插件只能在EXCEL内使用，不能用于幻灯片内；如">
-<meta name="twitter:image" content="http://yhv5.com/uploads/2014/07/12.png">
+<meta name="twitter:image" content="https://yhv5.com/uploads/2014/07/12.png">
 
 
 
@@ -406,19 +406,19 @@
 
       
         <p>亲爱的小伙伴们，还在愁给EXCEL或者PPT内的XY散点图加文字标签吗？当你百度一下的时候，网上主要讲到两种方法：一、用宏（VBA编程）；二、用专业插件（XYChartLabeler下载地址见文末）。</p>
-<p>个人谈谈这两种方法的弊端吧，对于第一种，如果你是VB高手，那就十分方便，如果你是VB小白，那么也许你会选择第二种。第二种使用非常方便，但唯一的缺点此款插件只能在EXCEL内使用，不能用于幻灯片内；如果你是调研行业的小伙伴也许公司会要求PPT内的图表不能直接从EXCEL粘贴，要从PPT内直接插图表（这主要是方便客户提取或编辑数据）。苦于这种原因，那么你也许就会通过手动插入文本框自己一个个添加标签或者选择数据→添加→选择系列名称、X轴、Y轴，一个一个的添加。如下图所示：<br><img src="http://yhv5.com/uploads/2014/07/12.png" alt="1"></p>
+<p>个人谈谈这两种方法的弊端吧，对于第一种，如果你是VB高手，那就十分方便，如果你是VB小白，那么也许你会选择第二种。第二种使用非常方便，但唯一的缺点此款插件只能在EXCEL内使用，不能用于幻灯片内；如果你是调研行业的小伙伴也许公司会要求PPT内的图表不能直接从EXCEL粘贴，要从PPT内直接插图表（这主要是方便客户提取或编辑数据）。苦于这种原因，那么你也许就会通过手动插入文本框自己一个个添加标签或者选择数据→添加→选择系列名称、X轴、Y轴，一个一个的添加。如下图所示：<br><img src="https://yhv5.com/uploads/2014/07/12.png" alt="1"></p>
 <p>举例数据中共8行，相当于需要重复添加八次。数据添加成功后，我们再添加数据标签，并在设置数据标签格式内勾选系列名称，最终成功添加。</p>
 <p>由于小编就属于VB小白，并且也属于不能从EXCEL直接粘图表的一员，因此在这向小伙伴们分享一种简便的方式，高手可以直接飘过。方法很简单，我们只需要在数据上换换格式就OK了。正常做XY散点图的数据源格式如下图：</p>
-<p><img src="http://yhv5.com/uploads/2014/07/21.png" alt="2"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/21.png" alt="2"></p>
 <p>我们仅需要将数据格式转换成如下的一个矩阵格式，第一行实际上就是X轴，第二行到最后一行实际上就都是Y轴了。然后呢我们只需要选中全部数据→插入→散点图。结果图表如下：</p>
-<p><img src="http://yhv5.com/uploads/2014/07/31.png" alt="3"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/31.png" alt="3"></p>
 <p>最后一步就是选中数据点→添加数据标签→设置数据标签格式→勾选系列名称（结果图如下）</p>
-<p><img src="http://yhv5.com/uploads/2014/07/61.png" alt="6"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/61.png" alt="6"></p>
 <p>当然了，这种方法也还是有缺陷的，大家应该很快意识到了，每个系列点都需要添加标签设置标签。但是在应用到幻灯片中有一定的帮助，当用在气泡图的时候就显得很快捷了。所以大家可以结合所需，灵活运用各种方法。</p>
-<p>顺便附上气泡图一例（上图为数据源格式，下图为成功的气泡图）<br><img src="http://yhv5.com/uploads/2014/07/71.png" alt="7"><br><img src="http://yhv5.com/uploads/2014/07/81.png" alt="8"></p>
+<p>顺便附上气泡图一例（上图为数据源格式，下图为成功的气泡图）<br><img src="https://yhv5.com/uploads/2014/07/71.png" alt="7"><br><img src="https://yhv5.com/uploads/2014/07/81.png" alt="8"></p>
 <p>可能亲会想说，调整数据格式是不是太麻烦了呀？其实呢如果数据量少的话当然可以手动调整，如果数据量多，或者要批量处理同样的数据，我们就可以借助EXCEL技巧和IF公式改变数据格式，但考虑这种情况不多见，此处就不多啰嗦了。最最方便的方式当然就是把模板保存好，下次使用就可以直接提取，哈哈。</p>
 <p>其实还有另外一种小技巧了呀，当做完XY散点图后，添加数据标签，然后直接将数据标签修改成文字就OK了。是不是很简单？</p>
-<p>最后附上工具下载地址<a href="http://yhv5.com/software/XYChartLabeler.rar"> XYChartLabeler </a></p>
+<p>最后附上工具下载地址<a href="https://yhv5.com/software/XYChartLabeler.rar"> XYChartLabeler </a></p>
 <p>(The End)</p>
 
       

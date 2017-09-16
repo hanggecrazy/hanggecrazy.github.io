@@ -201,15 +201,15 @@
 <p>对于64位CentOS，执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ wget http://acelnmp.googlecode.com/files/pptpd-1.3.4-1.rhel5.1.x86_64.rpm</div><div class="line">$ rpm -ivh pptpd-1.3.4-1.rhel5.1.x86_64.rpm</div></pre></td></tr></table></figure></p>
 <p>安装pptp过程中可能会出现异常，常见的是pptp于ppp版本不兼容，这样就只能选择合适的ppp版本或者pptd 版本来相互兼容了。</p>
 <h3 id="修改配置信息"><a href="#修改配置信息" class="headerlink" title="修改配置信息"></a>修改配置信息</h3><p>首先修改ppp配置信息，它在/etc/ppp/options.pptpd<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cp -r /etc/ppp/options.pptpd /etc/ppp/options.pptpd_bak</div><div class="line">$ vi /etc/ppp/options.pptpd</div></pre></td></tr></table></figure></p>
-<p>如下图：<br><img src="http://yhv5.com/uploads/2015/10/options.jpg" alt="options"><br>然后修改配置/etc/ppp/chap-secrets，这里面就是设置vpn账号和密码的文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cp -r /etc/ppp/chap-secrets /etc/ppp/chap-secrets_bak</div><div class="line">$ vi /etc/ppp/chap-secrets</div></pre></td></tr></table></figure></p>
-<p>其中格式：username pptpd password <em>**<br>//username是你的vpn帐号，password是你的vpn的密码，</em>表示对任何ip，记得不要丢了这个星号。如下图：<br><img src="http://yhv5.com/uploads/2015/10/secrets.jpg" alt="secrets"><br>接着需要修改pptp配置信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cp -r /etc/pptpd.conf /etc/pptpd.conf_bak</div><div class="line">$ vi /etc/pptpd.conf</div></pre></td></tr></table></figure></p>
-<p>修改内容如下图：<br><img src="http://yhv5.com/uploads/2015/10/pptpd.jpg" alt="pptpd"><br>另外还需要修改一个内核配置让其支持转发，否则是不能上网的。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ vi /sysctl.conf</div></pre></td></tr></table></figure></p>
-<p>修改内容如下图：<br><img src="http://yhv5.com/uploads/2015/10/sysctl.jpg" alt="sysctl"></p>
+<p>如下图：<br><img src="https://yhv5.com/uploads/2015/10/options.jpg" alt="options"><br>然后修改配置/etc/ppp/chap-secrets，这里面就是设置vpn账号和密码的文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cp -r /etc/ppp/chap-secrets /etc/ppp/chap-secrets_bak</div><div class="line">$ vi /etc/ppp/chap-secrets</div></pre></td></tr></table></figure></p>
+<p>其中格式：username pptpd password <em>**<br>//username是你的vpn帐号，password是你的vpn的密码，</em>表示对任何ip，记得不要丢了这个星号。如下图：<br><img src="https://yhv5.com/uploads/2015/10/secrets.jpg" alt="secrets"><br>接着需要修改pptp配置信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cp -r /etc/pptpd.conf /etc/pptpd.conf_bak</div><div class="line">$ vi /etc/pptpd.conf</div></pre></td></tr></table></figure></p>
+<p>修改内容如下图：<br><img src="https://yhv5.com/uploads/2015/10/pptpd.jpg" alt="pptpd"><br>另外还需要修改一个内核配置让其支持转发，否则是不能上网的。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ vi /sysctl.conf</div></pre></td></tr></table></figure></p>
+<p>修改内容如下图：<br><img src="https://yhv5.com/uploads/2015/10/sysctl.jpg" alt="sysctl"></p>
 <h3 id="启动pptp-和防火墙服务iptables"><a href="#启动pptp-和防火墙服务iptables" class="headerlink" title="启动pptp  和防火墙服务iptables"></a>启动pptp  和防火墙服务iptables</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ /sbin/service pptpd start</div></pre></td></tr></table></figure>
-<p>启动防火墙需要特别注意，我们上面指定了一个专用网络ip段，因此需要设置转发规则<br>如我的防火墙设置：<br><img src="http://yhv5.com/uploads/2015/10/iptables.jpg" alt="iptables"><br>将上面红色圈中的vpsip修改成自己的vps ip即可，如果vps有多个网卡就需要使用－o ethxx来指定可以上网的网卡,如上图最上面红色框中的2行中使用了－o 来指定网卡。<br>最好保存并重启防火墙。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ /sbin/service iptables start</div></pre></td></tr></table></figure></p>
+<p>启动防火墙需要特别注意，我们上面指定了一个专用网络ip段，因此需要设置转发规则<br>如我的防火墙设置：<br><img src="https://yhv5.com/uploads/2015/10/iptables.jpg" alt="iptables"><br>将上面红色圈中的vpsip修改成自己的vps ip即可，如果vps有多个网卡就需要使用－o ethxx来指定可以上网的网卡,如上图最上面红色框中的2行中使用了－o 来指定网卡。<br>最好保存并重启防火墙。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ /sbin/service iptables start</div></pre></td></tr></table></figure></p>
 <p>然后重启pptp服务即可。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$/sbin/service pptpd restart</div></pre></td></tr></table></figure></p>
 <p>另外也可以将pptp和防火墙设置成开机自启<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ chkconfig pptpd on</div><div class="line">$ chkconfig iptables on</div></pre></td></tr></table></figure></p>
-<p>最后展示2张链接成功的图：<br><img src="http://yhv5.com/uploads/2015/10/show.jpg" alt="show"><img src="http://yhv5.com/uploads/2015/10/online.jpg" alt="online"></p>
+<p>最后展示2张链接成功的图：<br><img src="https://yhv5.com/uploads/2015/10/show.jpg" alt="show"><img src="https://yhv5.com/uploads/2015/10/online.jpg" alt="online"></p>
 <p>(The End)</p>
 ]]></content>
       
@@ -256,7 +256,7 @@
 <h4 id="复制驱动"><a href="#复制驱动" class="headerlink" title="复制驱动"></a>复制驱动</h4><p>将键盘驱动和鼠标驱复制到上面写入的硬盘分区下的/Extra/Extensions/下面，删除System/Library/Extensions/下面的IOBluethooth开头的蓝牙驱动（不然安装过程会要求接入苹果的蓝牙键盘和鼠标），后续该路径简写为/S/L/E/。</p>
 <h4 id="创建win下mac引导文件"><a href="#创建win下mac引导文件" class="headerlink" title="创建win下mac引导文件"></a>创建win下mac引导文件</h4><p>将下载的win版版色龙复制到win系统根目录C盘新建文件夹HJMac下，使用easybcd将变色龙引导写入到win系统引导中。</p>
 <h4 id="启动安装mac"><a href="#启动安装mac" class="headerlink" title="启动安装mac"></a>启动安装mac</h4><p>重启系统后可以看到引导中多了一个刚才创建的引导，选择进入选择我们上面写入的硬盘分区，使用命令行模式启动-v -f -x （这样如果出现无国可以方便排查）</p>
-<h4 id="获取显卡ID"><a href="#获取显卡ID" class="headerlink" title="获取显卡ID"></a>获取显卡ID</h4><p>顺利的话能进行安装，但是这里我们看看进入到安装界面时屏幕分辨率是否正常，如果不正常的，可以在顶部选择磁盘工具中的查看系统信息，找到对应的图形卡中对应的两组id值（设备ID和修正版ID）纪录下来，我这里分别是0x0166，0x0009，如图：<img src="http://yhv5.com/uploads/2015/10/hd4000.jpg" alt="hd4000"></p>
+<h4 id="获取显卡ID"><a href="#获取显卡ID" class="headerlink" title="获取显卡ID"></a>获取显卡ID</h4><p>顺利的话能进行安装，但是这里我们看看进入到安装界面时屏幕分辨率是否正常，如果不正常的，可以在顶部选择磁盘工具中的查看系统信息，找到对应的图形卡中对应的两组id值（设备ID和修正版ID）纪录下来，我这里分别是0x0166，0x0009，如图：<img src="https://yhv5.com/uploads/2015/10/hd4000.jpg" alt="hd4000"></p>
 <h4 id="注入显卡ID到变色龙启动文件"><a href="#注入显卡ID到变色龙启动文件" class="headerlink" title="注入显卡ID到变色龙启动文件"></a>注入显卡ID到变色龙启动文件</h4><p>点击顶部的黑苹果选择重启系统到win，将刚才纪录的两组ID值注入到/Extra/org.chameleon.Boot.plist中。如可添加<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">&lt;key&gt;Graphics Mode&lt;/key&gt;</div><div class="line">&lt;string&gt;1366x768x32&lt;/string&gt;</div><div class="line">&lt;key&gt;CsrActiveConfig&lt;/key&gt;</div><div class="line">&lt;string&gt;103&lt;/string&gt;</div><div class="line">&lt;key&gt;EthernetBuiltIn&lt;/key&gt;</div><div class="line">&lt;string&gt;Yes&lt;/string&gt;</div><div class="line">&lt;key&gt;GraphicsEnabler&lt;/key&gt;</div><div class="line">&lt;string&gt;Yes&lt;/string&gt;</div><div class="line">&lt;key&gt;Kernel&lt;/string&gt;</div><div class="line">&lt;string&gt;/System/Library/Kernels/kernel</div><div class="line">&lt;key&gt;Kernel Flags&lt;/key&gt;</div><div class="line">&lt;string&gt;<span class="_">-f</span>&lt;/string&gt;</div><div class="line">&lt;key&gt;Timeout&lt;/key&gt;</div><div class="line">&lt;string&gt;3&lt;/string&gt;</div><div class="line">&lt;key&gt;USBBusFix&lt;/key&gt;</div><div class="line">&lt;string&gt;Yes&lt;/string&gt;</div><div class="line">&lt;key&gt;HD4000PlatformId&lt;/key&gt;</div><div class="line">&lt;string&gt;9&lt;/string&gt;</div><div class="line">&lt;key&gt;ig-platform-id&lt;/key&gt;</div><div class="line">&lt;string&gt;0x01660009&lt;/string&gt;</div><div class="line">&lt;key&gt;InjectIntel-ig&lt;/key&gt;</div><div class="line">&lt;string&gt;09006601&lt;/string&gt;</div><div class="line">&lt;key&gt;IntelCapriFB&lt;/key&gt;</div><div class="line">&lt;string&gt;3&lt;/string&gt;</div><div class="line">&lt;key&gt;device-properties&lt;/key&gt;</div><div class="line">&lt;string&gt;5e0000000100000001000000520000000100000002010c00d041030a000000000101060000027fff04002c0000004100410050004c002c00690067002d0070006c006100740066006f0072006d002d006900640000000800000003006601&lt;/string&gt;</div></pre></td></tr></table></figure></p>
 <p>注：Graphics Mode 可以指定分辨率，EthernetBuiltIn 是否内建网卡，GraphicsEnabler 是否开启显卡侦测，HD4000PlatformId显卡驱动id , 如果是HD5000就改成5000，ID值就是0x0009，解释下为什么我这里是9，在计算机内部指令是0x0009 对应0x09和0x00，这里所以就是值9，ig-platform-id 这个值就是刚才的纪录的两组合ID，注意顺序。InjectIntel-ig这个值需要注意顺序为09006601（分解为0x09,0x00,0x66,0x01）。IntelCapriFB 这个是1366 x 768 分辨率的都写3，其他分辨率的值不一样。最后一个值比较重要，是一组显卡神奇string注入代码，直接使用即可。</p>
 <h4 id="检查显卡驱动是否正常驱动"><a href="#检查显卡驱动是否正常驱动" class="headerlink" title="检查显卡驱动是否正常驱动"></a>检查显卡驱动是否正常驱动</h4><p>修改完之后，重启上面第8步操作，此时来到安装界面分辨率应该是正常的，另外可以到磁盘工具下面的系统信息中找到刚才的图形卡，可以看到是总线是内建状态（表示驱动成功）。</p>
@@ -264,8 +264,8 @@
 <h4 id="驱动修改"><a href="#驱动修改" class="headerlink" title="驱动修改"></a>驱动修改</h4><p>安装完成后会重启系统，先进入到win系统，将Mac引导盘中的/Extra 复制到Mac安装好的分区根目录下，然后到安装盘中删除/Extra/Extensions ,/Extra/SMBIOS.plist，这里说下为什么要删除，因为，本身/S/L/E/下面已经有/Extra/Extension/下面的驱动，删除SMBios.plist是防止无法登录iMessage，将鼠标驱动AppleACPIPS2Nub.kext和键盘驱动ApplePS2Controller.kext以及fsckSM.kext复制到/S/L/E/。</p>
 <h4 id="重启检查"><a href="#重启检查" class="headerlink" title="重启检查"></a>重启检查</h4><p>安装完成后会重启，来到刚才安装Mac分区，选择安装的Mac分区，并使用命令行模式-v -f -x 进行继续安装后续的操作，这个过程基本上不会出现问题。</p>
 <h4 id="进入桌面"><a href="#进入桌面" class="headerlink" title="进入桌面"></a>进入桌面</h4><p>这样应该可以顺利进入桌面，分辨率这时候应该是正常的，安装multibease,和kext wizard，前者是包含了一部分的驱动如以太网卡驱动、声卡驱动等等，可以方便的直接安装。到此为止电脑基本上就算正常了，如果无线网卡没办法驱动的，就买个usb的吧！</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>最后上一张安装完成的截图：<img src="http://yhv5.com/uploads/2015/10/system.jpg" alt="system"></p>
-<p>对于很多无法登录AppStore的看客，可以试着先内建以太网卡，或者使用蓝牙驱动创建en0,避免先安装无线网卡导致无线网卡变成en0,无法登录AppStore。<img src="http://yhv5.com/uploads/2015/10/network.jpg" alt="network"></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>最后上一张安装完成的截图：<img src="https://yhv5.com/uploads/2015/10/system.jpg" alt="system"></p>
+<p>对于很多无法登录AppStore的看客，可以试着先内建以太网卡，或者使用蓝牙驱动创建en0,避免先安装无线网卡导致无线网卡变成en0,无法登录AppStore。<img src="https://yhv5.com/uploads/2015/10/network.jpg" alt="network"></p>
 <p>最后说下为什么上面介绍时说系统安装分区一定要大于30G，因为系统安装完之后基本上就到了20G+，剩余的空间就不会很多了，苹果系统下面进行无损扩容分区非常不方便，所以建议大家开始就将分区设置大一些。</p>
 <p>然后说下怎么进行无损扩容，首先你需要有块移动硬盘或者普通硬盘能接入到电脑上的都行，将这块硬盘分一个区大概不要小于Mac目前的系统分区就够了，然后再Mac系统下使用磁盘工具把这个分区格式和成日志式。选择我们需要备份的Mac系统盘，在磁盘工具顶部选择“文件－&gt;新建镜像－&gt;Mac的镜像”，选择后填写好镜像的名称和备份的磁盘路径（刚格式化出来的分区），这个过程需要半小时左右，具体看导出的分区大小决定。结束后会在目标分区上生成一个名称.dmg格式的镜像文件。然后在win下面使用磁盘工具将分区进行合并好后，重新创建新的分区。使用win版变色龙来引导Mac到安装界面，选择磁盘工具，点击上方的“编辑－&gt;恢复”后，选择上面生产的dmg格式文件，恢复到新创见的分区上即可，如果分区格式不对，可以使用磁盘工具格式化为日志式分区类型。等待大概10分钟左右就可以将之前的系统恢复过来了，过程比较麻烦，所以建议之前将分区设置大一些。</p>
 <p>(The End)</p>
@@ -294,48 +294,48 @@
       <title><![CDATA[Redis Cluster部署]]></title>
       <url>/redis_cluster_1670.html</url>
       <content type="html"><![CDATA[<p>Redis Cluster 分布式集群，牺牲了数据的强一致性，来保证数据的可用性。也就是所谓的Redis从一个单纯的NoSQL内存数据库变成了分布式NoSQL数据库，CAP（Consistency &amp; Availability &amp; Partition-Tolerancy）模型也从CP变成了AP，三者只能取其二。</p>
-<h3 id="redis安装"><a href="#redis安装" class="headerlink" title="redis安装"></a>redis安装</h3><p>下载地址可以到官方下载或者下载本站地址<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /home/work/soft/</div><div class="line">wget http://yhv5.com/soft/redis-3.0.3.tar.gz</div><div class="line">tar -zxvf redis-3.0.3.tar.gz</div><div class="line"><span class="built_in">cd</span> redis-3.0.3</div><div class="line">configure --prefix=/home/work/redis</div><div class="line">make &amp;&amp; make install</div></pre></td></tr></table></figure></p>
+<h3 id="redis安装"><a href="#redis安装" class="headerlink" title="redis安装"></a>redis安装</h3><p>下载地址可以到官方下载或者下载本站地址<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /home/work/soft/</div><div class="line">wget https://yhv5.com/soft/redis-3.0.3.tar.gz</div><div class="line">tar -zxvf redis-3.0.3.tar.gz</div><div class="line"><span class="built_in">cd</span> redis-3.0.3</div><div class="line">configure --prefix=/home/work/redis</div><div class="line">make &amp;&amp; make install</div></pre></td></tr></table></figure></p>
 <h3 id="配置修改"><a href="#配置修改" class="headerlink" title="配置修改"></a>配置修改</h3><p>修改redis配置文件/home/work/redis/bin/redis.conf 如下内容<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">bind</span> XXX.XXX.XXX.XXX <span class="comment">#修改为自己的绑定IP地址</span></div><div class="line">cluster-enabled yes <span class="comment">#开启Cluster</span></div><div class="line">dir /mnt/redis/rdb <span class="comment">#rds数据落地文件路径</span></div><div class="line">dbfilename dump.rdb <span class="comment">#将内存数据刷入</span></div><div class="line">pidfile /mnt/redis/pid/redis-XXXX.pid <span class="comment">#路径可以自定义，将XXXX替换为对应端口</span></div><div class="line">cluster-config-file nodes-XXXX.conf <span class="comment">#这个配置文件不是要我们去配的，而是Redis运行时保存配置的文件，所以我们也不可以修改这个文件,将XXXX替换为我们的端口号。</span></div><div class="line">cluster-node-timeout 15000 <span class="comment">#集群超时时间：结点超时多久则认为它宕机了。</span></div><div class="line">cluster-require-full-coverage no <span class="comment">#槽是否全覆盖：默认是yes，只要有结点宕机导致16384个槽没全被覆盖，整个集群就全部停止服务，所以一定要改为no</span></div><div class="line">daemonize yes <span class="comment">#守护进程模式</span></div><div class="line">logfile <span class="string">"/mnt/redis/log/redis.log"</span> <span class="comment">#日志文件,路径可以自定义</span></div><div class="line">port XXXX <span class="comment">#监听端口,将XXXX替换为我们的端口</span></div></pre></td></tr></table></figure></p>
-<p>为保证集群的稳定性，数据冗余为1则至少需要3台Master和3台Slave(即一主对应一从)，那么我们将开启6个端口来支持这6个redis服务（端口分别为6380-6385）。因此需要将redis配置拷贝6份，我们将配置也重命名为redis.conf.端口号，如图：<br><img src="http://yhv5.com/uploads/2015/09/conf.png" alt="conf"></p>
+<p>为保证集群的稳定性，数据冗余为1则至少需要3台Master和3台Slave(即一主对应一从)，那么我们将开启6个端口来支持这6个redis服务（端口分别为6380-6385）。因此需要将redis配置拷贝6份，我们将配置也重命名为redis.conf.端口号，如图：<br><img src="https://yhv5.com/uploads/2015/09/conf.png" alt="conf"></p>
 <h3 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h3><p>可以按照/home/work/redis/bin/redis.server /home/work/redis/bin/conf/redis.conf.xxx 方式来启动6个实例,也可以批量启动<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>((i=0; i&lt;6; i++));<span class="keyword">do</span> /home/work/redis/bin/redis.server /home/work/redis/bin/conf/redis.conf.638<span class="variable">$i</span> ;<span class="keyword">done</span></div></pre></td></tr></table></figure></p>
 <p>为了方便我提供了一个快速启动的脚本（见文末附件）,即可以用如下方式启动、重启、或者停止服务。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>((i=0; i&lt;6; i++));<span class="keyword">do</span> /home/work/redis/redis_control -p 638<span class="variable">$i</span> [start|stop|restart];<span class="keyword">done</span></div></pre></td></tr></table></figure></p>
-<p><img src="http://yhv5.com/uploads/2015/09/start.png" alt="start"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/start.png" alt="start"></p>
 <p>如果执行顺利可以查看6个服务进程是否都已经启动。如果有问题可以按照日志进行排查（往往因为pid或log无权限写入，而导致启动失败）。</p>
 <p>查看进程是否正常：</p>
-<p><img src="http://yhv5.com/uploads/2015/09/cluster.png" alt="cluster"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/cluster.png" alt="cluster"></p>
 <p>查看进程pid是否生成到对应文件：</p>
-<p><img src="http://yhv5.com/uploads/2015/09/pid.png" alt="pid"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/pid.png" alt="pid"></p>
 <h3 id="集群部署"><a href="#集群部署" class="headerlink" title="集群部署"></a>集群部署</h3><p>上面操作完成后，6个实例之间并没有任何关联，现在需要用到redis-trib管理器，但它依赖于ruby，因此需要先安装ruby以及rubygems<br>安装ruby之前需要先安装开发包支持<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">yum install openssl* openssl-devel zlib-devel gcc gcc-c++ make autoconf readline-devel curl-devel expat-devel gettext-devel</div><div class="line"><span class="built_in">cd</span> /home/work/soft/</div><div class="line">wget http://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p247.tar.gz</div><div class="line">tar zxvf ruby-2.0.0-p247.tar.gz</div><div class="line"><span class="built_in">cd</span> ruby-2.0.0-p247</div><div class="line">./configure --enable-shared --enable-pthread --prefix=/home/work/ruby</div><div class="line">make &amp;&amp; make install</div></pre></td></tr></table></figure></p>
 <h4 id="加入环境变量"><a href="#加入环境变量" class="headerlink" title="加入环境变量"></a>加入环境变量</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> <span class="string">"PATH=<span class="variable">$PATH</span>:/home/work/ruby/bin;export PATH"</span> &gt;&gt; /etc/profile</div><div class="line"><span class="built_in">source</span> /etc/profile</div></pre></td></tr></table></figure>
 <h4 id="下载rubygems"><a href="#下载rubygems" class="headerlink" title="下载rubygems"></a>下载rubygems</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /home/work/soft/</div><div class="line">wget https://rubygems.org/downloads/redis-3.2.1.gem</div><div class="line">gem install redis-3.2.1.gem --local --no-rdoc --no-ri</div></pre></td></tr></table></figure>
 <h3 id="创建集群命令"><a href="#创建集群命令" class="headerlink" title="创建集群命令"></a>创建集群命令</h3><p>格式如：/home/work/soft/redis-3.0.3/src/redis-trib.rb create –replicas ip1:port1 ip2:port2 ….<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/work/soft/redis-3.0.3/src/redis-trib.rb create --replicas 1 10.48.56.215:6380 10.48.56.215:6381 10.48.56.215:6382 10.48.56.215:6383 10.48.56.215:6384 10.48.56.215:6385</div></pre></td></tr></table></figure></p>
-<p><img src="http://yhv5.com/uploads/2015/09/create.png" alt="create">2）查看集群节点：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/work/redis/bin/redis-cli -h 10.48.56.215 -p 6380 cluster nodes</div></pre></td></tr></table></figure></p>
-<p><img src="http://yhv5.com/uploads/2015/09/status.png" alt="status"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/create.png" alt="create">2）查看集群节点：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/work/redis/bin/redis-cli -h 10.48.56.215 -p 6380 cluster nodes</div></pre></td></tr></table></figure></p>
+<p><img src="https://yhv5.com/uploads/2015/09/status.png" alt="status"></p>
 <h4 id="添加数据"><a href="#添加数据" class="headerlink" title="添加数据"></a>添加数据</h4><p>接下来我们向集群中添加一些数据，执行命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>((i=0; i&lt;20; i++)); <span class="keyword">do</span> /home/work/redis/bin/redis-cli -c -h 10.48.56.215 -p 6380 <span class="built_in">set</span> yh_<span class="variable">$i</span>  <span class="variable">$i</span> ;<span class="keyword">done</span></div></pre></td></tr></table></figure></p>
 <h4 id="连接集群"><a href="#连接集群" class="headerlink" title="连接集群"></a>连接集群</h4><p>启动redis-cli时要加-c选项，不加-c选项如果查询到某个值不在该节点上会提示error<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/work/redis/bin/redis-cli -h 10.48.56.215 -p 6380 -c</div></pre></td></tr></table></figure></p>
-<p>就能看到以错误形式显示出的MOVED重定向信息。<img src="http://yhv5.com/uploads/2015/09/info.png" alt="info"></p>
+<p>就能看到以错误形式显示出的MOVED重定向信息。<img src="https://yhv5.com/uploads/2015/09/info.png" alt="info"></p>
 <h3 id="向集群添加节点"><a href="#向集群添加节点" class="headerlink" title="向集群添加节点"></a>向集群添加节点</h3><p>现在我们向集群中增加2个节点，一个Master和一个Salve节点，端口分别为（6386和6387）</p>
 <p>首先和刚才一样复制2份redis配置，如下：</p>
-<p><img src="http://yhv5.com/uploads/2015/09/addconf.png" alt="addconf"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/addconf.png" alt="addconf"></p>
 <p>接下来启动新增的2个redis服务：</p>
-<p><img src="http://yhv5.com/uploads/2015/09/addstart.png" alt="addstart"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/addstart.png" alt="addstart"></p>
 <p>查看进程pid已经写入成功：</p>
-<p><img src="http://yhv5.com/uploads/2015/09/addpid.png" alt="addpid"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/addpid.png" alt="addpid"></p>
 <p>现在我们将端口为6386的节点作为Master添加到集群中，执行命令如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/work/soft/redis-3.0.3/src/redis-trib.rb add-node Newip:port MasterIP:port，这里我们选择了6380端口的Master.</div></pre></td></tr></table></figure></p>
-<p><img src="http://yhv5.com/uploads/2015/09/addnode1.png" alt="addnode1"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/addnode1.png" alt="addnode1"></p>
 <p>我们再次查看集群节点可以看到端口为6386的node已经成为了Master.</p>
-<p><img src="http://yhv5.com/uploads/2015/09/addstatus.png" alt="addstatus"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/addstatus.png" alt="addstatus"></p>
 <p>接下来我们将端口为6387的作为Slave节点添加到端口为6386的Master下面，需要记录上图中的第一列中的MasterId执行命令如下:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/work/soft/redis-3.0.3/src/redis-trib.rb add-node --slave --master-id MasterId NewIP:port MasterIP:port</div></pre></td></tr></table></figure></p>
-<p><img src="http://yhv5.com/uploads/2015/09/addslave.png" alt="addslave"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/addslave.png" alt="addslave"></p>
 <p>查看一下添加的节点：</p>
-<p><img src="http://yhv5.com/uploads/2015/09/slave.png" alt="slave"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/slave.png" alt="slave"></p>
 <h3 id="Resharding"><a href="#Resharding" class="headerlink" title="Resharding"></a>Resharding</h3><p>接下来我们可以对集群中的slots重新分配，比如我们需要将端口为6380的Master中的5000slot分配给6386端口的Master,则可以执行如下命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/work/soft/redis-3.0.3/src/redis-trib.rb reshard ResIP:port DesIP:port</div></pre></td></tr></table></figure></p>
-<p><img src="http://yhv5.com/uploads/2015/09/reshard.png" alt="reshard"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/reshard.png" alt="reshard"></p>
 <p>我们再次查询key为”yh_2”时发现已经重定向到了6386端口上。</p>
-<p><img src="http://yhv5.com/uploads/2015/09/regetkey.png" alt="regetkey"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/regetkey.png" alt="regetkey"></p>
 <p>我们在来看下一下集群节点：</p>
-<p><img src="http://yhv5.com/uploads/2015/09/reshardresult.png" alt="reshardresult"></p>
-<p>最后附上本文资源：<a href="http://yhv5.com/software/redis_control">redis启动脚本</a>，<a href="http://yhv5.com/software/redis-3.0.3.tar.gz"> redis-3.0.3 </a>, <a href="http://yhv5.com/software/redis-3.2.1.gem"> rubygem </a>。</p>
+<p><img src="https://yhv5.com/uploads/2015/09/reshardresult.png" alt="reshardresult"></p>
+<p>最后附上本文资源：<a href="https://yhv5.com/software/redis_control">redis启动脚本</a>，<a href="https://yhv5.com/software/redis-3.0.3.tar.gz"> redis-3.0.3 </a>, <a href="https://yhv5.com/software/redis-3.2.1.gem"> rubygem </a>。</p>
 <p>(The End)</p>
 ]]></content>
       
@@ -361,24 +361,24 @@
       <url>/travel_1615.html</url>
       <content type="html"><![CDATA[<p>想必在这个黄金周没有各位看客都没有空闲吧！是个好机会出去放松放松长期工作的疲惫身躯了，于是就有了下面的内容….</p>
 <p>这个长假对于我来说还是比较充实的，本次旅行的终点便是大家熟悉而又不陌生的五岳之首-泰山。下面看看泰山的位置吧</p>
-<p><img src="http://yhv5.com/uploads/2014/10/map.jpg" alt="map"></p>
+<p><img src="https://yhv5.com/uploads/2014/10/map.jpg" alt="map"></p>
 <p>泰山位于山东省会济南市正南方向50km左右的泰安市(车道估计有70km)。</p>
 <p>如果大家想想直接旅行去泰山，估计就只能去泰山了，因为登泰山肯定是一件费劲的事儿，到时候从泰山下来估计哪儿也不想去了，因此我们制定的路线并不是直接去泰山，而是先去周边的旅游景点。</p>
 <p>泰山之前续-第一站：济南市</p>
 <p>10月1日傍晚18:27在北京南站乘坐G2601踏上此次旅行的第一步，高铁在月黑的夜晚开着300KM/h的速度一路向南，在21:50分左右到达济南站，并入住离火车站300m左右的天虹商务酒店（当时的酒店费用是188/天），由于到时已经比较晚了，到处看不到商店买零食和水，结果在济南车火车站东侧的世纪华联超市（邮政宾馆旁）买了一瓶6元的水，结果被骗了，让我觉得山东人的豪气顿时全无。骗子居然利用世纪华联超市名义在济南火车站行骗，骗走大洋70，后果断报警，平生第一次打110，追回大洋，发现落难者竟络绎不绝的前来讨债，无语的发现卖的东西都是2012年的。警察同志告诉我，之前记者都来采访过但愁于没有证据无法断案，现在只好遇到一次报案就帮忙追回一次。还原现场:达到济南站晚上10点左右，到处看不到买零食和水的地方，仅仅注意到济南站东侧邮政宾馆旁的“世纪华联超市”，买了一瓶水6大洋，给他100，没注意到他竟然把100悄悄给撕掉一个角，并告诉我说这钱少了一个角，是真钱，让我在钱包里面找那个角，并把钱包拿来里面的钱翻出来，他看我钱包里面还有100的大洋，于是说他家进货全是零钱，换100大洋的零钱给我，事先觉得以为自己的钱有问题，这老板都不在乎，就答应了他换，于是乎开始了骗局找我184，我接过钱数了一下少10大洋，让他再数，他数了确实少，然后看见他补了10大洋，呃呃呃没有数钱拿着钱就走了，这就被坑爹了。骗子花样很多，有些情况是把你钱包翻个底，然后随手套走大洋。基于带着警察同志到店询问，骗子说忙刚才找错了，或者说你自己落下了，他帮你捡着的，没有可靠证据，无法立案。唉百度一把，结果一大把被骗都忍气吞声了。这是济南的第一印象！</p>
 <p>第二天一大早便抽身去了传说中的大明湖（门票30元/位），也可以买通票（75元/位，包含大明湖景区30元、五龙湖景区5元、趵突泉景区40元），大明湖风景确实不错，如果围绕着湖转一圈估计的费一上午的时间，主要是水上娱乐，快艇、划船的人真不少，里面游玩的就像普通的游乐场没有两样，一般情况下不想去玩，主要是看湖畔风景。10月的大明湖吹着一阵阵的凉风，让人精神顿时抖擞，不愧是5A景点。后来去参观了老舍纪念馆、超然楼等等地方。</p>
-<p><img src="http://yhv5.com/uploads/2014/10/map2.jpg" alt="map2"></p>
+<p><img src="https://yhv5.com/uploads/2014/10/map2.jpg" alt="map2"></p>
 <p>由于我们走的比较快，一上午过去了，我们差不多围绕着转了一个圈，其中的东湖是免费参观的。中午就在开元广场随便吃了点东西，便进入广场的一个鸿星尔克专卖店购物，当时的甩卖价让我心动的买了两件衣服，结果证明还是买对了。</p>
 <p>一下子就到下午2点多了，由于时间关系，本想去五龙潭公园参观的，但是由于考虑时间因素，我们接着去了附近的趵突泉，这里的门票要比大明湖贵（门票40元/位），买票进园，一路都是都是泉（话说有888个泉眼，目前有史书记载的就有72个），清澈透明，风水宜人，真是适合养老啊。</p>
 <p>于是这一天时间就这样过去了，水也就看完了，于是去看山~</p>
 <p>泰山之前续-第二站：泰安市</p>
 <p>10月2日8:05乘坐K8281次列车由济南站出发前往泰山站，由于这之间路程较短差不多不到一个小时的车程就到了。吃完饭，在泰山站寄存行李（车站都没有寄存的地方，只好在一个超市寄存，12元还是挺便宜的），立马前往附近的岱庙景点（门票30元/位），岱庙具体位置如下：</p>
-<p><img src="http://yhv5.com/uploads/2014/10/map3.jpg" alt="map3"></p>
+<p><img src="https://yhv5.com/uploads/2014/10/map3.jpg" alt="map3"></p>
 <p>大约离泰山站不到5km，乘坐k37可以到附近（但是由于实在不太明白泰安乘车路线，第一次坐反了车，于是在那儿等了好久好久的车才坐回去）。岱庙可以堪称小皇宫，就像是故宫的缩影，在这里可以肉眼直接眺望泰山山顶，据说是皇帝专门修建眺望泰山的“别墅”。看看是不是像故宫</p>
-<p><img src="http://yhv5.com/uploads/2014/10/map4.gif" alt="map4"></p>
-<p><img src="http://yhv5.com/uploads/2014/10/map5.jpg" alt="map5"></p>
+<p><img src="https://yhv5.com/uploads/2014/10/map4.gif" alt="map4"></p>
+<p><img src="https://yhv5.com/uploads/2014/10/map5.jpg" alt="map5"></p>
 <p>岱庙一游，约了下午5点的车去泰山看封禅（shan）大典（10月1日后第一场是在18点15分开始，进行2小时），多数人都是看第一场的，因为第二场晚上20点开始都要等到22:00去了，晚上山上特别冷，所以那时候的票价要便宜些，于是3点多就转车回火车站拿上行李到了泰山脚下–天外村，坐等预约大巴（票价10元/位来回）前往封禅大典目的地，因为我们买的套票（泰山门票127元/位+封禅大典门票D区168元/位），因此门票都在天外村广场取票，从天外村到封禅大典大概需要30多分钟的车程。</p>
-<p><img src="http://yhv5.com/uploads/2014/10/map6.jpg" alt="map6"></p>
+<p><img src="https://yhv5.com/uploads/2014/10/map6.jpg" alt="map6"></p>
 <p>封禅大典确实是非常精彩，建议去登泰山的伙伴都去看看，各种表演凸显了各个朝代皇帝到泰山祭祀山神的壮观景象，而且在天烛峰的夜景也比较迷人，在这里一种复古的感觉悠然而生。</p>
 <p>晚上8点多了，乘来的车又会到了太外村，在这里我们在KFC吃了夜宵，做了登山前的准备工作，大致晚上10点左右，由于太外村是车道上中天门，而登山的道在红门，于是提前买上登山杖，打车（15元）前往红门登山口。来到红门一看夜间来登山的人还是比较多，各种山上下山的人都在步行着，各种灯光照得路面台阶清晰可见。</p>
 <p>大约晚上10点左右开始登山的前奏，由于自己带了帐篷，而检票处不让带帐篷，于是顺道带着溜进去，背着20公斤的行李移步青云，一波一波的人被我们甩在身后了，为了保持体力，没过多久我们放慢了节奏，慢慢登山，一路沿斗母宫、壶天阁、步天桥走走停停到达半山腰中天门，已经是凌晨12点多了，人此时也累的不行了，也没有再注意什么夜间景色，休息中顺便补充了一点食物，我们开始寻找搭帐篷的地方，由于很多地方都不太适合，十分钟之后继续前行，沿着云步桥、望人松、对松亭达到南天门，由于前半程已经非常疲惫不堪，因此下半程花了可以搭帐篷的地方，足足3个小时才到达南天门，在这里人山人海，到处都是睡着人，也找不到搭帐篷的地方，最后选择铺上防潮垫、裹着睡袋休息了2个小时，5点多左右爬起来开始看日出，结果由于山上雾霭蒙蒙满山阔，看不到什么云海，于是选择在继续前往玉皇顶，中途在山上吃了10元的“丰盛”早餐，大致步行了20分钟左右来到山顶，风相当大，在这里有祭祀，有求神、有购物的人群，看了看遍四处游玩去了，警告后天坞索道、桃花源索道，没过多久我们便又回到了南天门，在这里时而遇到小雨急下，时而大风凛冽。由于看日出的期望基本已经破灭，于是逗留到上午10点多左右开始下山。</p>
@@ -387,17 +387,17 @@
 <p>总结：此次出行，首遇火车站骗子，这是第一印象；在山东吃的每一顿饭，我注意到都没有提供过餐巾纸，这是第二大印象；热情好客、乐于助人的场景亲身经历，这是第三印象。总之还是值得去的一个地方。。。</p>
 <p>附上本次出行的各种门票：</p>
 <p>大明湖门票：</p>
-<p><img src="http://yhv5.com/uploads/2014/10/daminghu.jpg" alt="daminghu"></p>
+<p><img src="https://yhv5.com/uploads/2014/10/daminghu.jpg" alt="daminghu"></p>
 <p>趵突泉门票：</p>
-<p><img src="http://yhv5.com/uploads/2014/10/baotuquan.jpg" alt="baotuquan"></p>
+<p><img src="https://yhv5.com/uploads/2014/10/baotuquan.jpg" alt="baotuquan"></p>
 <p>岱庙门票：</p>
-<p><img src="http://yhv5.com/uploads/2014/10/daimiao.jpg" alt="daimiao"></p>
+<p><img src="https://yhv5.com/uploads/2014/10/daimiao.jpg" alt="daimiao"></p>
 <p>封禅大典门票：</p>
-<p><img src="http://yhv5.com/uploads/2014/10/tianzufeng.jpg" alt="tianzufeng"></p>
+<p><img src="https://yhv5.com/uploads/2014/10/tianzufeng.jpg" alt="tianzufeng"></p>
 <p>泰山门票：</p>
-<p><img src="http://yhv5.com/uploads/2014/10/taishan.jpg" alt="taishan"></p>
+<p><img src="https://yhv5.com/uploads/2014/10/taishan.jpg" alt="taishan"></p>
 <p>车票：</p>
-<p><img src="http://yhv5.com/uploads/2014/10/trail.jpg" alt="trail"></p>
+<p><img src="https://yhv5.com/uploads/2014/10/trail.jpg" alt="trail"></p>
 <p>(The End)</p>
 ]]></content>
       
@@ -472,10 +472,10 @@
 <h3 id="安装DBD-mysql"><a href="#安装DBD-mysql" class="headerlink" title="安装DBD-mysql"></a>安装DBD-mysql</h3><p>具体可以到官方(<a href="http://search.cpan.org/~capttofu/DBD-mysql-4.020/" target="_blank" rel="external">http://search.cpan.org/~capttofu/DBD-mysql-4.020/</a>) 选择版本下载，我这里选择的是截止目前为止的最高版本DBD-mysql-4.020，好了下载我们一如既往的编译安装</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">wget http://search.cpan.org/CPAN/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.020.tar.gz</div><div class="line">tar -zxvf DBD-mysql-4.011.tar.gz</div><div class="line"><span class="built_in">cd</span> DBD-mysql-4.011</div><div class="line">perl Makefile.PL --mysql_config=/usr/<span class="built_in">local</span>/mysql/bin/mysql_config</div><div class="line">make</div><div class="line">make install</div></pre></td></tr></table></figure>
 <p>安装完成之后，我们就可以去下载mystat脚本了，可以到本文末下载或者去作者博客(<a href="http://www.penglixun.com/" target="_blank" rel="external">http://www.penglixun.com/</a>) 站下载，下载好脚本到我们的服务器上即可运行它,执行脚本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./mystat.pl -hlocalhost -uusername -ppassword</div></pre></td></tr></table></figure></p>
-<p>结果如下图：<img src="http://yhv5.com/uploads/2014/08/mystat.jpg" alt="mystat"></p>
-<p><a href="http://yhv5.com/software/DBD-mysql-4.020.tar.gz">DBD-mysql-4.020.tar.gz</a> 下载</p>
-<p><a href="http://yhv5.com/software/DBI-1.631.tar.gz">DBI-1.631.tar.gz</a> 下载</p>
-<p><a href="http://yhv5.com/software/mystat.pl">mystat.pl</a> 下载</p>
+<p>结果如下图：<img src="https://yhv5.com/uploads/2014/08/mystat.jpg" alt="mystat"></p>
+<p><a href="https://yhv5.com/software/DBD-mysql-4.020.tar.gz">DBD-mysql-4.020.tar.gz</a> 下载</p>
+<p><a href="https://yhv5.com/software/DBI-1.631.tar.gz">DBI-1.631.tar.gz</a> 下载</p>
+<p><a href="https://yhv5.com/software/mystat.pl">mystat.pl</a> 下载</p>
 <p>(The End)</p>
 ]]></content>
       
@@ -530,20 +530,20 @@
 <h4 id="配置web访问"><a href="#配置web访问" class="headerlink" title="配置web访问"></a>配置web访问</h4><p>我们可以将zabbix_server解压目录中的frontends文件copy到我们的站点根目录，比如<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">copy -r /usr/<span class="built_in">local</span>/download/zabbix-2.2.5/frontends/php /usr/<span class="built_in">local</span>/nginx/html/zabbix</div></pre></td></tr></table></figure></p>
 <p>然后根据自己的选择的服务（nginx、apache、ligttpd）进行配置。</p>
 <p>完成之后我们就可以通过web进行访问了，因为zabbix源码是php ，我们需要安装php解析器（环境），安装php由于篇幅限制，本文不做介绍，具体可以移步各大论坛博客求攻略，web访问进入如下界面：</p>
-<p><img src="http://yhv5.com/uploads/2014/08/zabbix.jpg" alt="zabbix"></p>
+<p><img src="https://yhv5.com/uploads/2014/08/zabbix.jpg" alt="zabbix"></p>
 <p>接下来需要，在php配置文件中修改如下配置以满足zabbix的需要，max_execution_time、max_input_time、time zone</p>
-<p>修改php.ini文件之后重启php，看到如下配置都ok，然后next。<img src="http://yhv5.com/uploads/2014/08/zabbix_2.jpg" alt="zabbix_2"></p>
+<p>修改php.ini文件之后重启php，看到如下配置都ok，然后next。<img src="https://yhv5.com/uploads/2014/08/zabbix_2.jpg" alt="zabbix_2"></p>
 <p>根据提示填写基本配置信息并点击测试，pass之后继续next。</p>
-<p><img src="http://yhv5.com/uploads/2014/08/zabbix_3.jpg" alt="zabbix_3"></p>
+<p><img src="https://yhv5.com/uploads/2014/08/zabbix_3.jpg" alt="zabbix_3"></p>
 <p>到这一步，可能就要报错了，原因是我们需要先把数据表导入到数据库才能继续了，好吧，我们那就去导数据吧~，点击next</p>
-<p><img src="http://yhv5.com/uploads/2014/08/zabbix_5.jpg" alt="zabbix_5"></p>
-<p><img src="http://yhv5.com/uploads/2014/08/zabbix_6.jpg" alt="zabbix_6"></p>
-<p><img src="http://yhv5.com/uploads/2014/08/zabbix_7.jpg" alt="zabbix_7"></p>
+<p><img src="https://yhv5.com/uploads/2014/08/zabbix_5.jpg" alt="zabbix_5"></p>
+<p><img src="https://yhv5.com/uploads/2014/08/zabbix_6.jpg" alt="zabbix_6"></p>
+<p><img src="https://yhv5.com/uploads/2014/08/zabbix_7.jpg" alt="zabbix_7"></p>
 <p>如果遇到无法创建zabbix.conf.php，可以将站点根目录文件夹权限修改一下chown -R www:www /usr/local/nginx/html/zabbix</p>
 <p>需要将zabbix_server解压目录中的database文件夹中相应文件导入db，zabbix目前支持mysql、Oracle、sqllite、db2，我们把对应的文件夹中的文件导入db即可，这里我们选择mysql，则把mysql下面的3个文件（data.sql、images.sql、schema.sql）导入mysql中 ,完成之后我们就可以继续完成安装了，到这步就已经结束了，因为是导入的数据，因此zabbix默认登陆名是zabbix口令也是zabbix。我们登陆进入之后可以看到整个后台布局如下</p>
-<p><img src="http://yhv5.com/uploads/2014/08/zabbix_4.jpg" alt="zabbix_4"></p>
-<p><a href="http://yhv5.com/software/zabbix-2.2.5.tar.gz">zabbix-2.2.5.tar.gz</a> 下载</p>
-<p><a href="http://yhv5.com/software/zabbix_agents_2.2.5.linux2_6_23.amd64.tar.gz">zabbix_agents_2.2.5.linux2_6_23.amd64.tar.gz</a>下载</p>
+<p><img src="https://yhv5.com/uploads/2014/08/zabbix_4.jpg" alt="zabbix_4"></p>
+<p><a href="https://yhv5.com/software/zabbix-2.2.5.tar.gz">zabbix-2.2.5.tar.gz</a> 下载</p>
+<p><a href="https://yhv5.com/software/zabbix_agents_2.2.5.linux2_6_23.amd64.tar.gz">zabbix_agents_2.2.5.linux2_6_23.amd64.tar.gz</a>下载</p>
 <p>(The End)</p>
 ]]></content>
       
@@ -594,10 +594,10 @@
       <url>/make_error_1519.html</url>
       <content type="html"><![CDATA[<p>首先说明写作本文的用意，大致是昨天凌晨5点左右，我手机接到阿里云的短信报警提示–服务器宕机了，开始以为几分钟之内就能恢复正常，但是没有自己想象的那样，基础服务在重启之后都正常了，但是自己的一些作业被耽搁了，于是小编上准备上阿里云提交工单求解释。</p>
 <p>话说到官方提交完工单之后，顺便浏览了一下官方最近的活动，心想能遇有什么优惠政策。于是就在站内各种扫描，确实看到有一些令人心痒的活动，比如说官方推出的“<a href="http://free.aliyun.com/?spm=5176.383338.3.2.nHMQNT&amp;tracelog=shybanner" target="_blank" rel="external">0元拥抱云计算</a>”，看着就点进去了。进去之后里面做的很花哨啊！各种养眼的惠民政策，看着就顺势往下走，由于个人习惯喜欢在触摸板左右滑动，结果偶然屏幕右侧多出一块空白区域（下面给出），觉得很好奇啊~，想一下不应该啊，毕竟是阿里云，前端工作应该还是比较到位的，于是刷新了几下在看，仍然出现该情况，这下我就好奇了，于是去看源码发现，不知道那个粗心大意的攻城狮把宽度写错了（本来是100%的宽度，结果不知道啥情况手抖了一下增加了一个0，变成1000%），也许犯着糊涂的时候他本身不是故意的，但就是不知怎么回事儿的情况下就成这样了（我们这一行经常这样说），好吧说了这么多还是上一张图为证吧！</p>
-<p><img src="http://yhv5.com/uploads/2014/07/alibug.jpg" alt="alibug"></p>
-<p>另外在来看一下淘宝订单交易记录吧~，这里的效果更奇葩，还是上图为证；<br><img src="http://yhv5.com/uploads/2014/07/taobao.jpg" alt="taobao"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/alibug.jpg" alt="alibug"></p>
+<p>另外在来看一下淘宝订单交易记录吧~，这里的效果更奇葩，还是上图为证；<br><img src="https://yhv5.com/uploads/2014/07/taobao.jpg" alt="taobao"></p>
 <p>再如，淘宝的虚拟充值平台交易时弹出的对话框，都是一些细小的问题没有规范导致。</p>
-<p><img src="http://yhv5.com/uploads/2014/07/chongzhi.jpg" alt="chongzhi"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/chongzhi.jpg" alt="chongzhi"></p>
 <p>总结：每个人过多过少都会犯糊涂，疏忽大意是难免的，只能说是尽量避免不要出现严重的后果，影响用户的体验。有些时候就想着为了去解决一件事情而去做这件事儿，但是呢，结果事情没解决反而捅了篓子，惹出一摊子事儿来，就像我们曾经一起犯过的错，踩了前人留下的坑，各种坑爹的坑，填填补补，伤痕累累，最终劳民伤财啊。当然还是希望自己不要给后人留下坑否则后来者也会同样的抱怨曾经的缔造者。终规终矩，还是说明一个问题，规范，如果自己把自己的事儿做好，就不会让其他人为你头疼了。</p>
 <p>(The End)</p>
 ]]></content>
@@ -622,7 +622,7 @@
     <entry>
       <title><![CDATA[MySQL之高性能分析二]]></title>
       <url>/mysql_efficient_2_1260.html</url>
-      <content type="html"><![CDATA[<p>话说上一篇 <a href="http://yhv5.com/mysql_efficient_693.html">MySQL高性能分析一</a> 写于半年以前了，现在继续聊聊下一部分-索引类型的相关知识。</p>
+      <content type="html"><![CDATA[<p>话说上一篇 <a href="https://yhv5.com/mysql_efficient_693.html">MySQL高性能分析一</a> 写于半年以前了，现在继续聊聊下一部分-索引类型的相关知识。</p>
 <p>在写作本文之前有必要说明一下索引的优缺点，使用索引本身是为了解决问题，但是如果使用者滥用索引或者使用不当，索引也会让你付出惨痛的代价，因此我们有必要合理正确的使用索引，来解决遇到的问题，而不是带来新的问题。简单的说使用索引可以帮助我们：</p>
 <ul>
 <li><p>索引大大减少了服务器需要扫描的数据量；</p>
@@ -634,7 +634,7 @@
 </ul>
 <p>本文主要介绍关于索引的类型，索引可分为：B-Tree、哈希索引（hash index）、空间数据索引（R-Tree）、全文索引、其他索引类型。</p>
 <h4 id="B-Tree"><a href="#B-Tree" class="headerlink" title="B-Tree"></a>B-Tree</h4><p>如果在没有指定索引类型的情况下，多数都是指B-Tree索引（实际情况下是使用的B+Tree），不同的存储引擎之间B-Tree性能也是各有不同，如MyISAM使用的前缀压缩技术使得索引变小，但是InnoDB则按照原数据格式进行存储，再如MyISAM索引通过数据的物理位置引用被索引的行，而InnoDB则根据主键引用被索引的行。如下图所示：</p>
-<p><img src="http://yhv5.com/uploads/2014/07/1.jpg" alt="1"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/1.jpg" alt="1"></p>
 <p>由上图可知，B-Tree对索引是按照顺序组织数据存储的，所以很适合查找范围数据，例如一个基于文本域的索引树上，按照字母顺序传递连续的值进行查找非常适合，所以像查找以某个字母开头的方式效率非常高。通常这种B-Tree索引有如下六种查询方式（这里主要介绍联合索引的形式）：</p>
 <ul>
 <li><p>全值匹配：和索引中的所有列进行匹配，联合索引或者单列索引；</p>
@@ -700,19 +700,19 @@
       <title><![CDATA[XY散点图添加文字标签]]></title>
       <url>/xy_plot_to_add_a_text_label_1239.html</url>
       <content type="html"><![CDATA[<p>亲爱的小伙伴们，还在愁给EXCEL或者PPT内的XY散点图加文字标签吗？当你百度一下的时候，网上主要讲到两种方法：一、用宏（VBA编程）；二、用专业插件（XYChartLabeler下载地址见文末）。</p>
-<p>个人谈谈这两种方法的弊端吧，对于第一种，如果你是VB高手，那就十分方便，如果你是VB小白，那么也许你会选择第二种。第二种使用非常方便，但唯一的缺点此款插件只能在EXCEL内使用，不能用于幻灯片内；如果你是调研行业的小伙伴也许公司会要求PPT内的图表不能直接从EXCEL粘贴，要从PPT内直接插图表（这主要是方便客户提取或编辑数据）。苦于这种原因，那么你也许就会通过手动插入文本框自己一个个添加标签或者选择数据→添加→选择系列名称、X轴、Y轴，一个一个的添加。如下图所示：<br><img src="http://yhv5.com/uploads/2014/07/12.png" alt="1"></p>
+<p>个人谈谈这两种方法的弊端吧，对于第一种，如果你是VB高手，那就十分方便，如果你是VB小白，那么也许你会选择第二种。第二种使用非常方便，但唯一的缺点此款插件只能在EXCEL内使用，不能用于幻灯片内；如果你是调研行业的小伙伴也许公司会要求PPT内的图表不能直接从EXCEL粘贴，要从PPT内直接插图表（这主要是方便客户提取或编辑数据）。苦于这种原因，那么你也许就会通过手动插入文本框自己一个个添加标签或者选择数据→添加→选择系列名称、X轴、Y轴，一个一个的添加。如下图所示：<br><img src="https://yhv5.com/uploads/2014/07/12.png" alt="1"></p>
 <p>举例数据中共8行，相当于需要重复添加八次。数据添加成功后，我们再添加数据标签，并在设置数据标签格式内勾选系列名称，最终成功添加。</p>
 <p>由于小编就属于VB小白，并且也属于不能从EXCEL直接粘图表的一员，因此在这向小伙伴们分享一种简便的方式，高手可以直接飘过。方法很简单，我们只需要在数据上换换格式就OK了。正常做XY散点图的数据源格式如下图：</p>
-<p><img src="http://yhv5.com/uploads/2014/07/21.png" alt="2"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/21.png" alt="2"></p>
 <p>我们仅需要将数据格式转换成如下的一个矩阵格式，第一行实际上就是X轴，第二行到最后一行实际上就都是Y轴了。然后呢我们只需要选中全部数据→插入→散点图。结果图表如下：</p>
-<p><img src="http://yhv5.com/uploads/2014/07/31.png" alt="3"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/31.png" alt="3"></p>
 <p>最后一步就是选中数据点→添加数据标签→设置数据标签格式→勾选系列名称（结果图如下）</p>
-<p><img src="http://yhv5.com/uploads/2014/07/61.png" alt="6"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/61.png" alt="6"></p>
 <p>当然了，这种方法也还是有缺陷的，大家应该很快意识到了，每个系列点都需要添加标签设置标签。但是在应用到幻灯片中有一定的帮助，当用在气泡图的时候就显得很快捷了。所以大家可以结合所需，灵活运用各种方法。</p>
-<p>顺便附上气泡图一例（上图为数据源格式，下图为成功的气泡图）<br><img src="http://yhv5.com/uploads/2014/07/71.png" alt="7"><br><img src="http://yhv5.com/uploads/2014/07/81.png" alt="8"></p>
+<p>顺便附上气泡图一例（上图为数据源格式，下图为成功的气泡图）<br><img src="https://yhv5.com/uploads/2014/07/71.png" alt="7"><br><img src="https://yhv5.com/uploads/2014/07/81.png" alt="8"></p>
 <p>可能亲会想说，调整数据格式是不是太麻烦了呀？其实呢如果数据量少的话当然可以手动调整，如果数据量多，或者要批量处理同样的数据，我们就可以借助EXCEL技巧和IF公式改变数据格式，但考虑这种情况不多见，此处就不多啰嗦了。最最方便的方式当然就是把模板保存好，下次使用就可以直接提取，哈哈。</p>
 <p>其实还有另外一种小技巧了呀，当做完XY散点图后，添加数据标签，然后直接将数据标签修改成文字就OK了。是不是很简单？</p>
-<p>最后附上工具下载地址<a href="http://yhv5.com/software/XYChartLabeler.rar"> XYChartLabeler </a></p>
+<p>最后附上工具下载地址<a href="https://yhv5.com/software/XYChartLabeler.rar"> XYChartLabeler </a></p>
 <p>(The End)</p>
 ]]></content>
       
@@ -742,26 +742,26 @@
       <url>/spss_batch_tagging_1211.html</url>
       <content type="html"><![CDATA[<p>最近因为合作方数据统计报表出的太频繁，少不了使用到SPSS，但每次处理问卷标签值赋值都有种崩溃的绝望，看着就眼晕，小伙伴们有木有！然而各位看客朋友的福音到了，小编特意将平生所学、所用”批量加注标签”的方式总结了一番，分享给各位看客朋友，需要能帮互大家提高工作效率，欢迎吐槽，请勿喷水~</p>
 <h3 id="第一部分——Excel内预处理"><a href="#第一部分——Excel内预处理" class="headerlink" title="第一部分——Excel内预处理"></a>第一部分——Excel内预处理</h3><p>一般调研问卷是以WORD或者EXCEL的文档形式保存，这主要是方便整理和可视化管理。因此首先可以将问卷中选项的数值和标签整理出来（当然问卷一般有不同的格式，可以根据问卷规律整理，blablabla，如果对EXCEL非常熟悉，可以直接跳楼到第二部分-SPSS）。</p>
-<p>例如处理后的形式可能是如下图：（当然根据您具体的过程而定）<br><img src="http://yhv5.com/uploads/2014/07/1.png" alt="1"></p>
+<p>例如处理后的形式可能是如下图：（当然根据您具体的过程而定）<br><img src="https://yhv5.com/uploads/2014/07/1.png" alt="1"></p>
 <p>然后我们可以通过分列变成下图：（主要是方便套用公式）</p>
-<p><img src="http://yhv5.com/uploads/2014/07/2.png" alt="2"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/2.png" alt="2"></p>
 <p>套用公式：如下图</p>
 <p>在E2单元格套用公式：$C$1&amp;” “&amp;C2</p>
 <p>在E3单元格套用公式：C3&amp;”‘“&amp;D3&amp;”‘“</p>
-<p><img src="http://yhv5.com/uploads/2014/07/3.png" alt="3"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/3.png" alt="3"></p>
 <p>细心的看客肯定看到小编标黄色的行了，每个题项结束后都会插入空行隔开，这是因为在SPSS里面不同变量赋值所需。SPSS语法编辑器里面一个语法结束后需要回车后再编辑第二个语法。当遇到有非常非常多的题项时可以采用编序号+排序的方式快速插入，同时编序号后在筛选条件下也方便您快速复制以上公式啦，blablabla…</p>
-<p>同时看客们是否注意到此处label加了s，其实加s主要是对多个变量但是相同标签批量赋值，但单个变量赋值加s是不会影响的，为了方便大家理解特加以说明。如下图：<br><img src="http://yhv5.com/uploads/2014/07/22.png" alt="22"></p>
+<p>同时看客们是否注意到此处label加了s，其实加s主要是对多个变量但是相同标签批量赋值，但单个变量赋值加s是不会影响的，为了方便大家理解特加以说明。如下图：<br><img src="https://yhv5.com/uploads/2014/07/22.png" alt="22"></p>
 <p>那么变量A2-A7的标签都同时赋值为1-非常满意，2-基本满意，3-不满意，4-非常不满意。</p>
 <h3 id="第二部分——SPSS"><a href="#第二部分——SPSS" class="headerlink" title="第二部分——SPSS"></a>第二部分——SPSS</h3><p>接下来就是SPSS发挥强大功用了，继续走起~~~</p>
-<p>1、打开SPSS的语法编辑器，点击”文件”-&gt;”新建”-&gt; “语法”，如下图（小编用的SPSS19.0）<br><img src="http://yhv5.com/uploads/2014/07/4.png" alt="4"></p>
-<p>2、将上述EXCEL内整理得到的标签复制到编辑器，如下图（箭头所指的空白处就是我们在EXCEL内插入的空白行） <img src="http://yhv5.com/uploads/2014/07/5.png" alt="5"></p>
-<p>3、点击”运行”-&gt;”全部”： <img src="http://yhv5.com/uploads/2014/07/6.png" alt="6"></p>
+<p>1、打开SPSS的语法编辑器，点击”文件”-&gt;”新建”-&gt; “语法”，如下图（小编用的SPSS19.0）<br><img src="https://yhv5.com/uploads/2014/07/4.png" alt="4"></p>
+<p>2、将上述EXCEL内整理得到的标签复制到编辑器，如下图（箭头所指的空白处就是我们在EXCEL内插入的空白行） <img src="https://yhv5.com/uploads/2014/07/5.png" alt="5"></p>
+<p>3、点击”运行”-&gt;”全部”： <img src="https://yhv5.com/uploads/2014/07/6.png" alt="6"></p>
 <p>4、成功运行效果图（上图为查看器内的显示截图，下图为SPSS变量视图的截图）</p>
-<p><img src="http://yhv5.com/uploads/2014/07/7.png" alt="7"><a href="http://yhv5.com/uploads/2014/07/10.png"></a><img src="http://yhv5.com/uploads/2014/07/8.png" alt="8"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/7.png" alt="7"><a href="https://yhv5.com/uploads/2014/07/10.png"></a><img src="https://yhv5.com/uploads/2014/07/8.png" alt="8"></p>
 <p>备注：如果步骤2中没有空行（回车），如下图：</p>
-<p><img src="http://yhv5.com/uploads/2014/07/9.png" alt="9"></p>
-<p>我们可以看到左侧箭头所示，实际上语法编辑器内只默认了一个变量。现在我们再运行看看效果：(上图为查看器内的显示截图，下图为SPSS变量视图的截图）<br><img src="http://yhv5.com/uploads/2014/07/10.png" alt="10"></p>
-<p><img src="http://yhv5.com/uploads/2014/07/11.png" alt="11"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/9.png" alt="9"></p>
+<p>我们可以看到左侧箭头所示，实际上语法编辑器内只默认了一个变量。现在我们再运行看看效果：(上图为查看器内的显示截图，下图为SPSS变量视图的截图）<br><img src="https://yhv5.com/uploads/2014/07/10.png" alt="10"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/11.png" alt="11"></p>
 <p>根据上面结果可知，查看器内语法报错，并且变量视图内只有A1变量成功赋值。</p>
 <p>到了这里，如果没有报错，基本就ok了，上面也看到了最终的效果。希望本文能帮助到正在水深火热中痛苦挣扎的小伙伴们。。。</p>
 <p>(The End)</p>
@@ -824,10 +824,10 @@
       <url>/wonderful_tech_1173.html</url>
       <content type="html"><![CDATA[<p>也许当你看到标题就已经想入非非了，是的，科技总会给人们带来无穷的新鲜感，让你欲罢无能~，下面就一起来看看这些创意吧！写作本文并不代表小编的主观态度，只是分享乐趣哈，请勿喷水，欢迎各种吐槽~</p>
 <p>哈尔滨一家以机器人为主题的餐厅里，煮水饺、煮面、炒菜、地面送餐、空中传菜、迎宾都由机器人来完成，18种长相各异、个头不等、讲着简单语言的机器人是这家餐厅的“主力员工”。有图有真相，见下图：</p>
-<p><img src="http://yhv5.com/uploads/2014/06/1.jpg" alt="1jpg"></p>
+<p><img src="https://yhv5.com/uploads/2014/06/1.jpg" alt="1jpg"></p>
 <p>&nbsp;</p>
 <p>日前，一款 <a href="http://www.designboom.com/technology/ophone-capable-of-sending-scent-messages-06-13-2014/" target="_blank" rel="external">手机配件 oPhone</a> 就做到了这点，让发送气味变得像发送短信一样简单。<a href="http://www.onotes.com/" target="_blank" rel="external">oPhone</a> 由哈佛大学教授 David Edwards 和 Rachel Field 研制，目前正在准备推向市场。外观上看，这台机器略显奇怪：两个伸出的圆柱体，外加一个底座。它是一个手机配件，目前只适用于 iOS，用户需要下载免费的 app。oPhone 的核心是一块名为 oChip 的气味芯片。这块芯片上有 32 种“原味”，类似色彩中的“原色”。32 种气味可以合成 30 多万种复杂的气味。oPhone 的工作原理基于“编码——解码”的过程：用户用 app 输入气味，传递给同样使用 oPhone 的小伙伴，小伙伴接收后，oPhone 解码，释放气味。当然气味需要特定的材料生成。类似打印机中的“墨盒”，oPhone 有一个“气味盒”，气味盒中的材料用完需要更换。一套香味材料售价 20 美元，上图为证：</p>
-<p><img src="http://yhv5.com/uploads/2014/06/2.jpg" alt="2"></p>
+<p><img src="https://yhv5.com/uploads/2014/06/2.jpg" alt="2"></p>
 <p>(The End)</p>
 ]]></content>
       
@@ -852,7 +852,7 @@
       <content type="html"><![CDATA[<p>前段时间出地铁正好遇到一群卖艺的小乐队，他们有自己的乐队名称（桶子鼓乐队），有自己的专辑出售（每张20元）。于是也加入人群欣赏了一会儿。临走之时还有一点小感触，本就打算写点什么，但却一直被耽搁。</p>
 <p>昨晚小罗罗突然说在地铁里遇到一枚帅哥弹琴卖艺，于是我们开始了一波的讨论。在小罗罗眼里，他始终对这类人群表示深深的不理解。而我却有着不一样的看法和理解。</p>
 <p>我觉得他们至少也是在付出劳动力，并且说不定他们也还有自己的音乐梦想，只是由于缺乏机遇、缺乏平台让他们不能像正真的音乐人一样。但他们也在用自己的方式表达对此的热爱（但至于卖艺之人的真正目的还是要自己去判断）。<br>社会的人群分布就像一个金字塔，少数的人群是在塔尖，而大部分的人却是处于金字塔身和塔底。而这部分人也可称为普通人。当然我也是其中的一员。按照马斯洛的需要层次理论，从金字塔底到塔尖分别是生理需求、安全需求、社交需求、尊重需求、自我实现。不错，每个人都有理想，也有实现理想的愿望。当我们还在为满足我们的底层需求而奔波劳碌的时候，我们是不是就可以算得上是普通人呢？</p>
-<p>当我听着桶子鼓乐队的歌声，看着他们的投入；当我看到满脸汗水、挂着微笑的小摊小贩时；当我看到早高峰忙忙碌碌的人群时；还有晚上十二点之后还疾驰在路上的人们……我瞬间就能充满正能量。因为即使我们是再普通不过的人群，但我们仍旧用自己的双手去创建明天，飞洒着汗水，即使充满艰辛和坎坷，我们努力着、尝试着。偶尔我们会沮丧，但我们不会自暴自弃；偶尔我们会怨天尤人，但我们会尝试将其转化前行的动力。虽然我们处在金字塔底层，但我们也在贡献着我们的大量财富；虽然我们是普通人，但我们也追求梦想，勇于奋进。<br><img src="http://yhv5.com/uploads/2014/06/power.jpg" alt="power"></p>
+<p>当我听着桶子鼓乐队的歌声，看着他们的投入；当我看到满脸汗水、挂着微笑的小摊小贩时；当我看到早高峰忙忙碌碌的人群时；还有晚上十二点之后还疾驰在路上的人们……我瞬间就能充满正能量。因为即使我们是再普通不过的人群，但我们仍旧用自己的双手去创建明天，飞洒着汗水，即使充满艰辛和坎坷，我们努力着、尝试着。偶尔我们会沮丧，但我们不会自暴自弃；偶尔我们会怨天尤人，但我们会尝试将其转化前行的动力。虽然我们处在金字塔底层，但我们也在贡献着我们的大量财富；虽然我们是普通人，但我们也追求梦想，勇于奋进。<br><img src="https://yhv5.com/uploads/2014/06/power.jpg" alt="power"></p>
 <p>就如同桶子鼓乐队，虽然没有明星的演唱会，但他们可以有街头巡演；可以把自己的歌曲带给身边的人，把快乐和激情传递给身边的人。这不禁让我想到“星星之火可以燎原”，虽然意境不一样，但相信我们每一个普通人在坚持自己的梦想的时候，在努力开心的面对生活艰辛的时候，我们就是自己的英雄。</p>
 <p>(The End)</p>
 ]]></content>
@@ -898,7 +898,7 @@
 </li>
 </ul>
 <p>和上面两种例子一样操作完成之后再相对应的回调页面处理结果即可！（SDK文末附上）</p>
-<p>SDK下载: <a href="http://yhv5.com/software/QQ-SDK.zip">QQSDK</a>、<a href="http://yhv5.com/software/WB-SDK.zip">WBSDK</a>、<a href="http://yhv5.com/software/RR-SDK.zip">RRSDK</a></p>
+<p>SDK下载: <a href="https://yhv5.com/software/QQ-SDK.zip">QQSDK</a>、<a href="https://yhv5.com/software/WB-SDK.zip">WBSDK</a>、<a href="https://yhv5.com/software/RR-SDK.zip">RRSDK</a></p>
 <p>(The End)</p>
 ]]></content>
       
@@ -957,7 +957,7 @@
 </li>
 </ul>
 <p>最后贴一张自己去参加大会的照片~</p>
-<p><img src="http://yhv5.com/uploads/2014/06/pworld.jpg" alt="pworld"></p>
+<p><img src="https://yhv5.com/uploads/2014/06/pworld.jpg" alt="pworld"></p>
 <p>(The End)</p>
 ]]></content>
       
@@ -988,13 +988,13 @@
 <ul>
 <li>首先需要开启我们的抓包利器Fiddler工具，如下图所示：</li>
 </ul>
-<p><img src="http://yhv5.com/uploads/2014/05/first1.jpg" alt="first"></p>
+<p><img src="https://yhv5.com/uploads/2014/05/first1.jpg" alt="first"></p>
 <ul>
-<li>打开手机WiFi，在WiFi设置中选择你连接的WiFi并选择修改网络，在弹出的对话框中选择代理，将PC上使用的IP地址填写到对应位置，并将上面再Fiddler中设置的端口号填写到该位置，这里为了方便操作，我使用了虚拟软件Genymotion工具来模Android客户端，具体关于这个工具的使用，不是本文讨论范围，想了解可以移步本博客 <a href="http://yhv5.com/android_genymotion_1112.html" title="详细阅读 Android模拟器之神器-Genymotion">Android模拟器之神器-Genymotion</a> 观摩。如下图所示：</li>
+<li>打开手机WiFi，在WiFi设置中选择你连接的WiFi并选择修改网络，在弹出的对话框中选择代理，将PC上使用的IP地址填写到对应位置，并将上面再Fiddler中设置的端口号填写到该位置，这里为了方便操作，我使用了虚拟软件Genymotion工具来模Android客户端，具体关于这个工具的使用，不是本文讨论范围，想了解可以移步本博客 <a href="https://yhv5.com/android_genymotion_1112.html" title="详细阅读 Android模拟器之神器-Genymotion">Android模拟器之神器-Genymotion</a> 观摩。如下图所示：</li>
 </ul>
-<p><img src="http://yhv5.com/uploads/2014/05/third.jpg" alt="third"></p>
+<p><img src="https://yhv5.com/uploads/2014/05/third.jpg" alt="third"></p>
 <p>到这里基本就完成了整个调试抓包的流程，为了让你的设置生效，需要使用移动设备或者终断模拟器访问http:.//ip:port（也就是上面的ip地址和端口）下载CA证书安装到设备之后才能使用，完成这步操作之后你就可以在移动设备或者终端模拟器上访问你需要调试的App应用，可以看到你访问App应的时候都会抓取到很多相关的接口数据。这样就可以根据你想要的接口分析数据了，当然Fiddler工具远远不止这点功能，他的其他功能也是非常强大的，好了大家可以尽情的去使用它并挖掘它的潜力了。完成之后顺便截张图如下：</p>
-<p><img src="http://yhv5.com/uploads/2014/05/four.jpg" alt="four"></p>
+<p><img src="https://yhv5.com/uploads/2014/05/four.jpg" alt="four"></p>
 <p>(The End)</p>
 ]]></content>
       
@@ -1026,19 +1026,19 @@
 </li>
 </ul>
 <p>比如netsh wlan set hostednetwork mode=allow ssid=hanggecrazy key=hanggecrazy（其中mode可以设置热点的开启allow和禁用disallow）回车之后如下图则创建成功。</p>
-<p><img src="http://yhv5.com/uploads/2014/05/openwifi.jpg" alt="openwifi"></p>
+<p><img src="https://yhv5.com/uploads/2014/05/openwifi.jpg" alt="openwifi"></p>
 <ul>
 <li>运行成功后，打开网络和共享中心，点击左侧更改适配器设置。进入适配器设置就会发现多出了一个网卡为“Microsoft Virtual WiFi Miniport Adapter”的无线网络连接2并将其重命名（理论上面任意名字都行）。若没有，则尝试更新无线网卡驱动。如下图：</li>
 </ul>
-<p><img src="http://yhv5.com/uploads/2014/05/wifi.jpg" alt="wifi"></p>
+<p><img src="https://yhv5.com/uploads/2014/05/wifi.jpg" alt="wifi"></p>
 <ul>
 <li>选择一个需要共享的适配器（网络已连接）并右键单击选择“属性”，在弹出的对话框顶部选择“共享”选项卡，勾选上第一个选项，并选择，刚才创建的热点适配器，如下图</li>
 </ul>
-<p><img src="http://yhv5.com/uploads/2014/05/select.jpg" alt="select"></p>
+<p><img src="https://yhv5.com/uploads/2014/05/select.jpg" alt="select"></p>
 <ul>
 <li>确定之后，提供共享的网卡图标旁会出现“共享的”字样，表示该网络已共享至新创建的热点，然后回到DOS界面继续输入命令开启热点服务：netsh wlan start hostednetwork，按回车键运行。执行成功如下图所示：</li>
 </ul>
-<p><img src="http://yhv5.com/uploads/2014/05/success.jpg" alt="success"></p>
+<p><img src="https://yhv5.com/uploads/2014/05/success.jpg" alt="success"></p>
 <ul>
 <li>最后，新创建的热点WiFi红叉消失，WiFi基站已组建好并启动，用支持WiFi的设备搜索到自己建立的无线网络（如上面提到的hangecrazy）,输入自己设置的密码（如上面提到的hanggecrazy），即可使用其他设备连接WiFi热点上网了。</li>
 </ul>
@@ -1071,13 +1071,13 @@
 <p>好了介绍了这么一堆废话，开门见山聊正题，下面介绍如何使用这款神器，可以到 <a href="http://www.genymotion.cn/#theme=download" target="_blank" rel="external">Genymotion中文站</a> 去下载，最好注册一下，因为可以通过云端同步数据（非常友爱啊）！下载好了不要问我怎么安装，一路Next（一路走好），安装完成并不能马上就使用它，因为它依赖于 Oracle VirtualBox，可能又有人要问为啥了！因为模拟器的基础设备都是靠它来驱动完成的，那么没办法只好继续下载吧！毕竟是Oracle的，你需要登录下载，可以移步这里 <a href="https://www.virtualbox.org/" target="_blank" rel="external">Oracle VirtualBox</a> 下载，安装一路顺风，最后需要将它的服务启动起来（它默认是自启动的）。好了接下来说怎么使用了吧！</p>
 <p>现在准备工作都做好了！开始打开我们的模拟器Genymotion，第一次要稍微慢一些，因为你还要初始化一些安装。接下来就到了下面这一步：</p>
 <h4 id="创建设备"><a href="#创建设备" class="headerlink" title="创建设备"></a>创建设备</h4><p>在设备管理界面选择上方的Add来创建设备：</p>
-<p><img src="http://yhv5.com/uploads/2014/05/1.jpg" alt="1"></p>
+<p><img src="https://yhv5.com/uploads/2014/05/1.jpg" alt="1"></p>
 <h4 id="选择系统及版本"><a href="#选择系统及版本" class="headerlink" title="选择系统及版本"></a>选择系统及版本</h4><p>创建虚拟设备，选择你相中的一项，然后Next启程吧，之后确认创建的设备信息之后就可以在线安装设备需要的依赖包了（苦逼，又要下载啊```大致都是200M不等，没商量继续下载吧！）。</p>
-<p><img src="http://yhv5.com/uploads/2014/05/2.jpg" alt="2"></p>
+<p><img src="https://yhv5.com/uploads/2014/05/2.jpg" alt="2"></p>
 <h4 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h4><p>下载完成之后点击Finsh之后来到设备管理界面，选择我们创刚建的虚拟设备（细心的看客或许你已经注意到了上面已经虚拟了好几种设备了），可以对它进行配置修改、删除等等操作，当然你还可以连接到云端，即选择设备管理界面上面的Setting即可设置，将数据备份云端或者设置代理服务等等！如图：</p>
-<p><img src="http://yhv5.com/uploads/2014/05/3.jpg" alt="3"> <img src="http://yhv5.com/uploads/2014/05/4.jpg" alt="4"></p>
+<p><img src="https://yhv5.com/uploads/2014/05/3.jpg" alt="3"> <img src="https://yhv5.com/uploads/2014/05/4.jpg" alt="4"></p>
 <h4 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h4><p>完事之后，选中要启动的设备，在设备管理界面选择上方的Play，设备就开始初始化了，最后便来到了我们熟悉的android界面，操作和手机上面一致，无缝对接啊！！！到这里各自爱干嘛干嘛~ ，可别忘记了右侧和下侧还有一些工具条供你使用，另外告诉你一个秘密，你还可以把各种apk从桌面（Mac也可以使用哦）拖到模拟器即可使用，免去你需要在模拟器中下载安装包来安装的烦恼，做到无痛使用啊，强悍吧！！！！</p>
-<p><img src="http://yhv5.com/uploads/2014/05/5.jpg" alt="5"></p>
+<p><img src="https://yhv5.com/uploads/2014/05/5.jpg" alt="5"></p>
 <p>(The End)</p>
 ]]></content>
       
@@ -1128,8 +1128,8 @@
       <title><![CDATA[浅谈云存储]]></title>
       <url>/talkof_cloud_storage_1010.html</url>
       <content type="html"><![CDATA[<p>就在昨天新闻爆出了<a href="http://www.ithome.com/html/iphone/82660.htm" target="_blank" rel="external"> 苹果躺着赚钱：一晚上多了384亿 </a> 的消息下，我们得知苹果在股市带动下一夜净赚了384亿，什么概念呢？大致相当于零售巨头塔吉特的市值。于是也有人到<a href="https://www.worldpayzinc.com/tech-wealth" target="_blank" rel="external"> worldpayzinc </a>网站去查看了一下科技公司每秒能赚多少钱，hanggcrazy也兴趣正浓的上worldpayzinc去查看了一番，其中在网站上面以形象的视觉方式为我们提供了答案，</p>
-<p><img src="http://yhv5.com/uploads/2014/04/11.jpg" alt="1"></p>
-<p>图中列出了十二家科技公司在一秒钟所得到的回报和赚取的利润，其中苹果公司最高到达了1644刀的纯利润，而Twitter则是负利润29刀。我们知道，这么多的利润背后也少不了客户在线上、线下的操作，于是我们又找到了针对部分互联网行业中平均一分钟内请求的数据统计结果如下图所示，<img src="http://yhv5.com/uploads/2014/04/21.jpg" alt="2">其中可以看出在短短的一分钟都能产生如此庞大的数据量，可想而知在整个互联网行业中每一分钟乃至日复一日年复一年所产生的数据是不可想象的，那么这么多的数据如何存储的呢？</p>
+<p><img src="https://yhv5.com/uploads/2014/04/11.jpg" alt="1"></p>
+<p>图中列出了十二家科技公司在一秒钟所得到的回报和赚取的利润，其中苹果公司最高到达了1644刀的纯利润，而Twitter则是负利润29刀。我们知道，这么多的利润背后也少不了客户在线上、线下的操作，于是我们又找到了针对部分互联网行业中平均一分钟内请求的数据统计结果如下图所示，<img src="https://yhv5.com/uploads/2014/04/21.jpg" alt="2">其中可以看出在短短的一分钟都能产生如此庞大的数据量，可想而知在整个互联网行业中每一分钟乃至日复一日年复一年所产生的数据是不可想象的，那么这么多的数据如何存储的呢？</p>
 <p>现在是大数据的时代，很多公司都开启了云数据库存储来解决这个问题，笔者最近也关注了部分企业对大数据的存储方案，比如亚马逊的<a href="https://aws.amazon.com/cn/s3/?nc1=h_ls" target="_blank" rel="external"> AWS(Amazon Web Servives) </a> 是比较出色的，另外还有百度的<a href="http://developer.baidu.com/wiki/index.php?title=docs/cplat/bcs" title="docs/cplat/bcs" target="_blank" rel="external"> BCS(Baidu Cloud Storage) </a>，腾讯的<a href="http://wiki.open.qq.com/wiki/CDB%E6%9C%8D%E5%8A%A1%E4%BB%8B%E7%BB%8D" target="_blank" rel="external"> CDB(Cloud Database) </a>， 阿里的<a href="http://www.aliyun.com/product/rds/" target="_blank" rel="external"> RDS(Relational Database Service) </a>，新浪的<a href="http://www.infoq.com/cn/articles/cl-sae-datastore" target="_blank" rel="external"> RDC(Relational Database Cluster) </a> 等等，这些想必大家都很了解了。另外上述云存储也陆续的对外提供了API和相应的SDK，方便第三方的更好介入和应用。腾讯的CDB目前已经推出普通版和高性能版SSD供不同需求的客户选择，但普通版的销售并不理想，可能主要是高性能版的降价造成的（资料来源 腾讯钟超宇），经过半年的灰度，CDB已经比较稳定了，并且腾讯很多的业务都已经迁移到了CDB上；相对于阿里的RDS就已经广泛运用于ECS和轻云上面了，只要有条件的都可以去使用；国外应该都对AWS非常的感兴趣，因为在某种角度上面说AWS从时间和技术上面都非常的成熟了。</p>
 <p>目前许多公司都有了自己的 * AE（App Engine）了，随着业务的快速增长，大数据对于公司既是欢喜又是担忧，为了更好的解决各种业务带来的大数据，更便捷、合理的进行后端扩展是至关重要，然而后端对数据的稳定性也是一种考验，因此这也将更加严格的要求我们的攻城狮需要有更能适应变化的设计方案和应对大数据带来新技术难题的挑战，我们也将非常地关注和期待新技术给互联网带来的变革和体验。</p>
 <p>(The End)</p>
@@ -1164,7 +1164,7 @@
       <content type="html"><![CDATA[<p>今天笔者在无意识中爬文 <a href="http://www.wooyun.org/" target="_blank" rel="external">乌云</a> 平台上面最近报告的漏洞，各种形形色色奇葩的XSS攻击还是历历在目，只有想不到的，没有做不到的。虽然自己以前也做过这方面的安全过滤处理，但是看见乌云上频频爆出的漏洞，心中既是欢喜又是担忧，欢喜是因为我又了解到了一些新的东西；忧虑是因为自己在这些方面的工作没有完全做到位。</p>
 <p>提及安全，试问大家在做任何事是不是都先将安全方面放在首位呢？我想这里应该不用我来强调，可以见得它有举足重轻的分量。那你是否会问：为什么都将安全方面放在第一考虑，为何还是出现问题？ 这个问题其实也就说明安全是没有绝对的，没有人能将事情做得最完美，即使可能是花着百分之百的心思去处理这件事。因此，我们需要做的是减少问题的出现，尽量避免不必要的烦恼，来减少人力物力方面的支出，毕竟不要让人疲于奔命。</p>
 <p>作为一枚程序猿，我想熟悉这方面工作的人都知道，几乎很难将一段程序在没有BUG的前提下完成，这也因此有了“调试”工作的意义。好吧！说了这么多就想引出今天的正题-chrome浏览器插件 <a href="https://chrome.google.com/webstore/detail/user-agent-switcher-for-c/djflhoibgkdhkhhcedjiklpkjnoahfmg" target="_blank" rel="external">UserAgent switch</a> 的XSS问题。听这个名字大家都应该知道是干什么使的，对，其实就是一个切换UA的工具。很多人都注意了各方面的params、COOKIE、referer blablabla什么什么的过滤，但是往往还忽略了UserAgent也可能带来隐患。这不问题来了，使用UA工具添加一条UA信息准备切换过去，但是问题出来了。我添加的信息VALUE是一段脚本，如：<code>&lt;script&gt;window.location = &quot;http://www.yhv5.com/&quot;&lt;/script&gt;</code>，保存之后我便再也无法使用UA了，修改、添加、切换都无法使用。就连页面结构都乱了。如下图：</p>
-<p><img src="http://yhv5.com/uploads/2014/04/ua.jpg" alt="ua"></p>
+<p><img src="https://yhv5.com/uploads/2014/04/ua.jpg" alt="ua"></p>
 <p>不过这只是前端的一个影响，细心的朋友就会注意到如果安全工作没有做到位，可能就会遇到：在使用很多日志分析工具都是生成html格式的报告，如果这个字段值没有经过合适的过滤编码就直接输出在html里，管理员查看的时候就会执行插入的js了。<span class="subject">Splunk</span>就曾经出过因为对referer字段没有过滤导致的xss漏洞。本质上来说如果要进行xss攻击，只要找到一个未过滤的输入点。输入的数据在支持脚本的软件（不仅限于浏览器）里解析就可以了。sqli也是类似的道理。而输入点并不仅仅是网页里的表单，只要去发现，输入点无处不在，也防不胜防。</p>
 <p>(The End)</p>
 ]]></content>
@@ -1197,11 +1197,11 @@
 <p>本来说来也巧，和朋友讨论了一些关于Qcon举办的大会，虽然没有机会可以去，但是是否可以通过其他方式入场呢？想了一下应该都是需要money的，搜寻了一下，可以通过自愿者的方式入场，有是有这样的规则，但是条件有些不满足，各种限制性因素又浇灭了心中燃起的那朵小火苗。看来现阶段物质基础不满足的条件下真心无缘Qcon大会啊。</p>
 <p>伤心欲绝中去Qcon上面继续看视频，不知不觉发现<a href="http://www.infoq.com/cn/zones/pworld2014/" target="_blank" rel="external"> Pworld 2014 </a> 大会也快到了，了解了一下，这也是一个互联网行业比较有技术含量的分享大会。最值得关注的是，下面提供了”免费报名”的功能，不仅免费报名还有机会免费获得入场的门票（1000元人民币），心中甚是欢喜啊！虽然目前还没有得到门票，但是心情已经开始跳跃不能平静了。按照<br>流程我注册了会员，大致如下流程：</p>
 <p><strong>选择大会地址 </strong></p>
-<p><img src="http://yhv5.com/uploads/2014/04/1.jpg" alt="1"></p>
+<p><img src="https://yhv5.com/uploads/2014/04/1.jpg" alt="1"></p>
 <p><strong>填写申请信息 </strong></p>
-<p><img src="http://yhv5.com/uploads/2014/04/2.jpg" alt="2"></p>
+<p><img src="https://yhv5.com/uploads/2014/04/2.jpg" alt="2"></p>
 <p><strong>审核 </strong><br>审核阶段大致两三个小时之后便通过了审核（信息无误的情况下）。晚上我便收到了正式的电子门票。</p>
-<p><img src="http://yhv5.com/uploads/2014/04/3.jpg" alt="3"></p>
+<p><img src="https://yhv5.com/uploads/2014/04/3.jpg" alt="3"></p>
 <p>十分感谢这次能获取到门票，也感谢这美好的日子，希望到与会现场能面对面接触到业界的技术大牛，并将大会收获到的知识分享给大家。。。</p>
 <p>(The End)</p>
 ]]></content>
@@ -1229,7 +1229,7 @@
       <title><![CDATA[趣味逻辑面试题]]></title>
       <url>/savor_question_961.html</url>
       <content type="html"><![CDATA[<p>虽然笔者是做程序猿、攻城狮的，但最近面试有个HR问到了一些逻辑趣味题，最终还是推断出正确的结果，我觉得挺有意思的，现在分享给大家！</p>
-<p><img src="http://yhv5.com/uploads/2014/04/think.jpg" alt="think"></p>
+<p><img src="https://yhv5.com/uploads/2014/04/think.jpg" alt="think"></p>
 <p>第一个问题是：有一个国王他有四个王子，分别称作老大，老二，老三和老四，国王临终前将四个王子叫到床前，并让侍从拿来六顶皇冠，其中红色的三顶、蓝色的两顶、黄色的一顶让四个王子过目，之后让四个王子闭上眼睛，让侍从把六顶皇冠中的四顶分别给四个王子戴上，并让他们四个人纵向站成一列，将剩余的两顶藏起来。老大最前面，其次是老二，再是老三，最后是老四，然后让四个王子都睁开眼睛。每个人都只能看见前边人的皇冠颜色，老大看不见自己的皇冠颜色，也看不见老二、老三、老四的皇冠颜色；老二能看见老大的皇冠颜色，但是看不见自己和老三、老四的皇冠颜色；老三能看见老大和老二的皇冠颜色，但看不见自己和老四的皇冠颜色，老四能看见老大、老二、老三的皇冠颜色，但是看不见自己的皇冠颜色。这时候国王开始问老四：“你知道自己头上皇冠的颜色吗？” 四王子回答道：“不知道。” 国王又开始问老三：“你知道自己头上皇冠的颜色吗？” 三王子回答道：“不知道。” 国王又开始问老二：“你知道自己头上皇冠的颜色吗？” 二王子回答道：“不知道。” 国王又开始问老大：“你知道自己头上皇冠的颜色吗？” 大王子回答道：“知道。” 就这样的一个趣味逻辑题，请让你分析大王子头上戴的皇冠颜色，并给出逻辑推论。</p>
 <p>第二个问题要简单一些：有三个盒子各装两个球，分别是两个黑球、两个白球、一个黑球和一个白球。封装后，发现三个盒子的标签全部贴错。如果只允许打开一个盒子，拿出其中一个球看，那么能把标签全部纠正过来吗？</p>
 <p>现在大家可以思考这两个问题了。。</p>
@@ -1265,7 +1265,7 @@
     <entry>
       <title><![CDATA[弹窗垃圾广告引发的思绪]]></title>
       <url>/pop_up_spam_triggered_thoughts_951.html</url>
-      <content type="html"><![CDATA[<p><img src="http://yhv5.com/uploads/2014/04/trouble.png" alt="trouble">现如今网络发达，广告也在各种网络上大肆传播。游戏、美女、购物、减肥、医院等无处不在。现本已是见怪不怪了，但最让我受不了的就是游戏和各种美女广告。</p>
+      <content type="html"><![CDATA[<p><img src="https://yhv5.com/uploads/2014/04/trouble.png" alt="trouble">现如今网络发达，广告也在各种网络上大肆传播。游戏、美女、购物、减肥、医院等无处不在。现本已是见怪不怪了，但最让我受不了的就是游戏和各种美女广告。</p>
 <p>就本人安装的酷我播放软件来说，在这之前听歌都转换到手机上去了，电脑软件基本上未开启。就这几天突然心血来潮打开电脑，打开了音乐播放器。一首歌未完，就是游戏小弹窗，紧接着就是美女视频聊天弹窗。于是今天开始了卸载工作，重新安装了天天动听、酷狗音乐，但也发现和酷我音乐一样。播放器分类里面都有一块有关美女直播的模块。顿时很纳闷，听歌和美女有什么关系？最终我选择了QQ音乐。</p>
 <p>当然我没有将每一款播放器一一比较。并不一定所有播放器都是如此。排除音乐播放器，很多软件第一次启动时候的新闻弹窗，就布满了有关美女模块、游戏模块。</p>
 <p>这让我想起来了一个词“色情营销”。色情营销是指利用色情图片或文字吸引网民的注意以达到提高点击量或销售量的营销手段。表现形式主要有网络广告、网络游戏、网站、及时通讯。我相信只要有互联网经历的人都经历过这几种形式。这种行为背后的各种目的，相信大家也知道一二。在这种营销模式的疯狂乱炸下，不担保一个思想成熟的成年人也不会动动鼠标。那么我们的青少年呢？</p>
@@ -1325,7 +1325,7 @@
     <entry>
       <title><![CDATA[漫话坚持]]></title>
       <url>/freetalkperseverance_881.html</url>
-      <content type="html"><![CDATA[<p><img src="http://yhv5.com/uploads/2014/04/6628711bjw1dji2ocgmauj.jpg" alt="6628711bjw1dji2ocgmauj"><br>还是高中时代看过这副漫画。今天又费经心思找到了这副漫画。不难看出就是一人掉下悬崖时抓住了树枝。为了能够逃生，这个人一直坚持到这颗树长大伸向悬崖的对岸。</p>
+      <content type="html"><![CDATA[<p><img src="https://yhv5.com/uploads/2014/04/6628711bjw1dji2ocgmauj.jpg" alt="6628711bjw1dji2ocgmauj"><br>还是高中时代看过这副漫画。今天又费经心思找到了这副漫画。不难看出就是一人掉下悬崖时抓住了树枝。为了能够逃生，这个人一直坚持到这颗树长大伸向悬崖的对岸。</p>
 <p>很多时候我会时不时的想起它，用以激励自己。我深知坚持的不易。坚持按时起床、坚持每天记单词、坚持每天看书学习……这一路走来，很多时候我只能说“臣妾做不到呀”。我常有很多想法，却缺乏持之以恒的决心。如果我们面对的也像漫画中一样，这是生与死的决策，那么我们会怎样呢？（仅以此漫画再次激励自己）</p>
 <p>(The End)</p>
 ]]></content>
@@ -1390,7 +1390,7 @@
     <entry>
       <title><![CDATA[我眼中的互联网]]></title>
       <url>/nodejs_850.html</url>
-      <content type="html"><![CDATA[<p>就在众人追赶着互联网高速发展的浪潮，有些跟不上步伐的人倒下了，又有那么一些年轻的人站起来了。还没来得及熟悉这冲浪的生活节奏，移动互联网又来了，又一批批的躺枪倒下了；还没来得及学习应用云，大数据时代又来了（可以移步本博客的 <a href="http://yhv5.com/talkof_cloud_storage_1010.html">浅谈云存储</a>参阅），又一次次的选择放弃了，真的可以说互联网是把双刃剑，既能致富，也能致衰，既能造就人才，也能造就迷茫。</p>
+      <content type="html"><![CDATA[<p>就在众人追赶着互联网高速发展的浪潮，有些跟不上步伐的人倒下了，又有那么一些年轻的人站起来了。还没来得及熟悉这冲浪的生活节奏，移动互联网又来了，又一批批的躺枪倒下了；还没来得及学习应用云，大数据时代又来了（可以移步本博客的 <a href="https://yhv5.com/talkof_cloud_storage_1010.html">浅谈云存储</a>参阅），又一次次的选择放弃了，真的可以说互联网是把双刃剑，既能致富，也能致衰，既能造就人才，也能造就迷茫。</p>
 <p>话说运用LAMP做开发已经好多年头了，当看见<a href="http://www.infoq.com/news/2011/04/javascript-lamp" target="_blank" rel="external"> Will the Rise of Javascript Mean the End of LAMP </a> 这篇文章时，引用一下原文内容：”</p>
 <ul>
 <li>1991-1999: The HTML Age - The HTML Age was about documents,</li>
@@ -1445,7 +1445,7 @@
       <title><![CDATA[MongoDB 分片集群部署]]></title>
       <url>/mongodb_shard_821.html</url>
       <content type="html"><![CDATA[<p>最近抽了点时间整理一年前做过的MongoDB分片集群部署，具体如有图并结合下述案例分析：</p>
-<p><img src="http://yhv5.com/uploads/2014/03/cluster.png" alt="cluster"></p>
+<p><img src="https://yhv5.com/uploads/2014/03/cluster.png" alt="cluster"></p>
 <h4 id="分片集群配置"><a href="#分片集群配置" class="headerlink" title="分片集群配置"></a>分片集群配置</h4><p>Shard Server: mongod实例，用于存储实际的数据块，实际生产环境中一个Shard Server角色可由几台机器组和一个Replica Set承担，防止主机单点故障。</p>
 <p>Config Server: mongod实例，存储了整个Cluster Metadata，其中包括Chunk信息。</p>
 <p>Route Server: mongos实例，前端路由，客户端由此接入，且让整个集群看上去像单一数据库，前端应用可以透明使用。</p>
@@ -1474,7 +1474,7 @@
 <h5 id="分片中的所有Mongod节点宕机"><a href="#分片中的所有Mongod节点宕机" class="headerlink" title="分片中的所有Mongod节点宕机"></a>分片中的所有Mongod节点宕机</h5><p>如果一个分片中的全部节点（replicas)都宕机了，在该分片内的数据将不能被访问。然而，操作任然是继续进行，只不过是由别的分片分担。看文档就可以弄清楚为什么这样。如果分片被配置为一个复制集（Replicas set)，至少一个成员应该在另外一个数据中心，那样的话，整个分片都宕机几乎是不可能的。为了有更大的冗余度，推荐这样进行配置。</p>
 <h5 id="一个Config-Server宕机"><a href="#一个Config-Server宕机" class="headerlink" title="一个Config Server宕机"></a>一个Config Server宕机</h5><p>一个产品级的分片集群需要有3个Config Server进程，每一个进程都在一台独立的机器上运行。对于Config server中的集群元数据的写操作使用一个两阶段提交，去确保是一个原子的并且是被复制的事务操作。<br>在任何一个配置服务器失效的时候，Mongodb集群的元数据都会变成为只读了。集群系统继续运行，但是chunks在一个分片中将会成为不可以被拆分或者是不可以跨分片进行迁移。对于大多数使用场景，这个不会导致问题，应为改变Chunk元数据进行的并不频繁。</p>
 <p>另外，使宕机的Config Server在一个合理的时间周期（一天）内恢复是相当重要的，这样可以避免分片由于缺乏迁移而变得负载不均衡（相对而言，对于大多数产品场景，这种现象也不是很严重的事情）。</p>
-<p>如需MongoDB客户端工具，强烈推荐MongoVUE，但由于高版本并不支持长期免费试用，因此只能破解原生版本，如有需要，可以移步<a href="http://yhv5.com/mongovue_480.html">mongoVUE1.5完全破解版赠送</a> 获取。</p>
+<p>如需MongoDB客户端工具，强烈推荐MongoVUE，但由于高版本并不支持长期免费试用，因此只能破解原生版本，如有需要，可以移步<a href="https://yhv5.com/mongovue_480.html">mongoVUE1.5完全破解版赠送</a> 获取。</p>
 <p>(The End)</p>
 ]]></content>
       
@@ -1500,7 +1500,7 @@
     <entry>
       <title><![CDATA[MySQL5.6主从配置和定时备份]]></title>
       <url>/mysql_master_slave_799.html</url>
-      <content type="html"><![CDATA[<h4 id="MySQL5-6-的-Master-Slave配置"><a href="#MySQL5-6-的-Master-Slave配置" class="headerlink" title="MySQL5.6 的 Master-Slave配置"></a>MySQL5.6 的 Master-Slave配置</h4><p>在预装好MySQL5.6版本的两台机器A(192.168.1.123)、B(192.168.1.124)之后，可按照下文的操作进行配置主从备份，关于非主从线程的MySQL同步机制可移步 <a href="http://yhv5.com/mysql_svn_598.html">Windows下面的MYSQL同步（非主从线程同步机制）</a>参考，本篇是基于MySQL内部机制的同步。希望可以帮你解决问题！</p>
+      <content type="html"><![CDATA[<h4 id="MySQL5-6-的-Master-Slave配置"><a href="#MySQL5-6-的-Master-Slave配置" class="headerlink" title="MySQL5.6 的 Master-Slave配置"></a>MySQL5.6 的 Master-Slave配置</h4><p>在预装好MySQL5.6版本的两台机器A(192.168.1.123)、B(192.168.1.124)之后，可按照下文的操作进行配置主从备份，关于非主从线程的MySQL同步机制可移步 <a href="https://yhv5.com/mysql_svn_598.html">Windows下面的MYSQL同步（非主从线程同步机制）</a>参考，本篇是基于MySQL内部机制的同步。希望可以帮你解决问题！</p>
 <p>由于MySQL5.5版本之后主从之间不能直接将主服务器信息写入从服务器配置文件中，这里需要注意！因此只需要在主配置文件master.cnf中加入必要的一些选项即可，找到[mysqld]段加入如下内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">sql-mode=NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION</div><div class="line">log-bin=mysql-bin #slave会基于此log-bin来做replication</div><div class="line">server-id=1 #master的标示</div><div class="line">read-only=0</div><div class="line">binlog-do-db=mydb #同步数据库，可以复制写多个</div><div class="line">binlog-ignore-db=mysql #忽略需要同步的数据库，可以复制写多个</div><div class="line">log-slave-updates=1 #这个参数一定要加上，否则不会给更新的记录写入到二进制文件中</div><div class="line">innodb_flush_log_at_trx_commit=1</div><div class="line">sync_binlog=1</div><div class="line">skip-external-locking #加上可以避免因资源锁引起MySQL服务停止</div><div class="line">skip-name-resolve #加上可以避免因资源锁引起MySQL服务停止</div></pre></td></tr></table></figure></p>
 <h5 id="启动mysql"><a href="#启动mysql" class="headerlink" title="启动mysql"></a>启动mysql</h5><p>首先在主服务器A(192.168.1.123)上使用root权限启动MySQL，这里可以使用Daemon守护进程方式进行，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/mysql/bin/mysqld --defaults-file=/usr/local/mysql/master.cnf --basedir=/usr/local/mysql --datadir=/var/mysql/data --plugin-dir=/usr/local/mysql/lib/plugin --user=root --log-error=/var/logs/mysql/master.err --pid-file=/var/mysql.pid --explicit_defaults_for_timestamp &amp;</div></pre></td></tr></table></figure></p>
 <h5 id="授权"><a href="#授权" class="headerlink" title="授权"></a>授权</h5><p>主服务器A(192.168.1.123)上登录MySQL（root）进行从服务器同步授权<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/mysql/bin/mysql -uroot -h192.168.1.123 -p</div></pre></td></tr></table></figure></p>
@@ -1606,7 +1606,7 @@
       <content type="html"><![CDATA[<p>话说物联网这个词汇在我上大学的时候已经被炒的火热了，那时候还有用RFID做技术专利的大学同学，记得当时我也参加了。。。</p>
 <p>如今这个词汇再次出现在我的脑海里，今天在不小心点击综艺节目中的插播广告结果跳到了这个广告的网页，令我非常纳闷。难道这是传说中的电视购物吗？物联网走进了我们的生活了？</p>
 <p>果不其然，好些年没有关注物联网的发展，如今已经开始广泛进入了我们的周围，什么它真的来临了。。。最令人兴奋的是未来的厨房了，设想一下它有多么的方便。我们再也不用下班后忙碌的赶回家做晚餐了；再也不用为了厨房中的油烟而苦恼不堪；再也不用为了担心食物的健康问题。。。它将被一全套的设备指令所操控，而你就是它的主人，不敢想象吧！当你快要下班前，厨房设备会向你发送指令，让你选择晚餐菜系。当你选择好通过指令告知厨房设备后，冰箱会按照你指定的菜系将储藏在当中的菜进行消毒杀菌，并清洁干净供厨房设备待用；这同时你的米饭已经开始香喷喷的等着主人了，当你还有五分钟要到家门的时候，设备门会根据你平时最爱听的歌曲选择一首做预备工作，当你一踏进家门的时候，会给你带来一种轻松的感觉，也许这时候空调设备会自动给你报告室内的空气质量、温度和其他设备的状态是否正常，当然你可以视而不见的。但冰箱设备早已为你订了你最爱喝的牛奶，你一定会羡慕死的。屋内的所有设备将会相互协调工作，只要设备出现故障都会自动联系工作人员检查，而不是在你工作的百忙中接收到一系列的设备问题提醒。当你在吃完可口的晚餐后，你可以像在餐厅里面一样直接走人，剩下的工作将又是厨房设备的事了。当你拥有它的时候，它不但不会给你带了烦恼，而且还可以为你带来充足的时间做你喜欢做的事，它就是你未来家庭的一员。一些科学家提出了许多令人耳目一新的大胆设想，并正在将它们变成现实：比如免水洗衣机和洗碗机，它们可以通过发射声波将污垢震碎达到清洁的效果；再比如“智慧冰箱”，不仅可以分析并显示储藏菜肴的配方，甚至会自动将剩菜剩饭打包，将腐败的食物处理掉。</p>
-<p>不过，未来厨房里最具革命性的设施要算“自足式生物农场”了。<br><img src="http://yhv5.com/uploads/2014/01/futerhouse.jpg" alt="futerhouse"><br>这套外型有点像玻璃 橱柜的设备共分为两大部分：上半部是“菜田”，可以在营养液“土壤”中栽培瓜果蔬菜，顶部的照明系统将保证植物有充分的光照；下半部则是“池塘”，可以养殖鱼虾、藻类和其它水产品。只要厨房里有了这套设备，菜场和超市都不用去，全家人天天都能享用到最新鲜的鱼虾和蔬果。除了便捷外，“农场”还有一大特点就是节能，系统收集的氢气可以作为氢能汽车的燃料，来自“菜田”的氧气运输到“池塘”可以让鱼虾活得更欢畅。细心的你也许要问鱼缸脏了怎么办，别忘了里面还住着小虾，它们完全可以扮演“清道夫”的角色。</p>
+<p>不过，未来厨房里最具革命性的设施要算“自足式生物农场”了。<br><img src="https://yhv5.com/uploads/2014/01/futerhouse.jpg" alt="futerhouse"><br>这套外型有点像玻璃 橱柜的设备共分为两大部分：上半部是“菜田”，可以在营养液“土壤”中栽培瓜果蔬菜，顶部的照明系统将保证植物有充分的光照；下半部则是“池塘”，可以养殖鱼虾、藻类和其它水产品。只要厨房里有了这套设备，菜场和超市都不用去，全家人天天都能享用到最新鲜的鱼虾和蔬果。除了便捷外，“农场”还有一大特点就是节能，系统收集的氢气可以作为氢能汽车的燃料，来自“菜田”的氧气运输到“池塘”可以让鱼虾活得更欢畅。细心的你也许要问鱼缸脏了怎么办，别忘了里面还住着小虾，它们完全可以扮演“清道夫”的角色。</p>
 <p>科学家们表示，未来要在厨房使用这套设施，必须在房屋建造时就提前做好准备，而建筑师们已经在使用3D技术考虑相关设计。因此如今的社会已经进入高科技时代，未来将会一切皆有可能！大胆的你可以为你的创意发表任何意见了。。。你还等什么呢？</p>
 <p>(The End)</p>
 ]]></content>
@@ -1652,7 +1652,7 @@
 </ul>
 <p>存储引擎得到查询结果并递归返回给”查询执行引擎”，最终由查询引擎将数据返回给客户端和缓存至查询缓存。</p>
 <p>大致流程图如下：</p>
-<p><img src="http://yhv5.com/uploads/2013/12/mysql.jpg" alt="mysql"></p>
+<p><img src="https://yhv5.com/uploads/2013/12/mysql.jpg" alt="mysql"></p>
 <p>其中”MYSQL客户端/服务器通信协议”之间采用半双工通信，即一方发送数据，另一方接收数据，不能同时发送数据和接收数据，也不能将一个数据包分割发送。这使得通信协议快速简单化但也使得MYSQL的通信受到限制，一个明显的限制则是流量控制，也就意味着，一旦一方开始发送数据，另外一方无论数据量多少都需要接收完整个数据才能响应它。这也就是常常看到的查询语句较长就会非常耗时，客户端只需要一个简单的数据包发送给服务器端，就一直等待返回结果；而服务器端处理得到的请求需要很复杂的过程，并最终返回较多的数据给客户端，客户端也必须将整个数据接收完。这也是为何查询语句需要加上LIMIT的原因。客户端也应该配置发送最大数据包的参数max_allowed_packet。</p>
 <p>“查询缓存”：多数连接MYSQL的库函数都会默认将返回的数据缓存到内存中，这样可以方便下次请求数据有效的回收链接资源和带宽。因此在遇到不同场景的情况下需要将查询结果进行缓存，这样既可以减小响应时间，也可以降低服务器压力。但情况往往也不是我们所想象的那么理想，缓存大量的数据也需要系统的开销和时间。因此缓存是根据不同的场景进行自定义。如PHP获取数据库数据一般情况下都是</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$link = mysql_connect(<span class="string">'localhost'</span>, <span class="string">'user'</span>, <span class="string">'passwd'</span>);</div><div class="line">$query = mysql_query(<span class="string">'SELECT * FROM db.table'</span>, $link);</div><div class="line"><span class="keyword">while</span>($rs = mysql_fetch_assoc($query))&#123;</div><div class="line">    var_dump($rs);<span class="comment">//查询结果集</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -1680,7 +1680,7 @@
     <entry>
       <title><![CDATA[MySQL同步机制以及SVN自动发布]]></title>
       <url>/mysql_svn_598.html</url>
-      <content type="html"><![CDATA[<h3 id="Windows下面的MYSQL同步（非主从线程同步机制）"><a href="#Windows下面的MYSQL同步（非主从线程同步机制）" class="headerlink" title="Windows下面的MYSQL同步（非主从线程同步机制）"></a>Windows下面的MYSQL同步（非主从线程同步机制）</h3><p>大家都知道MySQL的主从同步机制，原理就是通过修改MySQL配置文件my.ini(Linux下面是my.cnf)进行设置相应的选项即可，这样就简单实现了MySQL的主从同步，但这样操作有好处也有坏处，好处是：可以直接使用MySQL内部机制进行数据同步，减少繁琐的事件驱动；坏处是：应用不方便如果需要更改同步机制，需要修改配置文件并重启数据库（即不能热机切换配置），因此如果需要了解主从同步可以移步各大论坛或者求助Google，另外关于MySQL的内部同步机制可以移步 <a href="http://yhv5.com/mysql_master_slave_799.html">MySQL5.6主从配置和定时备份</a> 参考。</p>
+      <content type="html"><![CDATA[<h3 id="Windows下面的MYSQL同步（非主从线程同步机制）"><a href="#Windows下面的MYSQL同步（非主从线程同步机制）" class="headerlink" title="Windows下面的MYSQL同步（非主从线程同步机制）"></a>Windows下面的MYSQL同步（非主从线程同步机制）</h3><p>大家都知道MySQL的主从同步机制，原理就是通过修改MySQL配置文件my.ini(Linux下面是my.cnf)进行设置相应的选项即可，这样就简单实现了MySQL的主从同步，但这样操作有好处也有坏处，好处是：可以直接使用MySQL内部机制进行数据同步，减少繁琐的事件驱动；坏处是：应用不方便如果需要更改同步机制，需要修改配置文件并重启数据库（即不能热机切换配置），因此如果需要了解主从同步可以移步各大论坛或者求助Google，另外关于MySQL的内部同步机制可以移步 <a href="https://yhv5.com/mysql_master_slave_799.html">MySQL5.6主从配置和定时备份</a> 参考。</p>
 <p>好了，了解了一点MySQL的同步机制，众所周知的是大家都知道Linux下面有crontab定时任务，这点可以方便我们定时执行某一些特定的任务。那相对应的Windows机器呢？它是否也有自己的定时任务处理呢？答案是有的。现在就让我们在Windows机器上来一起设置一个MySQL的同步脚本。</p>
 <p>脚本编写：首先我写了两个简单的脚本文件（文末附上链接，后缀是.bat文件,根据自己的需求更改文件）一个是自动同步数据库脚本（修改完配置参数，加入定时任务就能自动运行），另一个是手工同步脚本（即自己输入数据库信息并手动同步），脚本文件都很简单（里面有具体的命令解释说明，相信大家都能看明白），步骤大致分为以下六步：</p>
 <ul>
@@ -1700,25 +1700,25 @@
 <p>完成上述六步即完成了整个同步脚本。</p>
 <p>好了，做到到这里时MySQL的同步机制并没有完成，手工同步则可以直接运行脚本，这里可以略过，现在只介绍自动同步的后续工作。</p>
 <p>设置定时任务：Windows机器大家都常用，按下win键（即Windows图徽，左Crtl右边这个键），点击“控制面板”，如下图：</p>
-<p><img src="http://yhv5.com/uploads/2013/09/controller.jpg" alt="222"></p>
+<p><img src="https://yhv5.com/uploads/2013/09/controller.jpg" alt="222"></p>
 <p>在弹出的窗口中右上方选择“查看方式”为小图标，继而选择里面的“管理工具”，如下图所示：</p>
-<p><img src="http://yhv5.com/uploads/2013/09/2.png" alt="2"></p>
+<p><img src="https://yhv5.com/uploads/2013/09/2.png" alt="2"></p>
 <p>点击“管理工具”选择“任务计划程序”快捷图标进入任务计划控制台，在左侧的“任务计划程序库”右键选择“创建任务”，选择顶部菜单栏“常规”选项卡并如下图填写：</p>
-<p><img src="http://yhv5.com/uploads/2013/09/3.png" alt="3"></p>
+<p><img src="https://yhv5.com/uploads/2013/09/3.png" alt="3"></p>
 <p>选择顶部菜单栏“触发器”选项卡如下图填写：（我这里一分钟执行同步一次）</p>
-<p><img src="http://yhv5.com/uploads/2013/09/4.png" alt="4"></p>
+<p><img src="https://yhv5.com/uploads/2013/09/4.png" alt="4"></p>
 <p>点击确定，在选择顶部菜单栏“操作”选项卡，如下图填写：</p>
-<p><img src="http://yhv5.com/uploads/2013/09/5.png" alt="5"></p>
+<p><img src="https://yhv5.com/uploads/2013/09/5.png" alt="5"></p>
 <p>到这里为止，定时任务基本完成，如有容错机制，可以将顶部菜单栏后续的几个选项卡中设置调整为自己的模式即可。</p>
 <p>创建成功如下图：</p>
-<p><img src="http://yhv5.com/uploads/2013/09/6.png" alt="6"></p>
+<p><img src="https://yhv5.com/uploads/2013/09/6.png" alt="6"></p>
 <p>Tips：到这里，这个任务为挂起状态，我们如果需要关闭这个页面会报错，因此需要将这个任务结束才能关闭。</p>
 <h3 id="Linux主机上的SVN自动发布"><a href="#Linux主机上的SVN自动发布" class="headerlink" title="Linux主机上的SVN自动发布"></a>Linux主机上的SVN自动发布</h3><p>在linux主机上SVN仓库中修改hooks目录下面的post-commit.tmp钩子文件 并重命名为post-commit文件</p>
 <p>可以复制下面代码至文件中并修改相应程序路径：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">REPOS=<span class="string">"<span class="variable">$1</span>"</span>                          <span class="comment">#版本库</span></div><div class="line"></div><div class="line">REV=<span class="string">"<span class="variable">$2</span>"</span>                            <span class="comment">#版本号</span></div><div class="line"></div><div class="line"><span class="built_in">export</span> LANG=zh_CN.UTF-8             <span class="comment">#自动同步脚本防止乱码</span></div><div class="line"></div><div class="line">SVN=/usr/<span class="built_in">local</span>/svn/bin/svn          <span class="comment">#SVN程序路径，这里根据个人安装路径修改</span></div><div class="line"></div><div class="line">WEB=/usr/<span class="built_in">local</span>/web/hanggecrazy      <span class="comment">#SVN程序发布位置（项目路径），这里根据个人安装路径修改</span></div><div class="line"></div><div class="line"><span class="built_in">echo</span> `date`</div><div class="line"></div><div class="line"><span class="built_in">echo</span> <span class="string">"用户"</span>:`whoami`<span class="string">" 将版本库："</span><span class="variable">$REPOS</span><span class="string">" 更新至 "</span><span class="variable">$REV</span><span class="string">" 版本号"</span> &gt;&gt; /date1/logs/svn_hook.log   <span class="comment">#注:log文件路径，用于记录svn更新记录</span></div><div class="line"></div><div class="line"><span class="variable">$SVN</span> update --username ********** --password *********** <span class="variable">$WEB</span>  &gt;&gt; /date1/logs/svn_hook.log</div></pre></td></tr></table></figure></p>
 <p>#同步代码从SVN服务器到WEB服务器<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/bin/rsync -vaztpH  --timeout=60  <span class="variable">$WEB</span> *******@192.168.1.100:/www/hanggecrazy</div></pre></td></tr></table></figure></p>
 <p>但是最后同步操作还没有绕过不用输入用户和口令验证，这点待完善。。。</p>
 <p>分享一点小知识，希望大家了解一些。。。。</p>
-<p><a href="http://yhv5.com/software/SQL_auto_mallay.rar">SQL_auto_mallay</a></p>
+<p><a href="https://yhv5.com/software/SQL_auto_mallay.rar">SQL_auto_mallay</a></p>
 <p>(The End)</p>
 ]]></content>
       
@@ -1818,7 +1818,7 @@
       <title><![CDATA[GReader 之数据大迁移]]></title>
       <url>/greader_migration_553.html</url>
       <content type="html"><![CDATA[<p>3月13日随着Google宣布今年7月1日关闭Reader产品，人们都在怨气中寻找着它的替代产品，同时业界的资料也透露了一些相关的替代产品，如：Feedly、NewsBlur、The Old Reader、NetVibes、Pulse、Flipboard、Zite、Twitter等等（资料来源煎蛋）。</p>
-<p>GReader是大家都公认的从设计到用户体验都是最好的一款阅读器而深受大家喜爱，然而即将就戛然而止，许多人在背后议论中其中的渊源。<br><img src="http://yhv5.com/uploads/2013/06/googlereader.jpg" alt="googlereader"><br>GReader为何要死？这些话题都已成为茶余饭后的闲谈。目前最重要的找到其最终替代产品，网上很火的推荐都是Feedly，但是像GReader这个庞大的用户群体，要想转移到Feedly上面是需要很多的开销的，何况Feedly之前的用户比较少，随着用户群体的迁移，数据压力对Feedly是一个很大的挑战。</p>
+<p>GReader是大家都公认的从设计到用户体验都是最好的一款阅读器而深受大家喜爱，然而即将就戛然而止，许多人在背后议论中其中的渊源。<br><img src="https://yhv5.com/uploads/2013/06/googlereader.jpg" alt="googlereader"><br>GReader为何要死？这些话题都已成为茶余饭后的闲谈。目前最重要的找到其最终替代产品，网上很火的推荐都是Feedly，但是像GReader这个庞大的用户群体，要想转移到Feedly上面是需要很多的开销的，何况Feedly之前的用户比较少，随着用户群体的迁移，数据压力对Feedly是一个很大的挑战。</p>
 <p>当然我也是GReader的爱好者，这段期间也尝试了很多的替代产品，最终国内的产品还是无法被我接受，虽然像鲜果还是挺不错的，也需要支持，但是我觉得和国外的产品还是有很大的差距。在将目光投向国外的产品中虽然也随大众选择了Feedly，但总担忧这个产品做得不够好不够专业，但是目前也没有什么好的选择了。在Google刚宣布停止GReader服务的一周内，我测试了Feedly的性能，可以这么说几乎无法使用，我将自己的GReader订阅资料转移到Feedly就花了整整一天，本以为说是由于文章资料太多，但是在数据迁移之后，重新打开Feedly需要加载的时间竟然更让我很吃惊，一天都没有加载出来一个页面，这对我很失望。之后关注了一些舆论界的新闻，Feedly现在正在实行数据库扩容和性能提升，面对海量的数据来说，Feedly既是欢喜又是堪忧，从GReader上每天迁移的数据对于Feedly都是一个新的挑战，因此真正能做到完全替代GReader还需要时间。在即将要停止服务的GReader，Feedly你准备好了吗？能赶上7月1日之前将性能问题解决是现在最为关注的。</p>
 <p>最后留下一句 GoogleReader关闭的教训：“我们的”科技产品并不属于我们。带着遗憾挥手告别GReader！</p>
 <p>(The End)</p>
@@ -1857,20 +1857,20 @@
       <content type="html"><![CDATA[<p>由于SAE平台的特殊，为了网站的安全性，它不支持本地IO操作，因此这也使得对于一些常用的缓存机制都不能使用，必要的时候只能使用其提供的服务充当，当然这也是SAE的赚钱之道。</p>
 <p>CakePhp是比较成熟的轻量级框架，由于CakePhp原生程序不能在SAE上面直接运行，同时SAE也介绍了一些禁用的PHP类库函数，对于CakePhp底层框架依赖的这些函数就不能正常使用，为此一些大大就自行开源了支持SAE环境的CakePhp框架，虽然这其中只是更改底层的一些禁用函数和缓存引擎，但是也方便了很多的程序猿使用CakePhp在SAE上建站。</p>
 <p>对于使用SAE，我也才了解一段时间，不过它本身的稳定性还是值得屈指的，CakePhp原生使用写文件的方式来存储cache，而在SAE上面则更改这种方式为Memcache（MC）的方式存储，在SAE里面MC服务是收费的，另外在我们常用的上传文件功能，在SAE里面显得不那么自由了，它有好几种方式存储，当然我还是采用的Storage，Storage是SAE为开发者提供的分布式文件存储服务，用来存放用户的持久化存储的文件。具体的应用可以在自己的管理后台看到。首先使用SAE管理自己的代码，通常有两种方法，一种是常用的程序开发模式版本控制器（SVN），另外一种是它支持ZIP格式的压缩包上传到服务器的方式，这两种方式虽然后者方便，但是不利于管理，以至于在造成错误后无法回滚代码，所以还是推荐使用SVN方式，在使用SVN之前需要为网站创建二级域名和应用名，下面的SVN会用到。在后台左侧选择“应用设置”创建自己的二级域名和应用名，这个应用名同时是SVN项目名也是数据库名（具体后面会说到），然后点击左侧的 “代码管理”，这时你只需要创建一个版本它即为你生成一个SVN地址如下图：</p>
-<p><img src="http://yhv5.com/uploads/2013/05/1.png" alt="1"></p>
+<p><img src="https://yhv5.com/uploads/2013/05/1.png" alt="1"></p>
 <p>通过生成的SVN地址可以将自己的代码提交到服务器上面，刚才讲到了另外的一种方式提交代码，如上图中第2点后面操作部分“上传代码包”（只支持ZIP格式），上传完自动按照压缩包格式解压到服务器。待上传完毕代码之后即可在操作部分点击“编辑代码”，进入文件在线编辑工作区，在那里修改过的文件都会直接记录到SVN中。<br>其次是数据库的使用，在管理后台左侧选择MySQL，则可以对数据库进行配置，SAE和其他空间运营商有点不一样，它提供的数据库和网站应用名是相关联的，如创建了一个名为house的应用，则它会给你生成一个app_house的数据库，你只能对这个库进行操作，不能再创建数据库，如果需要创建数据库，只能从新定义应用名让其分配数据库进行操作，这点本人非常的不习惯，如下:</p>
-<p><img src="http://yhv5.com/uploads/2013/05/2.png" alt="2"></p>
+<p><img src="https://yhv5.com/uploads/2013/05/2.png" alt="2"></p>
 <p>点击上面的管理MySQL，则进入分配的数据库（和PhpMyAdmin一致），如下图：</p>
-<p><img src="http://yhv5.com/uploads/2013/05/3.png" alt="3"></p>
+<p><img src="https://yhv5.com/uploads/2013/05/3.png" alt="3"></p>
 <p>这也就是能对数据库进行管理的唯一入口了。这里需要说明一点，CakePhp程序中的database.php文件需要用SAE自己的数据库名常量并实例化数据库。数据库服务器上面截图处可以看到,直接上图：</p>
-<p><img src="http://yhv5.com/uploads/2013/05/4.png" alt="4"></p>
+<p><img src="https://yhv5.com/uploads/2013/05/4.png" alt="4"></p>
 <p>上面介绍在SAE上运行的CakePhp更改了缓存引擎为MC因此这里需要将MC服务开启，点击管理后台左侧的Memcache设置自己业务的配额激活即可，如下图:</p>
-<p><img src="http://yhv5.com/uploads/2013/05/5.png" alt="5"></p>
+<p><img src="https://yhv5.com/uploads/2013/05/5.png" alt="5"></p>
 <p>另外使用到的文件上传服务是Storage，SAE默认分配的空间为10G大小，这里只需要创建自己的domain文件夹就行了，权限可以自行设置（访问权限和防盗链），这里我创建了一个图片的domain，用来管理上传的图片和文件，废话少说直接上图:</p>
-<p><img src="http://yhv5.com/uploads/2013/05/6.png" alt="6"></p>
+<p><img src="https://yhv5.com/uploads/2013/05/6.png" alt="6"></p>
 <p>具体的文件上传的代码非常简单，直接上代码：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$sae = <span class="keyword">new</span> SaeStorage();</div><div class="line">$sae-&gt;upload( <span class="string">'domain名'</span>,<span class="string">'最终文件名'</span>,<span class="string">'源文件名'</span>);</div></pre></td></tr></table></figure></p>
 <p>调用完上传函数返回的就是该图片在服务器的路径了，操作非常简单，获取图片也很简单:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$sae-&gt;getUrl(<span class="string">'domain名'</span>,<span class="string">'最终文件名'</span>);</div></pre></td></tr></table></figure></p>
-<p>操作比php的图片上传更简单。最后还是提供一下MC引擎的CakePhp核心lib包和重定向文件config.yaml下载地址附后。<br>cake_lib下载地址:  <a href="http://yhv5.com/software/cakelib2.1.3">cake_lib_2.1.3</a><br>重定向文件下载地址：<a href="http://yhv5.com/software/config.yaml">config.yaml</a></p>
+<p>操作比php的图片上传更简单。最后还是提供一下MC引擎的CakePhp核心lib包和重定向文件config.yaml下载地址附后。<br>cake_lib下载地址:  <a href="https://yhv5.com/software/cakelib2.1.3">cake_lib_2.1.3</a><br>重定向文件下载地址：<a href="https://yhv5.com/software/config.yaml">config.yaml</a></p>
 <p>(The End)</p>
 ]]></content>
       
@@ -1909,17 +1909,17 @@
       <title><![CDATA[MongoVUE1.5完全破解版赠送]]></title>
       <url>/mongovue_480.html</url>
       <content type="html"><![CDATA[<p>最近一直接触NoSQL中的mongoDB，但是在网上找了很多的客户端工具都不是很好用，其中好用的客户端如  mongoVUE却不是完全免费的（目前最高版本是1.5版本），最多免费使用15天，如图：</p>
-<p><img src="http://yhv5.com/uploads/2013/04/20121215135019.png" alt="20121215135019"></p>
+<p><img src="https://yhv5.com/uploads/2013/04/20121215135019.png" alt="20121215135019"></p>
 <p>目前只有1.3版本以下的mongoVUE才是免费的，但新的功能却不能使用。网上也有很多针对1.5版本mongoVUE进行破解的方式，但是治标不治本，如：修改注册表中查找B1159E65-821C3-21C5-CE21-34A484D54444中的子项4FF78130 ，删除其下的三个子项，之后MongoVUE又重置到15天的情况了，但过了15天又需要手动进行操作注册表，而且开启软件时一直都会提示如图：</p>
-<p><img src="http://yhv5.com/uploads/2014/03/zhuce.png" alt="zhuce"></p>
+<p><img src="https://yhv5.com/uploads/2014/03/zhuce.png" alt="zhuce"></p>
 <p>是不是很烦恼？现在小编在此提供一下mongoVUE1.5破解版，破解后效果如下图：</p>
-<p><img src="http://yhv5.com/uploads/2013/04/20121215140217.png" alt="20121215140217"></p>
+<p><img src="https://yhv5.com/uploads/2013/04/20121215140217.png" alt="20121215140217"></p>
 <p>操作方式可到本文尾部下载软件到本机解压（由于软件资源甚少，几乎找不到完全破解版，下载请支持一下小编），其中包含三个文件如图：</p>
-<p><img src="http://yhv5.com/uploads/2013/04/8.png" alt="8"></p>
+<p><img src="https://yhv5.com/uploads/2013/04/8.png" alt="8"></p>
 <p>其中Installer.msi为安装软件，点击安装到本机即可，安装完成之后并没结束，到这里只是和普通网上下载的mongVUE1.5安装程序一样，没有经过破解，因此需要用到另一个文件Crached.zip，解压该文件之后出现如图两个文件：</p>
-<p><img src="http://yhv5.com/uploads/2013/04/9.png" alt="9"></p>
+<p><img src="https://yhv5.com/uploads/2013/04/9.png" alt="9"></p>
 <p>其中只有MongoVUE.exe文件有作用。将其拷贝到安装mongoVUE的安装目录覆盖原有MongoVUE.exe文件即可。现在再次打开mongoVUE到顶端菜单栏中help-&gt;about中查看type已经改变为Licensed了（不会再次出现免费使用天数限制这个烦人的界面）。</p>
-<p>下载地址：<a href="http://yhv5.com/software/MongoVUE.v1.5.3.rar">MongoVUE.v1.5.3.rar</a></p>
+<p>下载地址：<a href="https://yhv5.com/software/MongoVUE.v1.5.3.rar">MongoVUE.v1.5.3.rar</a></p>
 <p>(The End)</p>
 ]]></content>
       
@@ -1999,11 +1999,11 @@
 <h4 id="生成秘钥"><a href="#生成秘钥" class="headerlink" title="生成秘钥"></a>生成秘钥</h4><p>秘钥Key，也称私钥,openssl会提示输入一个密码，可以输入，也可以不输，输入的话，以后每次使用这个key的时候都要输入密码，安全起见，还是应该有一个密码保护。使用命令如： openssl genrsa (可选-des3) -out server.key 2048/1024/4096等</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ openssl genrsa -des3 -out server.key 4096</div></pre></td></tr></table></figure>
 <p>执行回车后输入密码再次回车输入确认密码即可，则在当前目录生成了server.key文件，具体可参见如下图：</p>
-<p><img src="http://yhv5.com/uploads/2014/02/1.jpg" alt="1"></p>
+<p><img src="https://yhv5.com/uploads/2014/02/1.jpg" alt="1"></p>
 <h4 id="生成CSR证书"><a href="#生成CSR证书" class="headerlink" title="生成CSR证书"></a>生成CSR证书</h4><p>使用上面生成的Key，生成一个certificate signing request (CSR)。如果生成的key有密码保护，openssl首先会询问刚才设置的密码，然后需要你填写一系列问题,其中Common Name(CN)是最重要的，它代表你的证书要代表的目标，如果你为网站申请的证书，就要添你站点的域名。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ openssl req -new -key server.key -out server.csr</div></pre></td></tr></table></figure>
 <p>执行完成之后则在当前目录生成了server.csr文件，如下图所示</p>
-<p><img src="http://yhv5.com/uploads/2014/02/2.jpg" alt="2"></p>
+<p><img src="https://yhv5.com/uploads/2014/02/2.jpg" alt="2"></p>
 <p>上图中需要填写的信息也可以作为配置信息，不用每次都进行填写，于是可以将这些信息设置为默认信息，如下：<br>找到 /etc/pki/tls/openssl.cnf 配置文件(修改默认设置)<br>查找[ req_distinguished_name ] 模块下面的</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">countryName_default = XX</div><div class="line">stateOrProvinceName_default = Default Province</div><div class="line">localityName_default = Default City</div><div class="line">0.organizationName_default = Default Company Ltd</div><div class="line">organizationalUnitName_default =</div></pre></td></tr></table></figure>
 <p>修改为<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">countryName_default = CN</div><div class="line">stateOrProvinceName_default = Beijing</div><div class="line">localityName_default = Beijing</div><div class="line">0.organizationName_default = YHV5.COM</div><div class="line">organizationalUnitName_default = YHV5.COM</div></pre></td></tr></table></figure></p>
@@ -2041,7 +2041,7 @@
       <title><![CDATA[ECSHOP源码解析]]></title>
       <url>/ecshop_source_resolution_62.html</url>
       <content type="html"><![CDATA[<p>前些天，寝室一朋友给我拿了一道ECSHOP的面试题，当时的我对商派EXSHOP还是有所了解的，于是答应帮他看看。但是一直都没时间做，等到昨天中午的时候才加紧看了一下源码，代码封装的还算不错的，结果前端页面样式弄好了但是功能没有得到实现。但是答应了别人的事还是的做好，于是到了晚上给加班弄好了。 例子是一个在ECSHOP 后台权限管理列表页面增加一个用户名和email邮箱搜索条件，并在列表下端显示分页效果。如下图所示。</p>
-<p><img src="http://yhv5.com/uploads/2012/09/7.png" alt="7"></p>
+<p><img src="https://yhv5.com/uploads/2012/09/7.png" alt="7"></p>
 <p>实现原理如下： </p>
 <h4 id="修改模板"><a href="#修改模板" class="headerlink" title="修改模板"></a>修改模板</h4><p>在修改安装目录upload/admin/templates文件夹下面的privilege_list.htm中的smarty模板页面第6行增加如下代码：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-div"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">"javascript:searchUser()"</span> <span class="attr">name</span>=<span class="string">"searchForm"</span> <span class="attr">accept-charset</span>=<span class="string">"utf-8"</span>&gt;</span></div><div class="line">		&#123;$lang.user_name&#125; <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"keywords"</span> <span class="attr">size</span>=<span class="string">"18"</span> /&gt;</span></div><div class="line">		&#123;$lang.email&#125; <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"email"</span> <span class="attr">size</span>=<span class="string">"18"</span> /&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">value</span>=<span class="string">"&#123;$lang.button_search&#125;"</span> /&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">form</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure></p>
 <p>修改第38行代码为<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;foreachelse&#125;</div><div class="line">	<span class="tag">&lt;<span class="name">tr</span>&gt;</span><span class="tag">&lt;<span class="name">td</span> <span class="attr">class</span>=<span class="string">"no-records"</span> <span class="attr">colspan</span>=<span class="string">"10"</span>&gt;</span>&#123;$lang.no_records&#125;<span class="tag">&lt;/<span class="name">td</span>&gt;</span><span class="tag">&lt;/<span class="name">tr</span>&gt;</span></div><div class="line">&#123;/foreach&#125;</div></pre></td></tr></table></figure></p>

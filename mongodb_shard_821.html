@@ -97,12 +97,12 @@
 <meta property="og:url" content="http://yhv5.com/mongodb_shard_821.html">
 <meta property="og:site_name" content="Crazy&#39;s Blog">
 <meta property="og:description" content="最近抽了点时间整理一年前做过的MongoDB分片集群部署，具体如有图并结合下述案例分析：  分片集群配置Shard Server: mongod实例，用于存储实际的数据块，实际生产环境中一个Shard Server角色可由几台机器组和一个Replica Set承担，防止主机单点故障。 Config Server: mongod实例，存储了整个Cluster Metadata，其中包括Chunk信息">
-<meta property="og:image" content="http://yhv5.com/uploads/2014/03/cluster.png">
-<meta property="og:updated_time" content="2017-08-17T11:17:08.381Z">
+<meta property="og:image" content="https://yhv5.com/uploads/2014/03/cluster.png">
+<meta property="og:updated_time" content="2017-09-16T09:31:39.540Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MongoDB 分片集群部署">
 <meta name="twitter:description" content="最近抽了点时间整理一年前做过的MongoDB分片集群部署，具体如有图并结合下述案例分析：  分片集群配置Shard Server: mongod实例，用于存储实际的数据块，实际生产环境中一个Shard Server角色可由几台机器组和一个Replica Set承担，防止主机单点故障。 Config Server: mongod实例，存储了整个Cluster Metadata，其中包括Chunk信息">
-<meta name="twitter:image" content="http://yhv5.com/uploads/2014/03/cluster.png">
+<meta name="twitter:image" content="https://yhv5.com/uploads/2014/03/cluster.png">
 
 
 
@@ -401,7 +401,7 @@
 
       
         <p>最近抽了点时间整理一年前做过的MongoDB分片集群部署，具体如有图并结合下述案例分析：</p>
-<p><img src="http://yhv5.com/uploads/2014/03/cluster.png" alt="cluster"></p>
+<p><img src="https://yhv5.com/uploads/2014/03/cluster.png" alt="cluster"></p>
 <h4 id="分片集群配置"><a href="#分片集群配置" class="headerlink" title="分片集群配置"></a>分片集群配置</h4><p>Shard Server: mongod实例，用于存储实际的数据块，实际生产环境中一个Shard Server角色可由几台机器组和一个Replica Set承担，防止主机单点故障。</p>
 <p>Config Server: mongod实例，存储了整个Cluster Metadata，其中包括Chunk信息。</p>
 <p>Route Server: mongos实例，前端路由，客户端由此接入，且让整个集群看上去像单一数据库，前端应用可以透明使用。</p>
@@ -430,7 +430,7 @@
 <h5 id="分片中的所有Mongod节点宕机"><a href="#分片中的所有Mongod节点宕机" class="headerlink" title="分片中的所有Mongod节点宕机"></a>分片中的所有Mongod节点宕机</h5><p>如果一个分片中的全部节点（replicas)都宕机了，在该分片内的数据将不能被访问。然而，操作任然是继续进行，只不过是由别的分片分担。看文档就可以弄清楚为什么这样。如果分片被配置为一个复制集（Replicas set)，至少一个成员应该在另外一个数据中心，那样的话，整个分片都宕机几乎是不可能的。为了有更大的冗余度，推荐这样进行配置。</p>
 <h5 id="一个Config-Server宕机"><a href="#一个Config-Server宕机" class="headerlink" title="一个Config Server宕机"></a>一个Config Server宕机</h5><p>一个产品级的分片集群需要有3个Config Server进程，每一个进程都在一台独立的机器上运行。对于Config server中的集群元数据的写操作使用一个两阶段提交，去确保是一个原子的并且是被复制的事务操作。<br>在任何一个配置服务器失效的时候，Mongodb集群的元数据都会变成为只读了。集群系统继续运行，但是chunks在一个分片中将会成为不可以被拆分或者是不可以跨分片进行迁移。对于大多数使用场景，这个不会导致问题，应为改变Chunk元数据进行的并不频繁。</p>
 <p>另外，使宕机的Config Server在一个合理的时间周期（一天）内恢复是相当重要的，这样可以避免分片由于缺乏迁移而变得负载不均衡（相对而言，对于大多数产品场景，这种现象也不是很严重的事情）。</p>
-<p>如需MongoDB客户端工具，强烈推荐MongoVUE，但由于高版本并不支持长期免费试用，因此只能破解原生版本，如有需要，可以移步<a href="http://yhv5.com/mongovue_480.html">mongoVUE1.5完全破解版赠送</a> 获取。</p>
+<p>如需MongoDB客户端工具，强烈推荐MongoVUE，但由于高版本并不支持长期免费试用，因此只能破解原生版本，如有需要，可以移步<a href="https://yhv5.com/mongovue_480.html">mongoVUE1.5完全破解版赠送</a> 获取。</p>
 <p>(The End)</p>
 
       

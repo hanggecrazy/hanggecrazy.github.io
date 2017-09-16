@@ -97,12 +97,12 @@
 <meta property="og:url" content="http://yhv5.com/ecshop_source_resolution_62.html">
 <meta property="og:site_name" content="Crazy&#39;s Blog">
 <meta property="og:description" content="前些天，寝室一朋友给我拿了一道ECSHOP的面试题，当时的我对商派EXSHOP还是有所了解的，于是答应帮他看看。但是一直都没时间做，等到昨天中午的时候才加紧看了一下源码，代码封装的还算不错的，结果前端页面样式弄好了但是功能没有得到实现。但是答应了别人的事还是的做好，于是到了晚上给加班弄好了。 例子是一个在ECSHOP 后台权限管理列表页面增加一个用户名和email邮箱搜索条件，并在列表下端显示分页">
-<meta property="og:image" content="http://yhv5.com/uploads/2012/09/7.png">
-<meta property="og:updated_time" content="2017-08-17T11:17:08.375Z">
+<meta property="og:image" content="https://yhv5.com/uploads/2012/09/7.png">
+<meta property="og:updated_time" content="2017-09-16T09:31:39.538Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ECSHOP源码解析">
 <meta name="twitter:description" content="前些天，寝室一朋友给我拿了一道ECSHOP的面试题，当时的我对商派EXSHOP还是有所了解的，于是答应帮他看看。但是一直都没时间做，等到昨天中午的时候才加紧看了一下源码，代码封装的还算不错的，结果前端页面样式弄好了但是功能没有得到实现。但是答应了别人的事还是的做好，于是到了晚上给加班弄好了。 例子是一个在ECSHOP 后台权限管理列表页面增加一个用户名和email邮箱搜索条件，并在列表下端显示分页">
-<meta name="twitter:image" content="http://yhv5.com/uploads/2012/09/7.png">
+<meta name="twitter:image" content="https://yhv5.com/uploads/2012/09/7.png">
 
 
 
@@ -401,7 +401,7 @@
 
       
         <p>前些天，寝室一朋友给我拿了一道ECSHOP的面试题，当时的我对商派EXSHOP还是有所了解的，于是答应帮他看看。但是一直都没时间做，等到昨天中午的时候才加紧看了一下源码，代码封装的还算不错的，结果前端页面样式弄好了但是功能没有得到实现。但是答应了别人的事还是的做好，于是到了晚上给加班弄好了。 例子是一个在ECSHOP 后台权限管理列表页面增加一个用户名和email邮箱搜索条件，并在列表下端显示分页效果。如下图所示。</p>
-<p><img src="http://yhv5.com/uploads/2012/09/7.png" alt="7"></p>
+<p><img src="https://yhv5.com/uploads/2012/09/7.png" alt="7"></p>
 <p>实现原理如下： </p>
 <h4 id="修改模板"><a href="#修改模板" class="headerlink" title="修改模板"></a>修改模板</h4><p>在修改安装目录upload/admin/templates文件夹下面的privilege_list.htm中的smarty模板页面第6行增加如下代码：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-div"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">"javascript:searchUser()"</span> <span class="attr">name</span>=<span class="string">"searchForm"</span> <span class="attr">accept-charset</span>=<span class="string">"utf-8"</span>&gt;</span></div><div class="line">		&#123;$lang.user_name&#125; <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"keywords"</span> <span class="attr">size</span>=<span class="string">"18"</span> /&gt;</span></div><div class="line">		&#123;$lang.email&#125; <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"email"</span> <span class="attr">size</span>=<span class="string">"18"</span> /&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">value</span>=<span class="string">"&#123;$lang.button_search&#125;"</span> /&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">form</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure></p>
 <p>修改第38行代码为<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;foreachelse&#125;</div><div class="line">	<span class="tag">&lt;<span class="name">tr</span>&gt;</span><span class="tag">&lt;<span class="name">td</span> <span class="attr">class</span>=<span class="string">"no-records"</span> <span class="attr">colspan</span>=<span class="string">"10"</span>&gt;</span>&#123;$lang.no_records&#125;<span class="tag">&lt;/<span class="name">td</span>&gt;</span><span class="tag">&lt;/<span class="name">tr</span>&gt;</span></div><div class="line">&#123;/foreach&#125;</div></pre></td></tr></table></figure></p>

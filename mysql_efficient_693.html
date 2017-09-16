@@ -97,12 +97,12 @@
 <meta property="og:url" content="http://yhv5.com/mysql_efficient_693.html">
 <meta property="og:site_name" content="Crazy&#39;s Blog">
 <meta property="og:description" content="就在NoSQL兴起的浪潮中，大小公司都跟随着”时代”的进步选择了非关系性数据库，而传统的关系型数据库呢？是否已经时过境迁？还是…… 但那都并不意味着关系型数据库已经失去了它的色彩。多数人并不了解关系型数据库，如何正确的使用关系型数据库是我们需要掌握的关键。由于笔者也在不断的学习中，下述也就自己对MySQL的高性能优化吐槽。 使用MySQL都有遇到过慢的情况，无可厚非的是没有多数人能具体说明慢的真正">
-<meta property="og:image" content="http://yhv5.com/uploads/2013/12/mysql.jpg">
-<meta property="og:updated_time" content="2017-08-17T11:17:08.382Z">
+<meta property="og:image" content="https://yhv5.com/uploads/2013/12/mysql.jpg">
+<meta property="og:updated_time" content="2017-09-16T09:31:39.540Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL之高性能分析一">
 <meta name="twitter:description" content="就在NoSQL兴起的浪潮中，大小公司都跟随着”时代”的进步选择了非关系性数据库，而传统的关系型数据库呢？是否已经时过境迁？还是…… 但那都并不意味着关系型数据库已经失去了它的色彩。多数人并不了解关系型数据库，如何正确的使用关系型数据库是我们需要掌握的关键。由于笔者也在不断的学习中，下述也就自己对MySQL的高性能优化吐槽。 使用MySQL都有遇到过慢的情况，无可厚非的是没有多数人能具体说明慢的真正">
-<meta name="twitter:image" content="http://yhv5.com/uploads/2013/12/mysql.jpg">
+<meta name="twitter:image" content="https://yhv5.com/uploads/2013/12/mysql.jpg">
 
 
 
@@ -419,7 +419,7 @@
 </ul>
 <p>存储引擎得到查询结果并递归返回给”查询执行引擎”，最终由查询引擎将数据返回给客户端和缓存至查询缓存。</p>
 <p>大致流程图如下：</p>
-<p><img src="http://yhv5.com/uploads/2013/12/mysql.jpg" alt="mysql"></p>
+<p><img src="https://yhv5.com/uploads/2013/12/mysql.jpg" alt="mysql"></p>
 <p>其中”MYSQL客户端/服务器通信协议”之间采用半双工通信，即一方发送数据，另一方接收数据，不能同时发送数据和接收数据，也不能将一个数据包分割发送。这使得通信协议快速简单化但也使得MYSQL的通信受到限制，一个明显的限制则是流量控制，也就意味着，一旦一方开始发送数据，另外一方无论数据量多少都需要接收完整个数据才能响应它。这也就是常常看到的查询语句较长就会非常耗时，客户端只需要一个简单的数据包发送给服务器端，就一直等待返回结果；而服务器端处理得到的请求需要很复杂的过程，并最终返回较多的数据给客户端，客户端也必须将整个数据接收完。这也是为何查询语句需要加上LIMIT的原因。客户端也应该配置发送最大数据包的参数max_allowed_packet。</p>
 <p>“查询缓存”：多数连接MYSQL的库函数都会默认将返回的数据缓存到内存中，这样可以方便下次请求数据有效的回收链接资源和带宽。因此在遇到不同场景的情况下需要将查询结果进行缓存，这样既可以减小响应时间，也可以降低服务器压力。但情况往往也不是我们所想象的那么理想，缓存大量的数据也需要系统的开销和时间。因此缓存是根据不同的场景进行自定义。如PHP获取数据库数据一般情况下都是</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$link = mysql_connect(<span class="string">'localhost'</span>, <span class="string">'user'</span>, <span class="string">'passwd'</span>);</div><div class="line">$query = mysql_query(<span class="string">'SELECT * FROM db.table'</span>, $link);</div><div class="line"><span class="keyword">while</span>($rs = mysql_fetch_assoc($query))&#123;</div><div class="line">    var_dump($rs);<span class="comment">//查询结果集</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>

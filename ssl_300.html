@@ -97,13 +97,13 @@
 <meta property="og:url" content="http://yhv5.com/ssl_300.html">
 <meta property="og:site_name" content="Crazy&#39;s Blog">
 <meta property="og:description" content="前段时间看了一点关于SSL的知识，给自己站也做了一个HTTPS的访问，当然这个是自行颁发不受浏览器信任的SSL证书，如果需要浏览器信任的证书需要向权威机构申请。整个设置大致流程如下： 生成秘钥秘钥Key，也称私钥,openssl会提示输入一个密码，可以输入，也可以不输，输入的话，以后每次使用这个key的时候都要输入密码，安全起见，还是应该有一个密码保护。使用命令如： openssl genrsa">
-<meta property="og:image" content="http://yhv5.com/uploads/2014/02/1.jpg">
-<meta property="og:image" content="http://yhv5.com/uploads/2014/02/2.jpg">
-<meta property="og:updated_time" content="2017-08-17T11:17:08.398Z">
+<meta property="og:image" content="https://yhv5.com/uploads/2014/02/1.jpg">
+<meta property="og:image" content="https://yhv5.com/uploads/2014/02/2.jpg">
+<meta property="og:updated_time" content="2017-09-16T09:31:39.544Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="给自己的站点添加SSL证书">
 <meta name="twitter:description" content="前段时间看了一点关于SSL的知识，给自己站也做了一个HTTPS的访问，当然这个是自行颁发不受浏览器信任的SSL证书，如果需要浏览器信任的证书需要向权威机构申请。整个设置大致流程如下： 生成秘钥秘钥Key，也称私钥,openssl会提示输入一个密码，可以输入，也可以不输，输入的话，以后每次使用这个key的时候都要输入密码，安全起见，还是应该有一个密码保护。使用命令如： openssl genrsa">
-<meta name="twitter:image" content="http://yhv5.com/uploads/2014/02/1.jpg">
+<meta name="twitter:image" content="https://yhv5.com/uploads/2014/02/1.jpg">
 
 
 
@@ -405,11 +405,11 @@
 <h4 id="生成秘钥"><a href="#生成秘钥" class="headerlink" title="生成秘钥"></a>生成秘钥</h4><p>秘钥Key，也称私钥,openssl会提示输入一个密码，可以输入，也可以不输，输入的话，以后每次使用这个key的时候都要输入密码，安全起见，还是应该有一个密码保护。使用命令如： openssl genrsa (可选-des3) -out server.key 2048/1024/4096等</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ openssl genrsa -des3 -out server.key 4096</div></pre></td></tr></table></figure>
 <p>执行回车后输入密码再次回车输入确认密码即可，则在当前目录生成了server.key文件，具体可参见如下图：</p>
-<p><img src="http://yhv5.com/uploads/2014/02/1.jpg" alt="1"></p>
+<p><img src="https://yhv5.com/uploads/2014/02/1.jpg" alt="1"></p>
 <h4 id="生成CSR证书"><a href="#生成CSR证书" class="headerlink" title="生成CSR证书"></a>生成CSR证书</h4><p>使用上面生成的Key，生成一个certificate signing request (CSR)。如果生成的key有密码保护，openssl首先会询问刚才设置的密码，然后需要你填写一系列问题,其中Common Name(CN)是最重要的，它代表你的证书要代表的目标，如果你为网站申请的证书，就要添你站点的域名。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ openssl req -new -key server.key -out server.csr</div></pre></td></tr></table></figure>
 <p>执行完成之后则在当前目录生成了server.csr文件，如下图所示</p>
-<p><img src="http://yhv5.com/uploads/2014/02/2.jpg" alt="2"></p>
+<p><img src="https://yhv5.com/uploads/2014/02/2.jpg" alt="2"></p>
 <p>上图中需要填写的信息也可以作为配置信息，不用每次都进行填写，于是可以将这些信息设置为默认信息，如下：<br>找到 /etc/pki/tls/openssl.cnf 配置文件(修改默认设置)<br>查找[ req_distinguished_name ] 模块下面的</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">countryName_default = XX</div><div class="line">stateOrProvinceName_default = Default Province</div><div class="line">localityName_default = Default City</div><div class="line">0.organizationName_default = Default Company Ltd</div><div class="line">organizationalUnitName_default =</div></pre></td></tr></table></figure>
 <p>修改为<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">countryName_default = CN</div><div class="line">stateOrProvinceName_default = Beijing</div><div class="line">localityName_default = Beijing</div><div class="line">0.organizationName_default = YHV5.COM</div><div class="line">organizationalUnitName_default = YHV5.COM</div></pre></td></tr></table></figure></p>

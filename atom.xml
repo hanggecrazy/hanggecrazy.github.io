@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yhv5.com/"/>
-  <updated>2017-09-15T10:52:20.457Z</updated>
+  <updated>2017-09-16T09:31:39.542Z</updated>
   <id>http://yhv5.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yhv5.com/pixel2char_1868.html"/>
     <id>http://yhv5.com/pixel2char_1868.html</id>
     <published>2017-06-03T08:56:19.000Z</published>
-    <updated>2017-09-15T10:52:20.457Z</updated>
+    <updated>2017-09-16T09:31:39.542Z</updated>
     
     <content type="html"><![CDATA[<p><strong>准备工作</strong><br>因如下介绍的Python均是3.x版本，PIL（Python Image Library）目前并不支持3.x版本，因此我们需要用到pillow模块。</p>
 <h4 id="原始图片处理"><a href="#原始图片处理" class="headerlink" title="原始图片处理"></a>原始图片处理</h4><p>对原始图片大小等进行缩放，以便达到需要输出的合适尺寸<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">output_width = <span class="number">180</span> <span class="comment">#终端展现的大小</span></div><div class="line">output_height = <span class="number">180</span>  <span class="comment">#终端展现的大小</span></div><div class="line"><span class="comment">#获取图片资源</span></div><div class="line">image_path = <span class="string">'source.png'</span></div><div class="line">image = Image.open(image_path)</div><div class="line"><span class="comment">#图像模式转换为3色RGB，包括RGBA/P等</span></div><div class="line"><span class="keyword">if</span> image.mode <span class="keyword">is</span> <span class="keyword">not</span> <span class="string">'RGB'</span>:</div><div class="line">    image = image.convert(<span class="string">'RGB'</span>)</div><div class="line"><span class="comment">#获取原始图片尺寸</span></div><div class="line">image_width, image_height = image.size</div><div class="line"><span class="comment">#获取图片缩放宽高比例</span></div><div class="line">w_scale = output_width * <span class="number">1.0</span> / image_width</div><div class="line">h_scale = output_height * <span class="number">1.0</span> / image_height</div><div class="line"></div><div class="line"><span class="comment">#防止输入尺寸比例造成图片变形，等比缩放获取缩放值处理</span></div><div class="line">scale = w_scale <span class="keyword">if</span> w_scale &lt; h_scale <span class="keyword">else</span> h_scale</div><div class="line"><span class="comment">#等到最终宽高值</span></div><div class="line">res_width = int(scale * image_width)</div><div class="line">res_height = int(scale * image_height)</div><div class="line"><span class="comment">#图片重置 并且做防锯齿过滤，取值0-5</span></div><div class="line">image = image.resize((res_width, res_height), Image.HAMMING)</div></pre></td></tr></table></figure></p>
@@ -51,7 +51,7 @@
     <link href="http://yhv5.com/update_python_1868.html"/>
     <id>http://yhv5.com/update_python_1868.html</id>
     <published>2017-05-18T06:50:00.000Z</published>
-    <updated>2017-08-17T11:17:08.406Z</updated>
+    <updated>2017-09-16T09:31:39.546Z</updated>
     
     <content type="html"><![CDATA[<h3 id="安装Homebrew"><a href="#安装Homebrew" class="headerlink" title="安装Homebrew"></a>安装Homebrew</h3><p>Mac最好能安装Homebrew，这样你安装软件会方便得多，当然也可以手工类似Linux下进行编译安装，这个看个人喜好。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ /usr/bin/ruby <span class="_">-e</span> <span class="string">"<span class="variable">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)</span>"</span></div></pre></td></tr></table></figure>
@@ -122,7 +122,7 @@
     <link href="http://yhv5.com/mysql_install_1867.html"/>
     <id>http://yhv5.com/mysql_install_1867.html</id>
     <published>2017-05-12T08:44:00.000Z</published>
-    <updated>2017-08-17T11:17:08.385Z</updated>
+    <updated>2017-09-16T09:31:39.541Z</updated>
     
     <content type="html"><![CDATA[<p>说在前面的话：因为MySQL5.7版本和之前的版本安装过程会有一定的不同，因此专门整理了一下整个流程。</p>
 <h3 id="安装前准备工作"><a href="#安装前准备工作" class="headerlink" title="安装前准备工作"></a>安装前准备工作</h3><p>因MySQL我们通常采用跨平台编译cmake，而不是make编译，因此需要下载cmake包，另外从MySQL 5.7.5开始Boost库是必需的，因此也需要下载boost包：<br>cmake：wget <a href="https://cmake.org/files/v3.5/cmake-3.5.2.tar.gz" target="_blank" rel="external">https://cmake.org/files/v3.5/cmake-3.5.2.tar.gz</a><br>boost：wget <a href="https://jaist.dl.sourceforge.net/project/boost/boost/1.64.0/boost_1_64_0.tar.gz" target="_blank" rel="external">https://jaist.dl.sourceforge.net/project/boost/boost/1.64.0/boost_1_64_0.tar.gz</a><br>mysql5.7：wget <a href="https://dev.mysql.com/get/archives/mysql-5.7/mysql-boost-5.7.16.tar.gz" target="_blank" rel="external">https://dev.mysql.com/get/archives/mysql-5.7/mysql-boost-5.7.16.tar.gz</a></p>
@@ -169,7 +169,7 @@
     <link href="http://yhv5.com/update_gcc_1866.html"/>
     <id>http://yhv5.com/update_gcc_1866.html</id>
     <published>2017-05-10T10:02:00.000Z</published>
-    <updated>2017-08-17T11:17:08.405Z</updated>
+    <updated>2017-09-16T09:31:39.546Z</updated>
     
     <content type="html"><![CDATA[<p>升级前准备工作：<br>因gcc依赖mpc、gmp、mpfr三个包，因此需要先下载依赖包进行升级(可以选择不同的依赖包版本)<br>mpc： wget ftp://ftp.gnu.org/gnu/mpc/mpc-1.0.3.tar.gz<br>gmp： wget ftp://ftp.gnu.org/gnu/gmp/gmp-5.0.0.tar.gz<br>mpfr： wget ftp://ftp.gnu.org/gnu/mpfr/mpfr-3.0.0.tar.gz<br>gcc： wget <a href="http://ftp.gnu.org/gnu/gcc/gcc-4.9.2/gcc-4.9.2.tar.bz2" target="_blank" rel="external">http://ftp.gnu.org/gnu/gcc/gcc-4.9.2/gcc-4.9.2.tar.bz2</a></p>
 <h2 id="编译安装-mpc"><a href="#编译安装-mpc" class="headerlink" title="编译安装 mpc"></a>编译安装 mpc</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ tar -zxf mpc-1.0.3.tar.gz</div><div class="line">$ <span class="built_in">cd</span> mpc-1.0.3</div><div class="line">$ ./configure &amp;&amp; make &amp;&amp; make install</div></pre></td></tr></table></figure>
@@ -213,7 +213,7 @@
     <link href="http://yhv5.com/centos_of_vpn_1733.html"/>
     <id>http://yhv5.com/centos_of_vpn_1733.html</id>
     <published>2015-10-25T09:02:28.000Z</published>
-    <updated>2017-08-17T11:17:08.371Z</updated>
+    <updated>2017-09-16T09:31:39.538Z</updated>
     
     <content type="html"><![CDATA[<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><h3 id="检查机器是否支持VPN"><a href="#检查机器是否支持VPN" class="headerlink" title="检查机器是否支持VPN"></a>检查机器是否支持VPN</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ modprobe ppp-compress-18 &amp;&amp; <span class="built_in">echo</span> ok </div><div class="line">ok</div></pre></td></tr></table></figure>
 <p>如果返回OK则说明内核支持 MPPE，否则内核就没有集成，需要升级内核高于2.6.15。</p>
@@ -228,15 +228,15 @@
 <p>对于64位CentOS，执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ wget http://acelnmp.googlecode.com/files/pptpd-1.3.4-1.rhel5.1.x86_64.rpm</div><div class="line">$ rpm -ivh pptpd-1.3.4-1.rhel5.1.x86_64.rpm</div></pre></td></tr></table></figure></p>
 <p>安装pptp过程中可能会出现异常，常见的是pptp于ppp版本不兼容，这样就只能选择合适的ppp版本或者pptd 版本来相互兼容了。</p>
 <h3 id="修改配置信息"><a href="#修改配置信息" class="headerlink" title="修改配置信息"></a>修改配置信息</h3><p>首先修改ppp配置信息，它在/etc/ppp/options.pptpd<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cp -r /etc/ppp/options.pptpd /etc/ppp/options.pptpd_bak</div><div class="line">$ vi /etc/ppp/options.pptpd</div></pre></td></tr></table></figure></p>
-<p>如下图：<br><img src="http://yhv5.com/uploads/2015/10/options.jpg" alt="options"><br>然后修改配置/etc/ppp/chap-secrets，这里面就是设置vpn账号和密码的文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cp -r /etc/ppp/chap-secrets /etc/ppp/chap-secrets_bak</div><div class="line">$ vi /etc/ppp/chap-secrets</div></pre></td></tr></table></figure></p>
-<p>其中格式：username pptpd password <em>**<br>//username是你的vpn帐号，password是你的vpn的密码，</em>表示对任何ip，记得不要丢了这个星号。如下图：<br><img src="http://yhv5.com/uploads/2015/10/secrets.jpg" alt="secrets"><br>接着需要修改pptp配置信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cp -r /etc/pptpd.conf /etc/pptpd.conf_bak</div><div class="line">$ vi /etc/pptpd.conf</div></pre></td></tr></table></figure></p>
-<p>修改内容如下图：<br><img src="http://yhv5.com/uploads/2015/10/pptpd.jpg" alt="pptpd"><br>另外还需要修改一个内核配置让其支持转发，否则是不能上网的。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ vi /sysctl.conf</div></pre></td></tr></table></figure></p>
-<p>修改内容如下图：<br><img src="http://yhv5.com/uploads/2015/10/sysctl.jpg" alt="sysctl"></p>
+<p>如下图：<br><img src="https://yhv5.com/uploads/2015/10/options.jpg" alt="options"><br>然后修改配置/etc/ppp/chap-secrets，这里面就是设置vpn账号和密码的文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cp -r /etc/ppp/chap-secrets /etc/ppp/chap-secrets_bak</div><div class="line">$ vi /etc/ppp/chap-secrets</div></pre></td></tr></table></figure></p>
+<p>其中格式：username pptpd password <em>**<br>//username是你的vpn帐号，password是你的vpn的密码，</em>表示对任何ip，记得不要丢了这个星号。如下图：<br><img src="https://yhv5.com/uploads/2015/10/secrets.jpg" alt="secrets"><br>接着需要修改pptp配置信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cp -r /etc/pptpd.conf /etc/pptpd.conf_bak</div><div class="line">$ vi /etc/pptpd.conf</div></pre></td></tr></table></figure></p>
+<p>修改内容如下图：<br><img src="https://yhv5.com/uploads/2015/10/pptpd.jpg" alt="pptpd"><br>另外还需要修改一个内核配置让其支持转发，否则是不能上网的。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ vi /sysctl.conf</div></pre></td></tr></table></figure></p>
+<p>修改内容如下图：<br><img src="https://yhv5.com/uploads/2015/10/sysctl.jpg" alt="sysctl"></p>
 <h3 id="启动pptp-和防火墙服务iptables"><a href="#启动pptp-和防火墙服务iptables" class="headerlink" title="启动pptp  和防火墙服务iptables"></a>启动pptp  和防火墙服务iptables</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ /sbin/service pptpd start</div></pre></td></tr></table></figure>
-<p>启动防火墙需要特别注意，我们上面指定了一个专用网络ip段，因此需要设置转发规则<br>如我的防火墙设置：<br><img src="http://yhv5.com/uploads/2015/10/iptables.jpg" alt="iptables"><br>将上面红色圈中的vpsip修改成自己的vps ip即可，如果vps有多个网卡就需要使用－o ethxx来指定可以上网的网卡,如上图最上面红色框中的2行中使用了－o 来指定网卡。<br>最好保存并重启防火墙。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ /sbin/service iptables start</div></pre></td></tr></table></figure></p>
+<p>启动防火墙需要特别注意，我们上面指定了一个专用网络ip段，因此需要设置转发规则<br>如我的防火墙设置：<br><img src="https://yhv5.com/uploads/2015/10/iptables.jpg" alt="iptables"><br>将上面红色圈中的vpsip修改成自己的vps ip即可，如果vps有多个网卡就需要使用－o ethxx来指定可以上网的网卡,如上图最上面红色框中的2行中使用了－o 来指定网卡。<br>最好保存并重启防火墙。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ /sbin/service iptables start</div></pre></td></tr></table></figure></p>
 <p>然后重启pptp服务即可。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$/sbin/service pptpd restart</div></pre></td></tr></table></figure></p>
 <p>另外也可以将pptp和防火墙设置成开机自启<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ chkconfig pptpd on</div><div class="line">$ chkconfig iptables on</div></pre></td></tr></table></figure></p>
-<p>最后展示2张链接成功的图：<br><img src="http://yhv5.com/uploads/2015/10/show.jpg" alt="show"><img src="http://yhv5.com/uploads/2015/10/online.jpg" alt="online"></p>
+<p>最后展示2张链接成功的图：<br><img src="https://yhv5.com/uploads/2015/10/show.jpg" alt="show"><img src="https://yhv5.com/uploads/2015/10/online.jpg" alt="online"></p>
 <p>(The End)</p>
 ]]></content>
     
@@ -260,7 +260,7 @@
     <link href="http://yhv5.com/hp_mac_10_11_1720.html"/>
     <id>http://yhv5.com/hp_mac_10_11_1720.html</id>
     <published>2015-10-25T04:50:10.000Z</published>
-    <updated>2017-08-17T11:17:08.379Z</updated>
+    <updated>2017-09-16T09:31:39.539Z</updated>
     
     <content type="html"><![CDATA[<p>终于闲下来吃口黑苹果了，hp(9470)最终完美驱动10.11，现在呈给各位看客朋友，勿喷。<br><strong>机器配置</strong></p>
 <blockquote>
@@ -285,7 +285,7 @@
 <h4 id="复制驱动"><a href="#复制驱动" class="headerlink" title="复制驱动"></a>复制驱动</h4><p>将键盘驱动和鼠标驱复制到上面写入的硬盘分区下的/Extra/Extensions/下面，删除System/Library/Extensions/下面的IOBluethooth开头的蓝牙驱动（不然安装过程会要求接入苹果的蓝牙键盘和鼠标），后续该路径简写为/S/L/E/。</p>
 <h4 id="创建win下mac引导文件"><a href="#创建win下mac引导文件" class="headerlink" title="创建win下mac引导文件"></a>创建win下mac引导文件</h4><p>将下载的win版版色龙复制到win系统根目录C盘新建文件夹HJMac下，使用easybcd将变色龙引导写入到win系统引导中。</p>
 <h4 id="启动安装mac"><a href="#启动安装mac" class="headerlink" title="启动安装mac"></a>启动安装mac</h4><p>重启系统后可以看到引导中多了一个刚才创建的引导，选择进入选择我们上面写入的硬盘分区，使用命令行模式启动-v -f -x （这样如果出现无国可以方便排查）</p>
-<h4 id="获取显卡ID"><a href="#获取显卡ID" class="headerlink" title="获取显卡ID"></a>获取显卡ID</h4><p>顺利的话能进行安装，但是这里我们看看进入到安装界面时屏幕分辨率是否正常，如果不正常的，可以在顶部选择磁盘工具中的查看系统信息，找到对应的图形卡中对应的两组id值（设备ID和修正版ID）纪录下来，我这里分别是0x0166，0x0009，如图：<img src="http://yhv5.com/uploads/2015/10/hd4000.jpg" alt="hd4000"></p>
+<h4 id="获取显卡ID"><a href="#获取显卡ID" class="headerlink" title="获取显卡ID"></a>获取显卡ID</h4><p>顺利的话能进行安装，但是这里我们看看进入到安装界面时屏幕分辨率是否正常，如果不正常的，可以在顶部选择磁盘工具中的查看系统信息，找到对应的图形卡中对应的两组id值（设备ID和修正版ID）纪录下来，我这里分别是0x0166，0x0009，如图：<img src="https://yhv5.com/uploads/2015/10/hd4000.jpg" alt="hd4000"></p>
 <h4 id="注入显卡ID到变色龙启动文件"><a href="#注入显卡ID到变色龙启动文件" class="headerlink" title="注入显卡ID到变色龙启动文件"></a>注入显卡ID到变色龙启动文件</h4><p>点击顶部的黑苹果选择重启系统到win，将刚才纪录的两组ID值注入到/Extra/org.chameleon.Boot.plist中。如可添加<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">&lt;key&gt;Graphics Mode&lt;/key&gt;</div><div class="line">&lt;string&gt;1366x768x32&lt;/string&gt;</div><div class="line">&lt;key&gt;CsrActiveConfig&lt;/key&gt;</div><div class="line">&lt;string&gt;103&lt;/string&gt;</div><div class="line">&lt;key&gt;EthernetBuiltIn&lt;/key&gt;</div><div class="line">&lt;string&gt;Yes&lt;/string&gt;</div><div class="line">&lt;key&gt;GraphicsEnabler&lt;/key&gt;</div><div class="line">&lt;string&gt;Yes&lt;/string&gt;</div><div class="line">&lt;key&gt;Kernel&lt;/string&gt;</div><div class="line">&lt;string&gt;/System/Library/Kernels/kernel</div><div class="line">&lt;key&gt;Kernel Flags&lt;/key&gt;</div><div class="line">&lt;string&gt;<span class="_">-f</span>&lt;/string&gt;</div><div class="line">&lt;key&gt;Timeout&lt;/key&gt;</div><div class="line">&lt;string&gt;3&lt;/string&gt;</div><div class="line">&lt;key&gt;USBBusFix&lt;/key&gt;</div><div class="line">&lt;string&gt;Yes&lt;/string&gt;</div><div class="line">&lt;key&gt;HD4000PlatformId&lt;/key&gt;</div><div class="line">&lt;string&gt;9&lt;/string&gt;</div><div class="line">&lt;key&gt;ig-platform-id&lt;/key&gt;</div><div class="line">&lt;string&gt;0x01660009&lt;/string&gt;</div><div class="line">&lt;key&gt;InjectIntel-ig&lt;/key&gt;</div><div class="line">&lt;string&gt;09006601&lt;/string&gt;</div><div class="line">&lt;key&gt;IntelCapriFB&lt;/key&gt;</div><div class="line">&lt;string&gt;3&lt;/string&gt;</div><div class="line">&lt;key&gt;device-properties&lt;/key&gt;</div><div class="line">&lt;string&gt;5e0000000100000001000000520000000100000002010c00d041030a000000000101060000027fff04002c0000004100410050004c002c00690067002d0070006c006100740066006f0072006d002d006900640000000800000003006601&lt;/string&gt;</div></pre></td></tr></table></figure></p>
 <p>注：Graphics Mode 可以指定分辨率，EthernetBuiltIn 是否内建网卡，GraphicsEnabler 是否开启显卡侦测，HD4000PlatformId显卡驱动id , 如果是HD5000就改成5000，ID值就是0x0009，解释下为什么我这里是9，在计算机内部指令是0x0009 对应0x09和0x00，这里所以就是值9，ig-platform-id 这个值就是刚才的纪录的两组合ID，注意顺序。InjectIntel-ig这个值需要注意顺序为09006601（分解为0x09,0x00,0x66,0x01）。IntelCapriFB 这个是1366 x 768 分辨率的都写3，其他分辨率的值不一样。最后一个值比较重要，是一组显卡神奇string注入代码，直接使用即可。</p>
 <h4 id="检查显卡驱动是否正常驱动"><a href="#检查显卡驱动是否正常驱动" class="headerlink" title="检查显卡驱动是否正常驱动"></a>检查显卡驱动是否正常驱动</h4><p>修改完之后，重启上面第8步操作，此时来到安装界面分辨率应该是正常的，另外可以到磁盘工具下面的系统信息中找到刚才的图形卡，可以看到是总线是内建状态（表示驱动成功）。</p>
@@ -293,8 +293,8 @@
 <h4 id="驱动修改"><a href="#驱动修改" class="headerlink" title="驱动修改"></a>驱动修改</h4><p>安装完成后会重启系统，先进入到win系统，将Mac引导盘中的/Extra 复制到Mac安装好的分区根目录下，然后到安装盘中删除/Extra/Extensions ,/Extra/SMBIOS.plist，这里说下为什么要删除，因为，本身/S/L/E/下面已经有/Extra/Extension/下面的驱动，删除SMBios.plist是防止无法登录iMessage，将鼠标驱动AppleACPIPS2Nub.kext和键盘驱动ApplePS2Controller.kext以及fsckSM.kext复制到/S/L/E/。</p>
 <h4 id="重启检查"><a href="#重启检查" class="headerlink" title="重启检查"></a>重启检查</h4><p>安装完成后会重启，来到刚才安装Mac分区，选择安装的Mac分区，并使用命令行模式-v -f -x 进行继续安装后续的操作，这个过程基本上不会出现问题。</p>
 <h4 id="进入桌面"><a href="#进入桌面" class="headerlink" title="进入桌面"></a>进入桌面</h4><p>这样应该可以顺利进入桌面，分辨率这时候应该是正常的，安装multibease,和kext wizard，前者是包含了一部分的驱动如以太网卡驱动、声卡驱动等等，可以方便的直接安装。到此为止电脑基本上就算正常了，如果无线网卡没办法驱动的，就买个usb的吧！</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>最后上一张安装完成的截图：<img src="http://yhv5.com/uploads/2015/10/system.jpg" alt="system"></p>
-<p>对于很多无法登录AppStore的看客，可以试着先内建以太网卡，或者使用蓝牙驱动创建en0,避免先安装无线网卡导致无线网卡变成en0,无法登录AppStore。<img src="http://yhv5.com/uploads/2015/10/network.jpg" alt="network"></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>最后上一张安装完成的截图：<img src="https://yhv5.com/uploads/2015/10/system.jpg" alt="system"></p>
+<p>对于很多无法登录AppStore的看客，可以试着先内建以太网卡，或者使用蓝牙驱动创建en0,避免先安装无线网卡导致无线网卡变成en0,无法登录AppStore。<img src="https://yhv5.com/uploads/2015/10/network.jpg" alt="network"></p>
 <p>最后说下为什么上面介绍时说系统安装分区一定要大于30G，因为系统安装完之后基本上就到了20G+，剩余的空间就不会很多了，苹果系统下面进行无损扩容分区非常不方便，所以建议大家开始就将分区设置大一些。</p>
 <p>然后说下怎么进行无损扩容，首先你需要有块移动硬盘或者普通硬盘能接入到电脑上的都行，将这块硬盘分一个区大概不要小于Mac目前的系统分区就够了，然后再Mac系统下使用磁盘工具把这个分区格式和成日志式。选择我们需要备份的Mac系统盘，在磁盘工具顶部选择“文件－&gt;新建镜像－&gt;Mac的镜像”，选择后填写好镜像的名称和备份的磁盘路径（刚格式化出来的分区），这个过程需要半小时左右，具体看导出的分区大小决定。结束后会在目标分区上生成一个名称.dmg格式的镜像文件。然后在win下面使用磁盘工具将分区进行合并好后，重新创建新的分区。使用win版变色龙来引导Mac到安装界面，选择磁盘工具，点击上方的“编辑－&gt;恢复”后，选择上面生产的dmg格式文件，恢复到新创见的分区上即可，如果分区格式不对，可以使用磁盘工具格式化为日志式分区类型。等待大概10分钟左右就可以将之前的系统恢复过来了，过程比较麻烦，所以建议之前将分区设置大一些。</p>
 <p>(The End)</p>
@@ -324,51 +324,51 @@
     <link href="http://yhv5.com/redis_cluster_1670.html"/>
     <id>http://yhv5.com/redis_cluster_1670.html</id>
     <published>2015-09-30T07:37:11.000Z</published>
-    <updated>2017-08-17T11:17:08.396Z</updated>
+    <updated>2017-09-16T09:31:39.544Z</updated>
     
     <content type="html"><![CDATA[<p>Redis Cluster 分布式集群，牺牲了数据的强一致性，来保证数据的可用性。也就是所谓的Redis从一个单纯的NoSQL内存数据库变成了分布式NoSQL数据库，CAP（Consistency &amp; Availability &amp; Partition-Tolerancy）模型也从CP变成了AP，三者只能取其二。</p>
-<h3 id="redis安装"><a href="#redis安装" class="headerlink" title="redis安装"></a>redis安装</h3><p>下载地址可以到官方下载或者下载本站地址<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /home/work/soft/</div><div class="line">wget http://yhv5.com/soft/redis-3.0.3.tar.gz</div><div class="line">tar -zxvf redis-3.0.3.tar.gz</div><div class="line"><span class="built_in">cd</span> redis-3.0.3</div><div class="line">configure --prefix=/home/work/redis</div><div class="line">make &amp;&amp; make install</div></pre></td></tr></table></figure></p>
+<h3 id="redis安装"><a href="#redis安装" class="headerlink" title="redis安装"></a>redis安装</h3><p>下载地址可以到官方下载或者下载本站地址<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /home/work/soft/</div><div class="line">wget https://yhv5.com/soft/redis-3.0.3.tar.gz</div><div class="line">tar -zxvf redis-3.0.3.tar.gz</div><div class="line"><span class="built_in">cd</span> redis-3.0.3</div><div class="line">configure --prefix=/home/work/redis</div><div class="line">make &amp;&amp; make install</div></pre></td></tr></table></figure></p>
 <h3 id="配置修改"><a href="#配置修改" class="headerlink" title="配置修改"></a>配置修改</h3><p>修改redis配置文件/home/work/redis/bin/redis.conf 如下内容<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">bind</span> XXX.XXX.XXX.XXX <span class="comment">#修改为自己的绑定IP地址</span></div><div class="line">cluster-enabled yes <span class="comment">#开启Cluster</span></div><div class="line">dir /mnt/redis/rdb <span class="comment">#rds数据落地文件路径</span></div><div class="line">dbfilename dump.rdb <span class="comment">#将内存数据刷入</span></div><div class="line">pidfile /mnt/redis/pid/redis-XXXX.pid <span class="comment">#路径可以自定义，将XXXX替换为对应端口</span></div><div class="line">cluster-config-file nodes-XXXX.conf <span class="comment">#这个配置文件不是要我们去配的，而是Redis运行时保存配置的文件，所以我们也不可以修改这个文件,将XXXX替换为我们的端口号。</span></div><div class="line">cluster-node-timeout 15000 <span class="comment">#集群超时时间：结点超时多久则认为它宕机了。</span></div><div class="line">cluster-require-full-coverage no <span class="comment">#槽是否全覆盖：默认是yes，只要有结点宕机导致16384个槽没全被覆盖，整个集群就全部停止服务，所以一定要改为no</span></div><div class="line">daemonize yes <span class="comment">#守护进程模式</span></div><div class="line">logfile <span class="string">"/mnt/redis/log/redis.log"</span> <span class="comment">#日志文件,路径可以自定义</span></div><div class="line">port XXXX <span class="comment">#监听端口,将XXXX替换为我们的端口</span></div></pre></td></tr></table></figure></p>
-<p>为保证集群的稳定性，数据冗余为1则至少需要3台Master和3台Slave(即一主对应一从)，那么我们将开启6个端口来支持这6个redis服务（端口分别为6380-6385）。因此需要将redis配置拷贝6份，我们将配置也重命名为redis.conf.端口号，如图：<br><img src="http://yhv5.com/uploads/2015/09/conf.png" alt="conf"></p>
+<p>为保证集群的稳定性，数据冗余为1则至少需要3台Master和3台Slave(即一主对应一从)，那么我们将开启6个端口来支持这6个redis服务（端口分别为6380-6385）。因此需要将redis配置拷贝6份，我们将配置也重命名为redis.conf.端口号，如图：<br><img src="https://yhv5.com/uploads/2015/09/conf.png" alt="conf"></p>
 <h3 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h3><p>可以按照/home/work/redis/bin/redis.server /home/work/redis/bin/conf/redis.conf.xxx 方式来启动6个实例,也可以批量启动<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>((i=0; i&lt;6; i++));<span class="keyword">do</span> /home/work/redis/bin/redis.server /home/work/redis/bin/conf/redis.conf.638<span class="variable">$i</span> ;<span class="keyword">done</span></div></pre></td></tr></table></figure></p>
 <p>为了方便我提供了一个快速启动的脚本（见文末附件）,即可以用如下方式启动、重启、或者停止服务。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>((i=0; i&lt;6; i++));<span class="keyword">do</span> /home/work/redis/redis_control -p 638<span class="variable">$i</span> [start|stop|restart];<span class="keyword">done</span></div></pre></td></tr></table></figure></p>
-<p><img src="http://yhv5.com/uploads/2015/09/start.png" alt="start"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/start.png" alt="start"></p>
 <p>如果执行顺利可以查看6个服务进程是否都已经启动。如果有问题可以按照日志进行排查（往往因为pid或log无权限写入，而导致启动失败）。</p>
 <p>查看进程是否正常：</p>
-<p><img src="http://yhv5.com/uploads/2015/09/cluster.png" alt="cluster"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/cluster.png" alt="cluster"></p>
 <p>查看进程pid是否生成到对应文件：</p>
-<p><img src="http://yhv5.com/uploads/2015/09/pid.png" alt="pid"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/pid.png" alt="pid"></p>
 <h3 id="集群部署"><a href="#集群部署" class="headerlink" title="集群部署"></a>集群部署</h3><p>上面操作完成后，6个实例之间并没有任何关联，现在需要用到redis-trib管理器，但它依赖于ruby，因此需要先安装ruby以及rubygems<br>安装ruby之前需要先安装开发包支持<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">yum install openssl* openssl-devel zlib-devel gcc gcc-c++ make autoconf readline-devel curl-devel expat-devel gettext-devel</div><div class="line"><span class="built_in">cd</span> /home/work/soft/</div><div class="line">wget http://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p247.tar.gz</div><div class="line">tar zxvf ruby-2.0.0-p247.tar.gz</div><div class="line"><span class="built_in">cd</span> ruby-2.0.0-p247</div><div class="line">./configure --enable-shared --enable-pthread --prefix=/home/work/ruby</div><div class="line">make &amp;&amp; make install</div></pre></td></tr></table></figure></p>
 <h4 id="加入环境变量"><a href="#加入环境变量" class="headerlink" title="加入环境变量"></a>加入环境变量</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> <span class="string">"PATH=<span class="variable">$PATH</span>:/home/work/ruby/bin;export PATH"</span> &gt;&gt; /etc/profile</div><div class="line"><span class="built_in">source</span> /etc/profile</div></pre></td></tr></table></figure>
 <h4 id="下载rubygems"><a href="#下载rubygems" class="headerlink" title="下载rubygems"></a>下载rubygems</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /home/work/soft/</div><div class="line">wget https://rubygems.org/downloads/redis-3.2.1.gem</div><div class="line">gem install redis-3.2.1.gem --local --no-rdoc --no-ri</div></pre></td></tr></table></figure>
 <h3 id="创建集群命令"><a href="#创建集群命令" class="headerlink" title="创建集群命令"></a>创建集群命令</h3><p>格式如：/home/work/soft/redis-3.0.3/src/redis-trib.rb create –replicas ip1:port1 ip2:port2 ….<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/work/soft/redis-3.0.3/src/redis-trib.rb create --replicas 1 10.48.56.215:6380 10.48.56.215:6381 10.48.56.215:6382 10.48.56.215:6383 10.48.56.215:6384 10.48.56.215:6385</div></pre></td></tr></table></figure></p>
-<p><img src="http://yhv5.com/uploads/2015/09/create.png" alt="create">2）查看集群节点：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/work/redis/bin/redis-cli -h 10.48.56.215 -p 6380 cluster nodes</div></pre></td></tr></table></figure></p>
-<p><img src="http://yhv5.com/uploads/2015/09/status.png" alt="status"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/create.png" alt="create">2）查看集群节点：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/work/redis/bin/redis-cli -h 10.48.56.215 -p 6380 cluster nodes</div></pre></td></tr></table></figure></p>
+<p><img src="https://yhv5.com/uploads/2015/09/status.png" alt="status"></p>
 <h4 id="添加数据"><a href="#添加数据" class="headerlink" title="添加数据"></a>添加数据</h4><p>接下来我们向集群中添加一些数据，执行命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>((i=0; i&lt;20; i++)); <span class="keyword">do</span> /home/work/redis/bin/redis-cli -c -h 10.48.56.215 -p 6380 <span class="built_in">set</span> yh_<span class="variable">$i</span>  <span class="variable">$i</span> ;<span class="keyword">done</span></div></pre></td></tr></table></figure></p>
 <h4 id="连接集群"><a href="#连接集群" class="headerlink" title="连接集群"></a>连接集群</h4><p>启动redis-cli时要加-c选项，不加-c选项如果查询到某个值不在该节点上会提示error<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/work/redis/bin/redis-cli -h 10.48.56.215 -p 6380 -c</div></pre></td></tr></table></figure></p>
-<p>就能看到以错误形式显示出的MOVED重定向信息。<img src="http://yhv5.com/uploads/2015/09/info.png" alt="info"></p>
+<p>就能看到以错误形式显示出的MOVED重定向信息。<img src="https://yhv5.com/uploads/2015/09/info.png" alt="info"></p>
 <h3 id="向集群添加节点"><a href="#向集群添加节点" class="headerlink" title="向集群添加节点"></a>向集群添加节点</h3><p>现在我们向集群中增加2个节点，一个Master和一个Salve节点，端口分别为（6386和6387）</p>
 <p>首先和刚才一样复制2份redis配置，如下：</p>
-<p><img src="http://yhv5.com/uploads/2015/09/addconf.png" alt="addconf"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/addconf.png" alt="addconf"></p>
 <p>接下来启动新增的2个redis服务：</p>
-<p><img src="http://yhv5.com/uploads/2015/09/addstart.png" alt="addstart"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/addstart.png" alt="addstart"></p>
 <p>查看进程pid已经写入成功：</p>
-<p><img src="http://yhv5.com/uploads/2015/09/addpid.png" alt="addpid"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/addpid.png" alt="addpid"></p>
 <p>现在我们将端口为6386的节点作为Master添加到集群中，执行命令如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/work/soft/redis-3.0.3/src/redis-trib.rb add-node Newip:port MasterIP:port，这里我们选择了6380端口的Master.</div></pre></td></tr></table></figure></p>
-<p><img src="http://yhv5.com/uploads/2015/09/addnode1.png" alt="addnode1"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/addnode1.png" alt="addnode1"></p>
 <p>我们再次查看集群节点可以看到端口为6386的node已经成为了Master.</p>
-<p><img src="http://yhv5.com/uploads/2015/09/addstatus.png" alt="addstatus"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/addstatus.png" alt="addstatus"></p>
 <p>接下来我们将端口为6387的作为Slave节点添加到端口为6386的Master下面，需要记录上图中的第一列中的MasterId执行命令如下:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/work/soft/redis-3.0.3/src/redis-trib.rb add-node --slave --master-id MasterId NewIP:port MasterIP:port</div></pre></td></tr></table></figure></p>
-<p><img src="http://yhv5.com/uploads/2015/09/addslave.png" alt="addslave"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/addslave.png" alt="addslave"></p>
 <p>查看一下添加的节点：</p>
-<p><img src="http://yhv5.com/uploads/2015/09/slave.png" alt="slave"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/slave.png" alt="slave"></p>
 <h3 id="Resharding"><a href="#Resharding" class="headerlink" title="Resharding"></a>Resharding</h3><p>接下来我们可以对集群中的slots重新分配，比如我们需要将端口为6380的Master中的5000slot分配给6386端口的Master,则可以执行如下命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/work/soft/redis-3.0.3/src/redis-trib.rb reshard ResIP:port DesIP:port</div></pre></td></tr></table></figure></p>
-<p><img src="http://yhv5.com/uploads/2015/09/reshard.png" alt="reshard"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/reshard.png" alt="reshard"></p>
 <p>我们再次查询key为”yh_2”时发现已经重定向到了6386端口上。</p>
-<p><img src="http://yhv5.com/uploads/2015/09/regetkey.png" alt="regetkey"></p>
+<p><img src="https://yhv5.com/uploads/2015/09/regetkey.png" alt="regetkey"></p>
 <p>我们在来看下一下集群节点：</p>
-<p><img src="http://yhv5.com/uploads/2015/09/reshardresult.png" alt="reshardresult"></p>
-<p>最后附上本文资源：<a href="http://yhv5.com/software/redis_control">redis启动脚本</a>，<a href="http://yhv5.com/software/redis-3.0.3.tar.gz"> redis-3.0.3 </a>, <a href="http://yhv5.com/software/redis-3.2.1.gem"> rubygem </a>。</p>
+<p><img src="https://yhv5.com/uploads/2015/09/reshardresult.png" alt="reshardresult"></p>
+<p>最后附上本文资源：<a href="https://yhv5.com/software/redis_control">redis启动脚本</a>，<a href="https://yhv5.com/software/redis-3.0.3.tar.gz"> redis-3.0.3 </a>, <a href="https://yhv5.com/software/redis-3.2.1.gem"> rubygem </a>。</p>
 <p>(The End)</p>
 ]]></content>
     
@@ -392,28 +392,28 @@
     <link href="http://yhv5.com/travel_1615.html"/>
     <id>http://yhv5.com/travel_1615.html</id>
     <published>2014-10-08T11:24:55.000Z</published>
-    <updated>2017-08-17T11:17:08.405Z</updated>
+    <updated>2017-09-16T09:31:39.546Z</updated>
     
     <content type="html"><![CDATA[<p>想必在这个黄金周没有各位看客都没有空闲吧！是个好机会出去放松放松长期工作的疲惫身躯了，于是就有了下面的内容….</p>
 <p>这个长假对于我来说还是比较充实的，本次旅行的终点便是大家熟悉而又不陌生的五岳之首-泰山。下面看看泰山的位置吧</p>
-<p><img src="http://yhv5.com/uploads/2014/10/map.jpg" alt="map"></p>
+<p><img src="https://yhv5.com/uploads/2014/10/map.jpg" alt="map"></p>
 <p>泰山位于山东省会济南市正南方向50km左右的泰安市(车道估计有70km)。</p>
 <p>如果大家想想直接旅行去泰山，估计就只能去泰山了，因为登泰山肯定是一件费劲的事儿，到时候从泰山下来估计哪儿也不想去了，因此我们制定的路线并不是直接去泰山，而是先去周边的旅游景点。</p>
 <p>泰山之前续-第一站：济南市</p>
 <p>10月1日傍晚18:27在北京南站乘坐G2601踏上此次旅行的第一步，高铁在月黑的夜晚开着300KM/h的速度一路向南，在21:50分左右到达济南站，并入住离火车站300m左右的天虹商务酒店（当时的酒店费用是188/天），由于到时已经比较晚了，到处看不到商店买零食和水，结果在济南车火车站东侧的世纪华联超市（邮政宾馆旁）买了一瓶6元的水，结果被骗了，让我觉得山东人的豪气顿时全无。骗子居然利用世纪华联超市名义在济南火车站行骗，骗走大洋70，后果断报警，平生第一次打110，追回大洋，发现落难者竟络绎不绝的前来讨债，无语的发现卖的东西都是2012年的。警察同志告诉我，之前记者都来采访过但愁于没有证据无法断案，现在只好遇到一次报案就帮忙追回一次。还原现场:达到济南站晚上10点左右，到处看不到买零食和水的地方，仅仅注意到济南站东侧邮政宾馆旁的“世纪华联超市”，买了一瓶水6大洋，给他100，没注意到他竟然把100悄悄给撕掉一个角，并告诉我说这钱少了一个角，是真钱，让我在钱包里面找那个角，并把钱包拿来里面的钱翻出来，他看我钱包里面还有100的大洋，于是说他家进货全是零钱，换100大洋的零钱给我，事先觉得以为自己的钱有问题，这老板都不在乎，就答应了他换，于是乎开始了骗局找我184，我接过钱数了一下少10大洋，让他再数，他数了确实少，然后看见他补了10大洋，呃呃呃没有数钱拿着钱就走了，这就被坑爹了。骗子花样很多，有些情况是把你钱包翻个底，然后随手套走大洋。基于带着警察同志到店询问，骗子说忙刚才找错了，或者说你自己落下了，他帮你捡着的，没有可靠证据，无法立案。唉百度一把，结果一大把被骗都忍气吞声了。这是济南的第一印象！</p>
 <p>第二天一大早便抽身去了传说中的大明湖（门票30元/位），也可以买通票（75元/位，包含大明湖景区30元、五龙湖景区5元、趵突泉景区40元），大明湖风景确实不错，如果围绕着湖转一圈估计的费一上午的时间，主要是水上娱乐，快艇、划船的人真不少，里面游玩的就像普通的游乐场没有两样，一般情况下不想去玩，主要是看湖畔风景。10月的大明湖吹着一阵阵的凉风，让人精神顿时抖擞，不愧是5A景点。后来去参观了老舍纪念馆、超然楼等等地方。</p>
-<p><img src="http://yhv5.com/uploads/2014/10/map2.jpg" alt="map2"></p>
+<p><img src="https://yhv5.com/uploads/2014/10/map2.jpg" alt="map2"></p>
 <p>由于我们走的比较快，一上午过去了，我们差不多围绕着转了一个圈，其中的东湖是免费参观的。中午就在开元广场随便吃了点东西，便进入广场的一个鸿星尔克专卖店购物，当时的甩卖价让我心动的买了两件衣服，结果证明还是买对了。</p>
 <p>一下子就到下午2点多了，由于时间关系，本想去五龙潭公园参观的，但是由于考虑时间因素，我们接着去了附近的趵突泉，这里的门票要比大明湖贵（门票40元/位），买票进园，一路都是都是泉（话说有888个泉眼，目前有史书记载的就有72个），清澈透明，风水宜人，真是适合养老啊。</p>
 <p>于是这一天时间就这样过去了，水也就看完了，于是去看山~</p>
 <p>泰山之前续-第二站：泰安市</p>
 <p>10月2日8:05乘坐K8281次列车由济南站出发前往泰山站，由于这之间路程较短差不多不到一个小时的车程就到了。吃完饭，在泰山站寄存行李（车站都没有寄存的地方，只好在一个超市寄存，12元还是挺便宜的），立马前往附近的岱庙景点（门票30元/位），岱庙具体位置如下：</p>
-<p><img src="http://yhv5.com/uploads/2014/10/map3.jpg" alt="map3"></p>
+<p><img src="https://yhv5.com/uploads/2014/10/map3.jpg" alt="map3"></p>
 <p>大约离泰山站不到5km，乘坐k37可以到附近（但是由于实在不太明白泰安乘车路线，第一次坐反了车，于是在那儿等了好久好久的车才坐回去）。岱庙可以堪称小皇宫，就像是故宫的缩影，在这里可以肉眼直接眺望泰山山顶，据说是皇帝专门修建眺望泰山的“别墅”。看看是不是像故宫</p>
-<p><img src="http://yhv5.com/uploads/2014/10/map4.gif" alt="map4"></p>
-<p><img src="http://yhv5.com/uploads/2014/10/map5.jpg" alt="map5"></p>
+<p><img src="https://yhv5.com/uploads/2014/10/map4.gif" alt="map4"></p>
+<p><img src="https://yhv5.com/uploads/2014/10/map5.jpg" alt="map5"></p>
 <p>岱庙一游，约了下午5点的车去泰山看封禅（shan）大典（10月1日后第一场是在18点15分开始，进行2小时），多数人都是看第一场的，因为第二场晚上20点开始都要等到22:00去了，晚上山上特别冷，所以那时候的票价要便宜些，于是3点多就转车回火车站拿上行李到了泰山脚下–天外村，坐等预约大巴（票价10元/位来回）前往封禅大典目的地，因为我们买的套票（泰山门票127元/位+封禅大典门票D区168元/位），因此门票都在天外村广场取票，从天外村到封禅大典大概需要30多分钟的车程。</p>
-<p><img src="http://yhv5.com/uploads/2014/10/map6.jpg" alt="map6"></p>
+<p><img src="https://yhv5.com/uploads/2014/10/map6.jpg" alt="map6"></p>
 <p>封禅大典确实是非常精彩，建议去登泰山的伙伴都去看看，各种表演凸显了各个朝代皇帝到泰山祭祀山神的壮观景象，而且在天烛峰的夜景也比较迷人，在这里一种复古的感觉悠然而生。</p>
 <p>晚上8点多了，乘来的车又会到了太外村，在这里我们在KFC吃了夜宵，做了登山前的准备工作，大致晚上10点左右，由于太外村是车道上中天门，而登山的道在红门，于是提前买上登山杖，打车（15元）前往红门登山口。来到红门一看夜间来登山的人还是比较多，各种山上下山的人都在步行着，各种灯光照得路面台阶清晰可见。</p>
 <p>大约晚上10点左右开始登山的前奏，由于自己带了帐篷，而检票处不让带帐篷，于是顺道带着溜进去，背着20公斤的行李移步青云，一波一波的人被我们甩在身后了，为了保持体力，没过多久我们放慢了节奏，慢慢登山，一路沿斗母宫、壶天阁、步天桥走走停停到达半山腰中天门，已经是凌晨12点多了，人此时也累的不行了，也没有再注意什么夜间景色，休息中顺便补充了一点食物，我们开始寻找搭帐篷的地方，由于很多地方都不太适合，十分钟之后继续前行，沿着云步桥、望人松、对松亭达到南天门，由于前半程已经非常疲惫不堪，因此下半程花了可以搭帐篷的地方，足足3个小时才到达南天门，在这里人山人海，到处都是睡着人，也找不到搭帐篷的地方，最后选择铺上防潮垫、裹着睡袋休息了2个小时，5点多左右爬起来开始看日出，结果由于山上雾霭蒙蒙满山阔，看不到什么云海，于是选择在继续前往玉皇顶，中途在山上吃了10元的“丰盛”早餐，大致步行了20分钟左右来到山顶，风相当大，在这里有祭祀，有求神、有购物的人群，看了看遍四处游玩去了，警告后天坞索道、桃花源索道，没过多久我们便又回到了南天门，在这里时而遇到小雨急下，时而大风凛冽。由于看日出的期望基本已经破灭，于是逗留到上午10点多左右开始下山。</p>
@@ -422,17 +422,17 @@
 <p>总结：此次出行，首遇火车站骗子，这是第一印象；在山东吃的每一顿饭，我注意到都没有提供过餐巾纸，这是第二大印象；热情好客、乐于助人的场景亲身经历，这是第三印象。总之还是值得去的一个地方。。。</p>
 <p>附上本次出行的各种门票：</p>
 <p>大明湖门票：</p>
-<p><img src="http://yhv5.com/uploads/2014/10/daminghu.jpg" alt="daminghu"></p>
+<p><img src="https://yhv5.com/uploads/2014/10/daminghu.jpg" alt="daminghu"></p>
 <p>趵突泉门票：</p>
-<p><img src="http://yhv5.com/uploads/2014/10/baotuquan.jpg" alt="baotuquan"></p>
+<p><img src="https://yhv5.com/uploads/2014/10/baotuquan.jpg" alt="baotuquan"></p>
 <p>岱庙门票：</p>
-<p><img src="http://yhv5.com/uploads/2014/10/daimiao.jpg" alt="daimiao"></p>
+<p><img src="https://yhv5.com/uploads/2014/10/daimiao.jpg" alt="daimiao"></p>
 <p>封禅大典门票：</p>
-<p><img src="http://yhv5.com/uploads/2014/10/tianzufeng.jpg" alt="tianzufeng"></p>
+<p><img src="https://yhv5.com/uploads/2014/10/tianzufeng.jpg" alt="tianzufeng"></p>
 <p>泰山门票：</p>
-<p><img src="http://yhv5.com/uploads/2014/10/taishan.jpg" alt="taishan"></p>
+<p><img src="https://yhv5.com/uploads/2014/10/taishan.jpg" alt="taishan"></p>
 <p>车票：</p>
-<p><img src="http://yhv5.com/uploads/2014/10/trail.jpg" alt="trail"></p>
+<p><img src="https://yhv5.com/uploads/2014/10/trail.jpg" alt="trail"></p>
 <p>(The End)</p>
 ]]></content>
     
@@ -462,7 +462,7 @@
     <link href="http://yhv5.com/mysql_skill_1601.html"/>
     <id>http://yhv5.com/mysql_skill_1601.html</id>
     <published>2014-08-09T18:08:03.000Z</published>
-    <updated>2017-08-17T11:17:08.387Z</updated>
+    <updated>2017-09-16T09:31:39.541Z</updated>
     
     <content type="html"><![CDATA[<p>熬夜看代码已经养成了习惯，如果看看优秀的代码还是值得的，但是如果是烂代码就太浪费时间了，总结下大致看到的一些问题，主要是关于MySQL中的SQL语句问题，下面一起来看看吧！ 第一个问题，关于分页处理，在一般情况下面我们都会使用如下语句来进行分页查询</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> TABLENAME <span class="keyword">LIMIT</span> x,y;</div></pre></td></tr></table></figure>
@@ -507,17 +507,17 @@
     <link href="http://yhv5.com/mystat_1575.html"/>
     <id>http://yhv5.com/mystat_1575.html</id>
     <published>2014-08-04T02:01:44.000Z</published>
-    <updated>2017-08-17T11:17:08.389Z</updated>
+    <updated>2017-09-16T09:31:39.542Z</updated>
     
     <content type="html"><![CDATA[<p>说起这款mystat，其实它就是一个Perl脚本，但是用来监测mysql还是足够了，下面我们来介绍一下这款利器。 因为是perl脚本，所以首先需要机器支持Perl，如果你的机器没有安装那么可以直接执行yum install perl，它会帮你安装各种Perl的依赖lib，如果你喜欢编译安装，那么可以去 perl官方(<a href="http://www.perl.org/get.html" target="_blank" rel="external">http://www.perl.org/get.html</a>) 下载编译安装，具体编译细节本文不做介绍。 好了已经安装或者已经有perl的小伙伴就可以去下载perl的mysql包了，首先需要安装的是<a href="http://www.cpan.org/modules/by-module/DBD/" target="_blank" rel="external">DBI</a>，Perl连接数据库需要安装DBI模块和相应数据库的DBD驱动，Linux上默认安装的Perl是没有该模块的,所以要手动安装。</p>
 <h3 id="安装DBI"><a href="#安装DBI" class="headerlink" title="安装DBI"></a>安装DBI</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">wget http://cpan.metacpan.org/authors/id/T/TI/TIMB/DBI-1.631.tar.gz</div><div class="line">tar -zxvf DBI-1.631.tar.gz</div><div class="line"><span class="built_in">cd</span> DBI-1.631</div><div class="line">perl Makefile.PL</div><div class="line">make</div><div class="line">make install</div></pre></td></tr></table></figure>
 <h3 id="安装DBD-mysql"><a href="#安装DBD-mysql" class="headerlink" title="安装DBD-mysql"></a>安装DBD-mysql</h3><p>具体可以到官方(<a href="http://search.cpan.org/~capttofu/DBD-mysql-4.020/" target="_blank" rel="external">http://search.cpan.org/~capttofu/DBD-mysql-4.020/</a>) 选择版本下载，我这里选择的是截止目前为止的最高版本DBD-mysql-4.020，好了下载我们一如既往的编译安装</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">wget http://search.cpan.org/CPAN/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.020.tar.gz</div><div class="line">tar -zxvf DBD-mysql-4.011.tar.gz</div><div class="line"><span class="built_in">cd</span> DBD-mysql-4.011</div><div class="line">perl Makefile.PL --mysql_config=/usr/<span class="built_in">local</span>/mysql/bin/mysql_config</div><div class="line">make</div><div class="line">make install</div></pre></td></tr></table></figure>
 <p>安装完成之后，我们就可以去下载mystat脚本了，可以到本文末下载或者去作者博客(<a href="http://www.penglixun.com/" target="_blank" rel="external">http://www.penglixun.com/</a>) 站下载，下载好脚本到我们的服务器上即可运行它,执行脚本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./mystat.pl -hlocalhost -uusername -ppassword</div></pre></td></tr></table></figure></p>
-<p>结果如下图：<img src="http://yhv5.com/uploads/2014/08/mystat.jpg" alt="mystat"></p>
-<p><a href="http://yhv5.com/software/DBD-mysql-4.020.tar.gz">DBD-mysql-4.020.tar.gz</a> 下载</p>
-<p><a href="http://yhv5.com/software/DBI-1.631.tar.gz">DBI-1.631.tar.gz</a> 下载</p>
-<p><a href="http://yhv5.com/software/mystat.pl">mystat.pl</a> 下载</p>
+<p>结果如下图：<img src="https://yhv5.com/uploads/2014/08/mystat.jpg" alt="mystat"></p>
+<p><a href="https://yhv5.com/software/DBD-mysql-4.020.tar.gz">DBD-mysql-4.020.tar.gz</a> 下载</p>
+<p><a href="https://yhv5.com/software/DBI-1.631.tar.gz">DBI-1.631.tar.gz</a> 下载</p>
+<p><a href="https://yhv5.com/software/mystat.pl">mystat.pl</a> 下载</p>
 <p>(The End)</p>
 ]]></content>
     
@@ -543,7 +543,7 @@
     <link href="http://yhv5.com/zabbix_1552.html"/>
     <id>http://yhv5.com/zabbix_1552.html</id>
     <published>2014-08-03T10:36:42.000Z</published>
-    <updated>2017-08-17T11:17:08.410Z</updated>
+    <updated>2017-09-16T09:31:39.547Z</updated>
     
     <content type="html"><![CDATA[<p>zabbix是一款基于WEB界面的提供分布式系统监视以及网络监视功能的企业级开源解决方案，源码是用PHP写的，官方地址可以移步<a href="http://www.zabbix.com" target="_blank" rel="external">zabbix</a>观摩。</p>
 <p>其实市场上的监控工具已经多得数不胜数了，现在比较流行的都是站长利用第三方进行监控自己的站点，很少自己来维护一套监控方案了，但是我觉得zabbix还是有必要了解和知道的，因为它的确很优秀，不仅能监视各种网络参数，保证服务器系统的安全运营；还能提供柔软的通知机制以让系统管理员快速定位/解决存在的各种问题。不管你是否关心，但是它真的做到了。</p>
@@ -574,20 +574,20 @@
 <h4 id="配置web访问"><a href="#配置web访问" class="headerlink" title="配置web访问"></a>配置web访问</h4><p>我们可以将zabbix_server解压目录中的frontends文件copy到我们的站点根目录，比如<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">copy -r /usr/<span class="built_in">local</span>/download/zabbix-2.2.5/frontends/php /usr/<span class="built_in">local</span>/nginx/html/zabbix</div></pre></td></tr></table></figure></p>
 <p>然后根据自己的选择的服务（nginx、apache、ligttpd）进行配置。</p>
 <p>完成之后我们就可以通过web进行访问了，因为zabbix源码是php ，我们需要安装php解析器（环境），安装php由于篇幅限制，本文不做介绍，具体可以移步各大论坛博客求攻略，web访问进入如下界面：</p>
-<p><img src="http://yhv5.com/uploads/2014/08/zabbix.jpg" alt="zabbix"></p>
+<p><img src="https://yhv5.com/uploads/2014/08/zabbix.jpg" alt="zabbix"></p>
 <p>接下来需要，在php配置文件中修改如下配置以满足zabbix的需要，max_execution_time、max_input_time、time zone</p>
-<p>修改php.ini文件之后重启php，看到如下配置都ok，然后next。<img src="http://yhv5.com/uploads/2014/08/zabbix_2.jpg" alt="zabbix_2"></p>
+<p>修改php.ini文件之后重启php，看到如下配置都ok，然后next。<img src="https://yhv5.com/uploads/2014/08/zabbix_2.jpg" alt="zabbix_2"></p>
 <p>根据提示填写基本配置信息并点击测试，pass之后继续next。</p>
-<p><img src="http://yhv5.com/uploads/2014/08/zabbix_3.jpg" alt="zabbix_3"></p>
+<p><img src="https://yhv5.com/uploads/2014/08/zabbix_3.jpg" alt="zabbix_3"></p>
 <p>到这一步，可能就要报错了，原因是我们需要先把数据表导入到数据库才能继续了，好吧，我们那就去导数据吧~，点击next</p>
-<p><img src="http://yhv5.com/uploads/2014/08/zabbix_5.jpg" alt="zabbix_5"></p>
-<p><img src="http://yhv5.com/uploads/2014/08/zabbix_6.jpg" alt="zabbix_6"></p>
-<p><img src="http://yhv5.com/uploads/2014/08/zabbix_7.jpg" alt="zabbix_7"></p>
+<p><img src="https://yhv5.com/uploads/2014/08/zabbix_5.jpg" alt="zabbix_5"></p>
+<p><img src="https://yhv5.com/uploads/2014/08/zabbix_6.jpg" alt="zabbix_6"></p>
+<p><img src="https://yhv5.com/uploads/2014/08/zabbix_7.jpg" alt="zabbix_7"></p>
 <p>如果遇到无法创建zabbix.conf.php，可以将站点根目录文件夹权限修改一下chown -R www:www /usr/local/nginx/html/zabbix</p>
 <p>需要将zabbix_server解压目录中的database文件夹中相应文件导入db，zabbix目前支持mysql、Oracle、sqllite、db2，我们把对应的文件夹中的文件导入db即可，这里我们选择mysql，则把mysql下面的3个文件（data.sql、images.sql、schema.sql）导入mysql中 ,完成之后我们就可以继续完成安装了，到这步就已经结束了，因为是导入的数据，因此zabbix默认登陆名是zabbix口令也是zabbix。我们登陆进入之后可以看到整个后台布局如下</p>
-<p><img src="http://yhv5.com/uploads/2014/08/zabbix_4.jpg" alt="zabbix_4"></p>
-<p><a href="http://yhv5.com/software/zabbix-2.2.5.tar.gz">zabbix-2.2.5.tar.gz</a> 下载</p>
-<p><a href="http://yhv5.com/software/zabbix_agents_2.2.5.linux2_6_23.amd64.tar.gz">zabbix_agents_2.2.5.linux2_6_23.amd64.tar.gz</a>下载</p>
+<p><img src="https://yhv5.com/uploads/2014/08/zabbix_4.jpg" alt="zabbix_4"></p>
+<p><a href="https://yhv5.com/software/zabbix-2.2.5.tar.gz">zabbix-2.2.5.tar.gz</a> 下载</p>
+<p><a href="https://yhv5.com/software/zabbix_agents_2.2.5.linux2_6_23.amd64.tar.gz">zabbix_agents_2.2.5.linux2_6_23.amd64.tar.gz</a>下载</p>
 <p>(The End)</p>
 ]]></content>
     
@@ -609,7 +609,7 @@
     <link href="http://yhv5.com/token_1532.html"/>
     <id>http://yhv5.com/token_1532.html</id>
     <published>2014-07-20T11:21:35.000Z</published>
-    <updated>2017-08-17T11:17:08.403Z</updated>
+    <updated>2017-09-16T09:31:39.545Z</updated>
     
     <content type="html"><![CDATA[<p>随着去年“棱镜门”事件曝光，人们才开始发现自己的隐私都被NSA监听，无论是生活中用到的通讯设备，还是工作中用到的PC，以及现在流行的各种端设备，都一一被指出安全问题，越来越多的个人或者企业也意识到了自己的安全工作没有做到位，当然也不排除那种有带有私心的范儿们。其实这一切都归咎于科技的高速发展，促使着人们学会去改进，而不是停滞不前。唠叨了这么多还是说明一点问题安全对于人们是多么的重要，IT是一个信息化时代，少不了的红黑帽之间的较量，正是由于这个原因就造就了各种大牛级的人物出现。</p>
 <p>接下来提到的Token（令牌）使用的RSA加密无非就是一种安全钥匙，目前也广泛的运用在各种企业，比如国家银行、私企、事业单位等等。下面我们就来一起探讨一下这个神奇的令牌是怎样实现安全认证的。</p>
@@ -638,14 +638,14 @@
     <link href="http://yhv5.com/make_error_1519.html"/>
     <id>http://yhv5.com/make_error_1519.html</id>
     <published>2014-07-17T15:12:29.000Z</published>
-    <updated>2017-08-17T11:17:08.380Z</updated>
+    <updated>2017-09-16T09:31:39.539Z</updated>
     
     <content type="html"><![CDATA[<p>首先说明写作本文的用意，大致是昨天凌晨5点左右，我手机接到阿里云的短信报警提示–服务器宕机了，开始以为几分钟之内就能恢复正常，但是没有自己想象的那样，基础服务在重启之后都正常了，但是自己的一些作业被耽搁了，于是小编上准备上阿里云提交工单求解释。</p>
 <p>话说到官方提交完工单之后，顺便浏览了一下官方最近的活动，心想能遇有什么优惠政策。于是就在站内各种扫描，确实看到有一些令人心痒的活动，比如说官方推出的“<a href="http://free.aliyun.com/?spm=5176.383338.3.2.nHMQNT&amp;tracelog=shybanner" target="_blank" rel="external">0元拥抱云计算</a>”，看着就点进去了。进去之后里面做的很花哨啊！各种养眼的惠民政策，看着就顺势往下走，由于个人习惯喜欢在触摸板左右滑动，结果偶然屏幕右侧多出一块空白区域（下面给出），觉得很好奇啊~，想一下不应该啊，毕竟是阿里云，前端工作应该还是比较到位的，于是刷新了几下在看，仍然出现该情况，这下我就好奇了，于是去看源码发现，不知道那个粗心大意的攻城狮把宽度写错了（本来是100%的宽度，结果不知道啥情况手抖了一下增加了一个0，变成1000%），也许犯着糊涂的时候他本身不是故意的，但就是不知怎么回事儿的情况下就成这样了（我们这一行经常这样说），好吧说了这么多还是上一张图为证吧！</p>
-<p><img src="http://yhv5.com/uploads/2014/07/alibug.jpg" alt="alibug"></p>
-<p>另外在来看一下淘宝订单交易记录吧~，这里的效果更奇葩，还是上图为证；<br><img src="http://yhv5.com/uploads/2014/07/taobao.jpg" alt="taobao"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/alibug.jpg" alt="alibug"></p>
+<p>另外在来看一下淘宝订单交易记录吧~，这里的效果更奇葩，还是上图为证；<br><img src="https://yhv5.com/uploads/2014/07/taobao.jpg" alt="taobao"></p>
 <p>再如，淘宝的虚拟充值平台交易时弹出的对话框，都是一些细小的问题没有规范导致。</p>
-<p><img src="http://yhv5.com/uploads/2014/07/chongzhi.jpg" alt="chongzhi"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/chongzhi.jpg" alt="chongzhi"></p>
 <p>总结：每个人过多过少都会犯糊涂，疏忽大意是难免的，只能说是尽量避免不要出现严重的后果，影响用户的体验。有些时候就想着为了去解决一件事情而去做这件事儿，但是呢，结果事情没解决反而捅了篓子，惹出一摊子事儿来，就像我们曾经一起犯过的错，踩了前人留下的坑，各种坑爹的坑，填填补补，伤痕累累，最终劳民伤财啊。当然还是希望自己不要给后人留下坑否则后来者也会同样的抱怨曾经的缔造者。终规终矩，还是说明一个问题，规范，如果自己把自己的事儿做好，就不会让其他人为你头疼了。</p>
 <p>(The End)</p>
 ]]></content>
@@ -671,9 +671,9 @@
     <link href="http://yhv5.com/mysql_efficient_2_1260.html"/>
     <id>http://yhv5.com/mysql_efficient_2_1260.html</id>
     <published>2014-07-06T07:39:04.000Z</published>
-    <updated>2017-08-17T11:17:08.384Z</updated>
+    <updated>2017-09-16T09:31:39.540Z</updated>
     
-    <content type="html"><![CDATA[<p>话说上一篇 <a href="http://yhv5.com/mysql_efficient_693.html">MySQL高性能分析一</a> 写于半年以前了，现在继续聊聊下一部分-索引类型的相关知识。</p>
+    <content type="html"><![CDATA[<p>话说上一篇 <a href="https://yhv5.com/mysql_efficient_693.html">MySQL高性能分析一</a> 写于半年以前了，现在继续聊聊下一部分-索引类型的相关知识。</p>
 <p>在写作本文之前有必要说明一下索引的优缺点，使用索引本身是为了解决问题，但是如果使用者滥用索引或者使用不当，索引也会让你付出惨痛的代价，因此我们有必要合理正确的使用索引，来解决遇到的问题，而不是带来新的问题。简单的说使用索引可以帮助我们：</p>
 <ul>
 <li><p>索引大大减少了服务器需要扫描的数据量；</p>
@@ -685,7 +685,7 @@
 </ul>
 <p>本文主要介绍关于索引的类型，索引可分为：B-Tree、哈希索引（hash index）、空间数据索引（R-Tree）、全文索引、其他索引类型。</p>
 <h4 id="B-Tree"><a href="#B-Tree" class="headerlink" title="B-Tree"></a>B-Tree</h4><p>如果在没有指定索引类型的情况下，多数都是指B-Tree索引（实际情况下是使用的B+Tree），不同的存储引擎之间B-Tree性能也是各有不同，如MyISAM使用的前缀压缩技术使得索引变小，但是InnoDB则按照原数据格式进行存储，再如MyISAM索引通过数据的物理位置引用被索引的行，而InnoDB则根据主键引用被索引的行。如下图所示：</p>
-<p><img src="http://yhv5.com/uploads/2014/07/1.jpg" alt="1"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/1.jpg" alt="1"></p>
 <p>由上图可知，B-Tree对索引是按照顺序组织数据存储的，所以很适合查找范围数据，例如一个基于文本域的索引树上，按照字母顺序传递连续的值进行查找非常适合，所以像查找以某个字母开头的方式效率非常高。通常这种B-Tree索引有如下六种查询方式（这里主要介绍联合索引的形式）：</p>
 <ul>
 <li><p>全值匹配：和索引中的所有列进行匹配，联合索引或者单列索引；</p>
@@ -732,8 +732,8 @@
     
     <summary type="html">
     
-      &lt;p&gt;话说上一篇 &lt;a href=&quot;http://yhv5.com/mysql_efficient_693.html&quot;&gt;MySQL高性能分析一&lt;/a&gt; 写于半年以前了，现在继续聊聊下一部分-索引类型的相关知识。&lt;/p&gt;
-&lt;p&gt;在写作本文之前有必要说明一下索引的优缺点，使用索引本身
+      &lt;p&gt;话说上一篇 &lt;a href=&quot;https://yhv5.com/mysql_efficient_693.html&quot;&gt;MySQL高性能分析一&lt;/a&gt; 写于半年以前了，现在继续聊聊下一部分-索引类型的相关知识。&lt;/p&gt;
+&lt;p&gt;在写作本文之前有必要说明一下索引的优缺点，使用索引本
     
     </summary>
     
@@ -751,22 +751,22 @@
     <link href="http://yhv5.com/xy_plot_to_add_a_text_label_1239.html"/>
     <id>http://yhv5.com/xy_plot_to_add_a_text_label_1239.html</id>
     <published>2014-07-03T10:13:59.000Z</published>
-    <updated>2017-08-17T11:17:08.409Z</updated>
+    <updated>2017-09-16T09:31:39.547Z</updated>
     
     <content type="html"><![CDATA[<p>亲爱的小伙伴们，还在愁给EXCEL或者PPT内的XY散点图加文字标签吗？当你百度一下的时候，网上主要讲到两种方法：一、用宏（VBA编程）；二、用专业插件（XYChartLabeler下载地址见文末）。</p>
-<p>个人谈谈这两种方法的弊端吧，对于第一种，如果你是VB高手，那就十分方便，如果你是VB小白，那么也许你会选择第二种。第二种使用非常方便，但唯一的缺点此款插件只能在EXCEL内使用，不能用于幻灯片内；如果你是调研行业的小伙伴也许公司会要求PPT内的图表不能直接从EXCEL粘贴，要从PPT内直接插图表（这主要是方便客户提取或编辑数据）。苦于这种原因，那么你也许就会通过手动插入文本框自己一个个添加标签或者选择数据→添加→选择系列名称、X轴、Y轴，一个一个的添加。如下图所示：<br><img src="http://yhv5.com/uploads/2014/07/12.png" alt="1"></p>
+<p>个人谈谈这两种方法的弊端吧，对于第一种，如果你是VB高手，那就十分方便，如果你是VB小白，那么也许你会选择第二种。第二种使用非常方便，但唯一的缺点此款插件只能在EXCEL内使用，不能用于幻灯片内；如果你是调研行业的小伙伴也许公司会要求PPT内的图表不能直接从EXCEL粘贴，要从PPT内直接插图表（这主要是方便客户提取或编辑数据）。苦于这种原因，那么你也许就会通过手动插入文本框自己一个个添加标签或者选择数据→添加→选择系列名称、X轴、Y轴，一个一个的添加。如下图所示：<br><img src="https://yhv5.com/uploads/2014/07/12.png" alt="1"></p>
 <p>举例数据中共8行，相当于需要重复添加八次。数据添加成功后，我们再添加数据标签，并在设置数据标签格式内勾选系列名称，最终成功添加。</p>
 <p>由于小编就属于VB小白，并且也属于不能从EXCEL直接粘图表的一员，因此在这向小伙伴们分享一种简便的方式，高手可以直接飘过。方法很简单，我们只需要在数据上换换格式就OK了。正常做XY散点图的数据源格式如下图：</p>
-<p><img src="http://yhv5.com/uploads/2014/07/21.png" alt="2"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/21.png" alt="2"></p>
 <p>我们仅需要将数据格式转换成如下的一个矩阵格式，第一行实际上就是X轴，第二行到最后一行实际上就都是Y轴了。然后呢我们只需要选中全部数据→插入→散点图。结果图表如下：</p>
-<p><img src="http://yhv5.com/uploads/2014/07/31.png" alt="3"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/31.png" alt="3"></p>
 <p>最后一步就是选中数据点→添加数据标签→设置数据标签格式→勾选系列名称（结果图如下）</p>
-<p><img src="http://yhv5.com/uploads/2014/07/61.png" alt="6"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/61.png" alt="6"></p>
 <p>当然了，这种方法也还是有缺陷的，大家应该很快意识到了，每个系列点都需要添加标签设置标签。但是在应用到幻灯片中有一定的帮助，当用在气泡图的时候就显得很快捷了。所以大家可以结合所需，灵活运用各种方法。</p>
-<p>顺便附上气泡图一例（上图为数据源格式，下图为成功的气泡图）<br><img src="http://yhv5.com/uploads/2014/07/71.png" alt="7"><br><img src="http://yhv5.com/uploads/2014/07/81.png" alt="8"></p>
+<p>顺便附上气泡图一例（上图为数据源格式，下图为成功的气泡图）<br><img src="https://yhv5.com/uploads/2014/07/71.png" alt="7"><br><img src="https://yhv5.com/uploads/2014/07/81.png" alt="8"></p>
 <p>可能亲会想说，调整数据格式是不是太麻烦了呀？其实呢如果数据量少的话当然可以手动调整，如果数据量多，或者要批量处理同样的数据，我们就可以借助EXCEL技巧和IF公式改变数据格式，但考虑这种情况不多见，此处就不多啰嗦了。最最方便的方式当然就是把模板保存好，下次使用就可以直接提取，哈哈。</p>
 <p>其实还有另外一种小技巧了呀，当做完XY散点图后，添加数据标签，然后直接将数据标签修改成文字就OK了。是不是很简单？</p>
-<p>最后附上工具下载地址<a href="http://yhv5.com/software/XYChartLabeler.rar"> XYChartLabeler </a></p>
+<p>最后附上工具下载地址<a href="https://yhv5.com/software/XYChartLabeler.rar"> XYChartLabeler </a></p>
 <p>(The End)</p>
 ]]></content>
     
@@ -795,30 +795,30 @@
     <link href="http://yhv5.com/spss_batch_tagging_1211.html"/>
     <id>http://yhv5.com/spss_batch_tagging_1211.html</id>
     <published>2014-07-01T06:30:42.000Z</published>
-    <updated>2017-08-17T11:17:08.397Z</updated>
+    <updated>2017-09-16T09:31:39.544Z</updated>
     
     <content type="html"><![CDATA[<p>最近因为合作方数据统计报表出的太频繁，少不了使用到SPSS，但每次处理问卷标签值赋值都有种崩溃的绝望，看着就眼晕，小伙伴们有木有！然而各位看客朋友的福音到了，小编特意将平生所学、所用”批量加注标签”的方式总结了一番，分享给各位看客朋友，需要能帮互大家提高工作效率，欢迎吐槽，请勿喷水~</p>
 <h3 id="第一部分——Excel内预处理"><a href="#第一部分——Excel内预处理" class="headerlink" title="第一部分——Excel内预处理"></a>第一部分——Excel内预处理</h3><p>一般调研问卷是以WORD或者EXCEL的文档形式保存，这主要是方便整理和可视化管理。因此首先可以将问卷中选项的数值和标签整理出来（当然问卷一般有不同的格式，可以根据问卷规律整理，blablabla，如果对EXCEL非常熟悉，可以直接跳楼到第二部分-SPSS）。</p>
-<p>例如处理后的形式可能是如下图：（当然根据您具体的过程而定）<br><img src="http://yhv5.com/uploads/2014/07/1.png" alt="1"></p>
+<p>例如处理后的形式可能是如下图：（当然根据您具体的过程而定）<br><img src="https://yhv5.com/uploads/2014/07/1.png" alt="1"></p>
 <p>然后我们可以通过分列变成下图：（主要是方便套用公式）</p>
-<p><img src="http://yhv5.com/uploads/2014/07/2.png" alt="2"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/2.png" alt="2"></p>
 <p>套用公式：如下图</p>
 <p>在E2单元格套用公式：$C$1&amp;” “&amp;C2</p>
 <p>在E3单元格套用公式：C3&amp;”‘“&amp;D3&amp;”‘“</p>
-<p><img src="http://yhv5.com/uploads/2014/07/3.png" alt="3"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/3.png" alt="3"></p>
 <p>细心的看客肯定看到小编标黄色的行了，每个题项结束后都会插入空行隔开，这是因为在SPSS里面不同变量赋值所需。SPSS语法编辑器里面一个语法结束后需要回车后再编辑第二个语法。当遇到有非常非常多的题项时可以采用编序号+排序的方式快速插入，同时编序号后在筛选条件下也方便您快速复制以上公式啦，blablabla…</p>
-<p>同时看客们是否注意到此处label加了s，其实加s主要是对多个变量但是相同标签批量赋值，但单个变量赋值加s是不会影响的，为了方便大家理解特加以说明。如下图：<br><img src="http://yhv5.com/uploads/2014/07/22.png" alt="22"></p>
+<p>同时看客们是否注意到此处label加了s，其实加s主要是对多个变量但是相同标签批量赋值，但单个变量赋值加s是不会影响的，为了方便大家理解特加以说明。如下图：<br><img src="https://yhv5.com/uploads/2014/07/22.png" alt="22"></p>
 <p>那么变量A2-A7的标签都同时赋值为1-非常满意，2-基本满意，3-不满意，4-非常不满意。</p>
 <h3 id="第二部分——SPSS"><a href="#第二部分——SPSS" class="headerlink" title="第二部分——SPSS"></a>第二部分——SPSS</h3><p>接下来就是SPSS发挥强大功用了，继续走起~~~</p>
-<p>1、打开SPSS的语法编辑器，点击”文件”-&gt;”新建”-&gt; “语法”，如下图（小编用的SPSS19.0）<br><img src="http://yhv5.com/uploads/2014/07/4.png" alt="4"></p>
-<p>2、将上述EXCEL内整理得到的标签复制到编辑器，如下图（箭头所指的空白处就是我们在EXCEL内插入的空白行） <img src="http://yhv5.com/uploads/2014/07/5.png" alt="5"></p>
-<p>3、点击”运行”-&gt;”全部”： <img src="http://yhv5.com/uploads/2014/07/6.png" alt="6"></p>
+<p>1、打开SPSS的语法编辑器，点击”文件”-&gt;”新建”-&gt; “语法”，如下图（小编用的SPSS19.0）<br><img src="https://yhv5.com/uploads/2014/07/4.png" alt="4"></p>
+<p>2、将上述EXCEL内整理得到的标签复制到编辑器，如下图（箭头所指的空白处就是我们在EXCEL内插入的空白行） <img src="https://yhv5.com/uploads/2014/07/5.png" alt="5"></p>
+<p>3、点击”运行”-&gt;”全部”： <img src="https://yhv5.com/uploads/2014/07/6.png" alt="6"></p>
 <p>4、成功运行效果图（上图为查看器内的显示截图，下图为SPSS变量视图的截图）</p>
-<p><img src="http://yhv5.com/uploads/2014/07/7.png" alt="7"><a href="http://yhv5.com/uploads/2014/07/10.png"></a><img src="http://yhv5.com/uploads/2014/07/8.png" alt="8"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/7.png" alt="7"><a href="https://yhv5.com/uploads/2014/07/10.png"></a><img src="https://yhv5.com/uploads/2014/07/8.png" alt="8"></p>
 <p>备注：如果步骤2中没有空行（回车），如下图：</p>
-<p><img src="http://yhv5.com/uploads/2014/07/9.png" alt="9"></p>
-<p>我们可以看到左侧箭头所示，实际上语法编辑器内只默认了一个变量。现在我们再运行看看效果：(上图为查看器内的显示截图，下图为SPSS变量视图的截图）<br><img src="http://yhv5.com/uploads/2014/07/10.png" alt="10"></p>
-<p><img src="http://yhv5.com/uploads/2014/07/11.png" alt="11"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/9.png" alt="9"></p>
+<p>我们可以看到左侧箭头所示，实际上语法编辑器内只默认了一个变量。现在我们再运行看看效果：(上图为查看器内的显示截图，下图为SPSS变量视图的截图）<br><img src="https://yhv5.com/uploads/2014/07/10.png" alt="10"></p>
+<p><img src="https://yhv5.com/uploads/2014/07/11.png" alt="11"></p>
 <p>根据上面结果可知，查看器内语法报错，并且变量视图内只有A1变量成功赋值。</p>
 <p>到了这里，如果没有报错，基本就ok了，上面也看到了最终的效果。希望本文能帮助到正在水深火热中痛苦挣扎的小伙伴们。。。</p>
 <p>(The End)</p>
@@ -844,7 +844,7 @@
     <link href="http://yhv5.com/aliqin_1189.html"/>
     <id>http://yhv5.com/aliqin_1189.html</id>
     <published>2014-06-21T14:53:14.000Z</published>
-    <updated>2017-09-16T09:29:22.454Z</updated>
+    <updated>2017-09-16T09:31:39.537Z</updated>
     
     <content type="html"><![CDATA[<p>话说，这都已经半个月前的事儿了，阿里、TX（JD）都在为筹办618活动大肆宣扬惠民政策，遇到这么好的事儿，或许你也没错过吧~</p>
 <p>当然这种互联网的活动也不是头一回了，就像小米F码一样，阿里这次来效仿了一个T码，具体活动可移步其<a href="http://aliqin.tmall.com/" target="_blank" rel="external"> 官网 </a>，活动期间使用这个T码可以用来购买阿里通信（虚拟运营商）170号卡，不过在头一个月前，要是你能预约，也就不用抢这个T码了，那时候小编没有这么好的运气遇上，这次正好赶上抢T码，抢了T码可以绑定一款手机，在6月18日的时候进行提前优惠选购亲心号卡和购买手机，也许大家看中的都不是神马手机之类的，只是对它的号卡感兴趣。不过这次惠民活动最早开始在一线和不多的二线城市进行，其他城市就要等候佳音了，当然也不是全国所有城市都发售的（因为阿里本次虚拟运营竞标，只获得全国不到40个地区和城市，苏宁竞标虚拟运营城市获得高达61个之多），具体的发行城市如下图:</p>
@@ -882,14 +882,14 @@
     <link href="http://yhv5.com/wonderful_tech_1173.html"/>
     <id>http://yhv5.com/wonderful_tech_1173.html</id>
     <published>2014-06-21T04:26:13.000Z</published>
-    <updated>2017-08-17T11:17:08.408Z</updated>
+    <updated>2017-09-16T09:31:39.547Z</updated>
     
     <content type="html"><![CDATA[<p>也许当你看到标题就已经想入非非了，是的，科技总会给人们带来无穷的新鲜感，让你欲罢无能~，下面就一起来看看这些创意吧！写作本文并不代表小编的主观态度，只是分享乐趣哈，请勿喷水，欢迎各种吐槽~</p>
 <p>哈尔滨一家以机器人为主题的餐厅里，煮水饺、煮面、炒菜、地面送餐、空中传菜、迎宾都由机器人来完成，18种长相各异、个头不等、讲着简单语言的机器人是这家餐厅的“主力员工”。有图有真相，见下图：</p>
-<p><img src="http://yhv5.com/uploads/2014/06/1.jpg" alt="1jpg"></p>
+<p><img src="https://yhv5.com/uploads/2014/06/1.jpg" alt="1jpg"></p>
 <p>&nbsp;</p>
 <p>日前，一款 <a href="http://www.designboom.com/technology/ophone-capable-of-sending-scent-messages-06-13-2014/" target="_blank" rel="external">手机配件 oPhone</a> 就做到了这点，让发送气味变得像发送短信一样简单。<a href="http://www.onotes.com/" target="_blank" rel="external">oPhone</a> 由哈佛大学教授 David Edwards 和 Rachel Field 研制，目前正在准备推向市场。外观上看，这台机器略显奇怪：两个伸出的圆柱体，外加一个底座。它是一个手机配件，目前只适用于 iOS，用户需要下载免费的 app。oPhone 的核心是一块名为 oChip 的气味芯片。这块芯片上有 32 种“原味”，类似色彩中的“原色”。32 种气味可以合成 30 多万种复杂的气味。oPhone 的工作原理基于“编码——解码”的过程：用户用 app 输入气味，传递给同样使用 oPhone 的小伙伴，小伙伴接收后，oPhone 解码，释放气味。当然气味需要特定的材料生成。类似打印机中的“墨盒”，oPhone 有一个“气味盒”，气味盒中的材料用完需要更换。一套香味材料售价 20 美元，上图为证：</p>
-<p><img src="http://yhv5.com/uploads/2014/06/2.jpg" alt="2"></p>
+<p><img src="https://yhv5.com/uploads/2014/06/2.jpg" alt="2"></p>
 <p>(The End)</p>
 ]]></content>
     
@@ -912,12 +912,12 @@
     <link href="http://yhv5.com/to_be_an_ordinary_person_full_of_energy_1166.html"/>
     <id>http://yhv5.com/to_be_an_ordinary_person_full_of_energy_1166.html</id>
     <published>2014-06-18T07:49:24.000Z</published>
-    <updated>2017-08-17T11:17:08.402Z</updated>
+    <updated>2017-09-16T09:31:39.545Z</updated>
     
     <content type="html"><![CDATA[<p>前段时间出地铁正好遇到一群卖艺的小乐队，他们有自己的乐队名称（桶子鼓乐队），有自己的专辑出售（每张20元）。于是也加入人群欣赏了一会儿。临走之时还有一点小感触，本就打算写点什么，但却一直被耽搁。</p>
 <p>昨晚小罗罗突然说在地铁里遇到一枚帅哥弹琴卖艺，于是我们开始了一波的讨论。在小罗罗眼里，他始终对这类人群表示深深的不理解。而我却有着不一样的看法和理解。</p>
 <p>我觉得他们至少也是在付出劳动力，并且说不定他们也还有自己的音乐梦想，只是由于缺乏机遇、缺乏平台让他们不能像正真的音乐人一样。但他们也在用自己的方式表达对此的热爱（但至于卖艺之人的真正目的还是要自己去判断）。<br>社会的人群分布就像一个金字塔，少数的人群是在塔尖，而大部分的人却是处于金字塔身和塔底。而这部分人也可称为普通人。当然我也是其中的一员。按照马斯洛的需要层次理论，从金字塔底到塔尖分别是生理需求、安全需求、社交需求、尊重需求、自我实现。不错，每个人都有理想，也有实现理想的愿望。当我们还在为满足我们的底层需求而奔波劳碌的时候，我们是不是就可以算得上是普通人呢？</p>
-<p>当我听着桶子鼓乐队的歌声，看着他们的投入；当我看到满脸汗水、挂着微笑的小摊小贩时；当我看到早高峰忙忙碌碌的人群时；还有晚上十二点之后还疾驰在路上的人们……我瞬间就能充满正能量。因为即使我们是再普通不过的人群，但我们仍旧用自己的双手去创建明天，飞洒着汗水，即使充满艰辛和坎坷，我们努力着、尝试着。偶尔我们会沮丧，但我们不会自暴自弃；偶尔我们会怨天尤人，但我们会尝试将其转化前行的动力。虽然我们处在金字塔底层，但我们也在贡献着我们的大量财富；虽然我们是普通人，但我们也追求梦想，勇于奋进。<br><img src="http://yhv5.com/uploads/2014/06/power.jpg" alt="power"></p>
+<p>当我听着桶子鼓乐队的歌声，看着他们的投入；当我看到满脸汗水、挂着微笑的小摊小贩时；当我看到早高峰忙忙碌碌的人群时；还有晚上十二点之后还疾驰在路上的人们……我瞬间就能充满正能量。因为即使我们是再普通不过的人群，但我们仍旧用自己的双手去创建明天，飞洒着汗水，即使充满艰辛和坎坷，我们努力着、尝试着。偶尔我们会沮丧，但我们不会自暴自弃；偶尔我们会怨天尤人，但我们会尝试将其转化前行的动力。虽然我们处在金字塔底层，但我们也在贡献着我们的大量财富；虽然我们是普通人，但我们也追求梦想，勇于奋进。<br><img src="https://yhv5.com/uploads/2014/06/power.jpg" alt="power"></p>
 <p>就如同桶子鼓乐队，虽然没有明星的演唱会，但他们可以有街头巡演；可以把自己的歌曲带给身边的人，把快乐和激情传递给身边的人。这不禁让我想到“星星之火可以燎原”，虽然意境不一样，但相信我们每一个普通人在坚持自己的梦想的时候，在努力开心的面对生活艰辛的时候，我们就是自己的英雄。</p>
 <p>(The End)</p>
 ]]></content>
@@ -943,7 +943,7 @@
     <link href="http://yhv5.com/php_vendor_login_1155.html"/>
     <id>http://yhv5.com/php_vendor_login_1155.html</id>
     <published>2014-06-13T17:07:43.000Z</published>
-    <updated>2017-08-17T11:17:08.390Z</updated>
+    <updated>2017-09-16T09:31:39.542Z</updated>
     
     <content type="html"><![CDATA[<p>话说，这都是一年以前就想写的，一直都没想起这件事了，最近发现很多人都在做关于这个方面应用（虽然RR都黯然神伤了，陌陌已经整装待发了），但还是将自己的心得总结一下，分享给有需要的小伙伴们吧！其实也是比较简单的操作，老鸟可飞过，只为新手指路。</p>
 <h3 id="同步登录之QQ"><a href="#同步登录之QQ" class="headerlink" title="同步登录之QQ"></a>同步登录之QQ</h3><ul>
@@ -966,7 +966,7 @@
 </li>
 </ul>
 <p>和上面两种例子一样操作完成之后再相对应的回调页面处理结果即可！（SDK文末附上）</p>
-<p>SDK下载: <a href="http://yhv5.com/software/QQ-SDK.zip">QQSDK</a>、<a href="http://yhv5.com/software/WB-SDK.zip">WBSDK</a>、<a href="http://yhv5.com/software/RR-SDK.zip">RRSDK</a></p>
+<p>SDK下载: <a href="https://yhv5.com/software/QQ-SDK.zip">QQSDK</a>、<a href="https://yhv5.com/software/WB-SDK.zip">WBSDK</a>、<a href="https://yhv5.com/software/RR-SDK.zip">RRSDK</a></p>
 <p>(The End)</p>
 ]]></content>
     

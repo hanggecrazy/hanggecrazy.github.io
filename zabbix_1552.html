@@ -97,18 +97,18 @@
 <meta property="og:url" content="http://yhv5.com/zabbix_1552.html">
 <meta property="og:site_name" content="Crazy&#39;s Blog">
 <meta property="og:description" content="zabbix是一款基于WEB界面的提供分布式系统监视以及网络监视功能的企业级开源解决方案，源码是用PHP写的，官方地址可以移步zabbix观摩。 其实市场上的监控工具已经多得数不胜数了，现在比较流行的都是站长利用第三方进行监控自己的站点，很少自己来维护一套监控方案了，但是我觉得zabbix还是有必要了解和知道的，因为它的确很优秀，不仅能监视各种网络参数，保证服务器系统的安全运营；还能提供柔软的通知">
-<meta property="og:image" content="http://yhv5.com/uploads/2014/08/zabbix.jpg">
-<meta property="og:image" content="http://yhv5.com/uploads/2014/08/zabbix_2.jpg">
-<meta property="og:image" content="http://yhv5.com/uploads/2014/08/zabbix_3.jpg">
-<meta property="og:image" content="http://yhv5.com/uploads/2014/08/zabbix_5.jpg">
-<meta property="og:image" content="http://yhv5.com/uploads/2014/08/zabbix_6.jpg">
-<meta property="og:image" content="http://yhv5.com/uploads/2014/08/zabbix_7.jpg">
-<meta property="og:image" content="http://yhv5.com/uploads/2014/08/zabbix_4.jpg">
-<meta property="og:updated_time" content="2017-08-17T11:17:08.410Z">
+<meta property="og:image" content="https://yhv5.com/uploads/2014/08/zabbix.jpg">
+<meta property="og:image" content="https://yhv5.com/uploads/2014/08/zabbix_2.jpg">
+<meta property="og:image" content="https://yhv5.com/uploads/2014/08/zabbix_3.jpg">
+<meta property="og:image" content="https://yhv5.com/uploads/2014/08/zabbix_5.jpg">
+<meta property="og:image" content="https://yhv5.com/uploads/2014/08/zabbix_6.jpg">
+<meta property="og:image" content="https://yhv5.com/uploads/2014/08/zabbix_7.jpg">
+<meta property="og:image" content="https://yhv5.com/uploads/2014/08/zabbix_4.jpg">
+<meta property="og:updated_time" content="2017-09-16T09:31:39.547Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Zabbix监控">
 <meta name="twitter:description" content="zabbix是一款基于WEB界面的提供分布式系统监视以及网络监视功能的企业级开源解决方案，源码是用PHP写的，官方地址可以移步zabbix观摩。 其实市场上的监控工具已经多得数不胜数了，现在比较流行的都是站长利用第三方进行监控自己的站点，很少自己来维护一套监控方案了，但是我觉得zabbix还是有必要了解和知道的，因为它的确很优秀，不仅能监视各种网络参数，保证服务器系统的安全运营；还能提供柔软的通知">
-<meta name="twitter:image" content="http://yhv5.com/uploads/2014/08/zabbix.jpg">
+<meta name="twitter:image" content="https://yhv5.com/uploads/2014/08/zabbix.jpg">
 
 
 
@@ -435,20 +435,20 @@
 <h4 id="配置web访问"><a href="#配置web访问" class="headerlink" title="配置web访问"></a>配置web访问</h4><p>我们可以将zabbix_server解压目录中的frontends文件copy到我们的站点根目录，比如<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">copy -r /usr/<span class="built_in">local</span>/download/zabbix-2.2.5/frontends/php /usr/<span class="built_in">local</span>/nginx/html/zabbix</div></pre></td></tr></table></figure></p>
 <p>然后根据自己的选择的服务（nginx、apache、ligttpd）进行配置。</p>
 <p>完成之后我们就可以通过web进行访问了，因为zabbix源码是php ，我们需要安装php解析器（环境），安装php由于篇幅限制，本文不做介绍，具体可以移步各大论坛博客求攻略，web访问进入如下界面：</p>
-<p><img src="http://yhv5.com/uploads/2014/08/zabbix.jpg" alt="zabbix"></p>
+<p><img src="https://yhv5.com/uploads/2014/08/zabbix.jpg" alt="zabbix"></p>
 <p>接下来需要，在php配置文件中修改如下配置以满足zabbix的需要，max_execution_time、max_input_time、time zone</p>
-<p>修改php.ini文件之后重启php，看到如下配置都ok，然后next。<img src="http://yhv5.com/uploads/2014/08/zabbix_2.jpg" alt="zabbix_2"></p>
+<p>修改php.ini文件之后重启php，看到如下配置都ok，然后next。<img src="https://yhv5.com/uploads/2014/08/zabbix_2.jpg" alt="zabbix_2"></p>
 <p>根据提示填写基本配置信息并点击测试，pass之后继续next。</p>
-<p><img src="http://yhv5.com/uploads/2014/08/zabbix_3.jpg" alt="zabbix_3"></p>
+<p><img src="https://yhv5.com/uploads/2014/08/zabbix_3.jpg" alt="zabbix_3"></p>
 <p>到这一步，可能就要报错了，原因是我们需要先把数据表导入到数据库才能继续了，好吧，我们那就去导数据吧~，点击next</p>
-<p><img src="http://yhv5.com/uploads/2014/08/zabbix_5.jpg" alt="zabbix_5"></p>
-<p><img src="http://yhv5.com/uploads/2014/08/zabbix_6.jpg" alt="zabbix_6"></p>
-<p><img src="http://yhv5.com/uploads/2014/08/zabbix_7.jpg" alt="zabbix_7"></p>
+<p><img src="https://yhv5.com/uploads/2014/08/zabbix_5.jpg" alt="zabbix_5"></p>
+<p><img src="https://yhv5.com/uploads/2014/08/zabbix_6.jpg" alt="zabbix_6"></p>
+<p><img src="https://yhv5.com/uploads/2014/08/zabbix_7.jpg" alt="zabbix_7"></p>
 <p>如果遇到无法创建zabbix.conf.php，可以将站点根目录文件夹权限修改一下chown -R www:www /usr/local/nginx/html/zabbix</p>
 <p>需要将zabbix_server解压目录中的database文件夹中相应文件导入db，zabbix目前支持mysql、Oracle、sqllite、db2，我们把对应的文件夹中的文件导入db即可，这里我们选择mysql，则把mysql下面的3个文件（data.sql、images.sql、schema.sql）导入mysql中 ,完成之后我们就可以继续完成安装了，到这步就已经结束了，因为是导入的数据，因此zabbix默认登陆名是zabbix口令也是zabbix。我们登陆进入之后可以看到整个后台布局如下</p>
-<p><img src="http://yhv5.com/uploads/2014/08/zabbix_4.jpg" alt="zabbix_4"></p>
-<p><a href="http://yhv5.com/software/zabbix-2.2.5.tar.gz">zabbix-2.2.5.tar.gz</a> 下载</p>
-<p><a href="http://yhv5.com/software/zabbix_agents_2.2.5.linux2_6_23.amd64.tar.gz">zabbix_agents_2.2.5.linux2_6_23.amd64.tar.gz</a>下载</p>
+<p><img src="https://yhv5.com/uploads/2014/08/zabbix_4.jpg" alt="zabbix_4"></p>
+<p><a href="https://yhv5.com/software/zabbix-2.2.5.tar.gz">zabbix-2.2.5.tar.gz</a> 下载</p>
+<p><a href="https://yhv5.com/software/zabbix_agents_2.2.5.linux2_6_23.amd64.tar.gz">zabbix_agents_2.2.5.linux2_6_23.amd64.tar.gz</a>下载</p>
 <p>(The End)</p>
 
       

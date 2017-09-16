@@ -97,14 +97,14 @@
 <meta property="og:url" content="http://yhv5.com/hp_mac_10_11_1720.html">
 <meta property="og:site_name" content="Crazy&#39;s Blog">
 <meta property="og:description" content="终于闲下来吃口黑苹果了，hp(9470)最终完美驱动10.11，现在呈给各位看客朋友，勿喷。机器配置  处理器：惠普Folio 9470m采用了Ivy Bridge i5 335u处理器内存：8G 金士顿1600MHZ + 4G 海力士1600MHZ显示器：Intel HD Grpjics 4000 1366 x 768硬盘：120G SSD声卡：Intel HDA(Intel High Defi">
-<meta property="og:image" content="http://yhv5.com/uploads/2015/10/hd4000.jpg">
-<meta property="og:image" content="http://yhv5.com/uploads/2015/10/system.jpg">
-<meta property="og:image" content="http://yhv5.com/uploads/2015/10/network.jpg">
-<meta property="og:updated_time" content="2017-08-17T11:17:08.379Z">
+<meta property="og:image" content="https://yhv5.com/uploads/2015/10/hd4000.jpg">
+<meta property="og:image" content="https://yhv5.com/uploads/2015/10/system.jpg">
+<meta property="og:image" content="https://yhv5.com/uploads/2015/10/network.jpg">
+<meta property="og:updated_time" content="2017-09-16T09:31:39.539Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HP(9470)吃下黑苹果10.11">
 <meta name="twitter:description" content="终于闲下来吃口黑苹果了，hp(9470)最终完美驱动10.11，现在呈给各位看客朋友，勿喷。机器配置  处理器：惠普Folio 9470m采用了Ivy Bridge i5 335u处理器内存：8G 金士顿1600MHZ + 4G 海力士1600MHZ显示器：Intel HD Grpjics 4000 1366 x 768硬盘：120G SSD声卡：Intel HDA(Intel High Defi">
-<meta name="twitter:image" content="http://yhv5.com/uploads/2015/10/hd4000.jpg">
+<meta name="twitter:image" content="https://yhv5.com/uploads/2015/10/hd4000.jpg">
 
 
 
@@ -425,7 +425,7 @@
 <h4 id="复制驱动"><a href="#复制驱动" class="headerlink" title="复制驱动"></a>复制驱动</h4><p>将键盘驱动和鼠标驱复制到上面写入的硬盘分区下的/Extra/Extensions/下面，删除System/Library/Extensions/下面的IOBluethooth开头的蓝牙驱动（不然安装过程会要求接入苹果的蓝牙键盘和鼠标），后续该路径简写为/S/L/E/。</p>
 <h4 id="创建win下mac引导文件"><a href="#创建win下mac引导文件" class="headerlink" title="创建win下mac引导文件"></a>创建win下mac引导文件</h4><p>将下载的win版版色龙复制到win系统根目录C盘新建文件夹HJMac下，使用easybcd将变色龙引导写入到win系统引导中。</p>
 <h4 id="启动安装mac"><a href="#启动安装mac" class="headerlink" title="启动安装mac"></a>启动安装mac</h4><p>重启系统后可以看到引导中多了一个刚才创建的引导，选择进入选择我们上面写入的硬盘分区，使用命令行模式启动-v -f -x （这样如果出现无国可以方便排查）</p>
-<h4 id="获取显卡ID"><a href="#获取显卡ID" class="headerlink" title="获取显卡ID"></a>获取显卡ID</h4><p>顺利的话能进行安装，但是这里我们看看进入到安装界面时屏幕分辨率是否正常，如果不正常的，可以在顶部选择磁盘工具中的查看系统信息，找到对应的图形卡中对应的两组id值（设备ID和修正版ID）纪录下来，我这里分别是0x0166，0x0009，如图：<img src="http://yhv5.com/uploads/2015/10/hd4000.jpg" alt="hd4000"></p>
+<h4 id="获取显卡ID"><a href="#获取显卡ID" class="headerlink" title="获取显卡ID"></a>获取显卡ID</h4><p>顺利的话能进行安装，但是这里我们看看进入到安装界面时屏幕分辨率是否正常，如果不正常的，可以在顶部选择磁盘工具中的查看系统信息，找到对应的图形卡中对应的两组id值（设备ID和修正版ID）纪录下来，我这里分别是0x0166，0x0009，如图：<img src="https://yhv5.com/uploads/2015/10/hd4000.jpg" alt="hd4000"></p>
 <h4 id="注入显卡ID到变色龙启动文件"><a href="#注入显卡ID到变色龙启动文件" class="headerlink" title="注入显卡ID到变色龙启动文件"></a>注入显卡ID到变色龙启动文件</h4><p>点击顶部的黑苹果选择重启系统到win，将刚才纪录的两组ID值注入到/Extra/org.chameleon.Boot.plist中。如可添加<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">&lt;key&gt;Graphics Mode&lt;/key&gt;</div><div class="line">&lt;string&gt;1366x768x32&lt;/string&gt;</div><div class="line">&lt;key&gt;CsrActiveConfig&lt;/key&gt;</div><div class="line">&lt;string&gt;103&lt;/string&gt;</div><div class="line">&lt;key&gt;EthernetBuiltIn&lt;/key&gt;</div><div class="line">&lt;string&gt;Yes&lt;/string&gt;</div><div class="line">&lt;key&gt;GraphicsEnabler&lt;/key&gt;</div><div class="line">&lt;string&gt;Yes&lt;/string&gt;</div><div class="line">&lt;key&gt;Kernel&lt;/string&gt;</div><div class="line">&lt;string&gt;/System/Library/Kernels/kernel</div><div class="line">&lt;key&gt;Kernel Flags&lt;/key&gt;</div><div class="line">&lt;string&gt;<span class="_">-f</span>&lt;/string&gt;</div><div class="line">&lt;key&gt;Timeout&lt;/key&gt;</div><div class="line">&lt;string&gt;3&lt;/string&gt;</div><div class="line">&lt;key&gt;USBBusFix&lt;/key&gt;</div><div class="line">&lt;string&gt;Yes&lt;/string&gt;</div><div class="line">&lt;key&gt;HD4000PlatformId&lt;/key&gt;</div><div class="line">&lt;string&gt;9&lt;/string&gt;</div><div class="line">&lt;key&gt;ig-platform-id&lt;/key&gt;</div><div class="line">&lt;string&gt;0x01660009&lt;/string&gt;</div><div class="line">&lt;key&gt;InjectIntel-ig&lt;/key&gt;</div><div class="line">&lt;string&gt;09006601&lt;/string&gt;</div><div class="line">&lt;key&gt;IntelCapriFB&lt;/key&gt;</div><div class="line">&lt;string&gt;3&lt;/string&gt;</div><div class="line">&lt;key&gt;device-properties&lt;/key&gt;</div><div class="line">&lt;string&gt;5e0000000100000001000000520000000100000002010c00d041030a000000000101060000027fff04002c0000004100410050004c002c00690067002d0070006c006100740066006f0072006d002d006900640000000800000003006601&lt;/string&gt;</div></pre></td></tr></table></figure></p>
 <p>注：Graphics Mode 可以指定分辨率，EthernetBuiltIn 是否内建网卡，GraphicsEnabler 是否开启显卡侦测，HD4000PlatformId显卡驱动id , 如果是HD5000就改成5000，ID值就是0x0009，解释下为什么我这里是9，在计算机内部指令是0x0009 对应0x09和0x00，这里所以就是值9，ig-platform-id 这个值就是刚才的纪录的两组合ID，注意顺序。InjectIntel-ig这个值需要注意顺序为09006601（分解为0x09,0x00,0x66,0x01）。IntelCapriFB 这个是1366 x 768 分辨率的都写3，其他分辨率的值不一样。最后一个值比较重要，是一组显卡神奇string注入代码，直接使用即可。</p>
 <h4 id="检查显卡驱动是否正常驱动"><a href="#检查显卡驱动是否正常驱动" class="headerlink" title="检查显卡驱动是否正常驱动"></a>检查显卡驱动是否正常驱动</h4><p>修改完之后，重启上面第8步操作，此时来到安装界面分辨率应该是正常的，另外可以到磁盘工具下面的系统信息中找到刚才的图形卡，可以看到是总线是内建状态（表示驱动成功）。</p>
@@ -433,8 +433,8 @@
 <h4 id="驱动修改"><a href="#驱动修改" class="headerlink" title="驱动修改"></a>驱动修改</h4><p>安装完成后会重启系统，先进入到win系统，将Mac引导盘中的/Extra 复制到Mac安装好的分区根目录下，然后到安装盘中删除/Extra/Extensions ,/Extra/SMBIOS.plist，这里说下为什么要删除，因为，本身/S/L/E/下面已经有/Extra/Extension/下面的驱动，删除SMBios.plist是防止无法登录iMessage，将鼠标驱动AppleACPIPS2Nub.kext和键盘驱动ApplePS2Controller.kext以及fsckSM.kext复制到/S/L/E/。</p>
 <h4 id="重启检查"><a href="#重启检查" class="headerlink" title="重启检查"></a>重启检查</h4><p>安装完成后会重启，来到刚才安装Mac分区，选择安装的Mac分区，并使用命令行模式-v -f -x 进行继续安装后续的操作，这个过程基本上不会出现问题。</p>
 <h4 id="进入桌面"><a href="#进入桌面" class="headerlink" title="进入桌面"></a>进入桌面</h4><p>这样应该可以顺利进入桌面，分辨率这时候应该是正常的，安装multibease,和kext wizard，前者是包含了一部分的驱动如以太网卡驱动、声卡驱动等等，可以方便的直接安装。到此为止电脑基本上就算正常了，如果无线网卡没办法驱动的，就买个usb的吧！</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>最后上一张安装完成的截图：<img src="http://yhv5.com/uploads/2015/10/system.jpg" alt="system"></p>
-<p>对于很多无法登录AppStore的看客，可以试着先内建以太网卡，或者使用蓝牙驱动创建en0,避免先安装无线网卡导致无线网卡变成en0,无法登录AppStore。<img src="http://yhv5.com/uploads/2015/10/network.jpg" alt="network"></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>最后上一张安装完成的截图：<img src="https://yhv5.com/uploads/2015/10/system.jpg" alt="system"></p>
+<p>对于很多无法登录AppStore的看客，可以试着先内建以太网卡，或者使用蓝牙驱动创建en0,避免先安装无线网卡导致无线网卡变成en0,无法登录AppStore。<img src="https://yhv5.com/uploads/2015/10/network.jpg" alt="network"></p>
 <p>最后说下为什么上面介绍时说系统安装分区一定要大于30G，因为系统安装完之后基本上就到了20G+，剩余的空间就不会很多了，苹果系统下面进行无损扩容分区非常不方便，所以建议大家开始就将分区设置大一些。</p>
 <p>然后说下怎么进行无损扩容，首先你需要有块移动硬盘或者普通硬盘能接入到电脑上的都行，将这块硬盘分一个区大概不要小于Mac目前的系统分区就够了，然后再Mac系统下使用磁盘工具把这个分区格式和成日志式。选择我们需要备份的Mac系统盘，在磁盘工具顶部选择“文件－&gt;新建镜像－&gt;Mac的镜像”，选择后填写好镜像的名称和备份的磁盘路径（刚格式化出来的分区），这个过程需要半小时左右，具体看导出的分区大小决定。结束后会在目标分区上生成一个名称.dmg格式的镜像文件。然后在win下面使用磁盘工具将分区进行合并好后，重新创建新的分区。使用win版变色龙来引导Mac到安装界面，选择磁盘工具，点击上方的“编辑－&gt;恢复”后，选择上面生产的dmg格式文件，恢复到新创见的分区上即可，如果分区格式不对，可以使用磁盘工具格式化为日志式分区类型。等待大概10分钟左右就可以将之前的系统恢复过来了，过程比较麻烦，所以建议之前将分区设置大一些。</p>
 <p>(The End)</p>

@@ -97,12 +97,12 @@
 <meta property="og:url" content="http://yhv5.com/chrome_ua_991.html">
 <meta property="og:site_name" content="Crazy&#39;s Blog">
 <meta property="og:description" content="今天笔者在无意识中爬文 乌云 平台上面最近报告的漏洞，各种形形色色奇葩的XSS攻击还是历历在目，只有想不到的，没有做不到的。虽然自己以前也做过这方面的安全过滤处理，但是看见乌云上频频爆出的漏洞，心中既是欢喜又是担忧，欢喜是因为我又了解到了一些新的东西；忧虑是因为自己在这些方面的工作没有完全做到位。 提及安全，试问大家在做任何事是不是都先将安全方面放在首位呢？我想这里应该不用我来强调，可以见得它有举">
-<meta property="og:image" content="http://yhv5.com/uploads/2014/04/ua.jpg">
-<meta property="og:updated_time" content="2017-08-17T11:17:08.372Z">
+<meta property="og:image" content="https://yhv5.com/uploads/2014/04/ua.jpg">
+<meta property="og:updated_time" content="2017-09-16T09:31:39.538Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chrome UA插件问题">
 <meta name="twitter:description" content="今天笔者在无意识中爬文 乌云 平台上面最近报告的漏洞，各种形形色色奇葩的XSS攻击还是历历在目，只有想不到的，没有做不到的。虽然自己以前也做过这方面的安全过滤处理，但是看见乌云上频频爆出的漏洞，心中既是欢喜又是担忧，欢喜是因为我又了解到了一些新的东西；忧虑是因为自己在这些方面的工作没有完全做到位。 提及安全，试问大家在做任何事是不是都先将安全方面放在首位呢？我想这里应该不用我来强调，可以见得它有举">
-<meta name="twitter:image" content="http://yhv5.com/uploads/2014/04/ua.jpg">
+<meta name="twitter:image" content="https://yhv5.com/uploads/2014/04/ua.jpg">
 
 
 
@@ -403,7 +403,7 @@
         <p>今天笔者在无意识中爬文 <a href="http://www.wooyun.org/" target="_blank" rel="external">乌云</a> 平台上面最近报告的漏洞，各种形形色色奇葩的XSS攻击还是历历在目，只有想不到的，没有做不到的。虽然自己以前也做过这方面的安全过滤处理，但是看见乌云上频频爆出的漏洞，心中既是欢喜又是担忧，欢喜是因为我又了解到了一些新的东西；忧虑是因为自己在这些方面的工作没有完全做到位。</p>
 <p>提及安全，试问大家在做任何事是不是都先将安全方面放在首位呢？我想这里应该不用我来强调，可以见得它有举足重轻的分量。那你是否会问：为什么都将安全方面放在第一考虑，为何还是出现问题？ 这个问题其实也就说明安全是没有绝对的，没有人能将事情做得最完美，即使可能是花着百分之百的心思去处理这件事。因此，我们需要做的是减少问题的出现，尽量避免不必要的烦恼，来减少人力物力方面的支出，毕竟不要让人疲于奔命。</p>
 <p>作为一枚程序猿，我想熟悉这方面工作的人都知道，几乎很难将一段程序在没有BUG的前提下完成，这也因此有了“调试”工作的意义。好吧！说了这么多就想引出今天的正题-chrome浏览器插件 <a href="https://chrome.google.com/webstore/detail/user-agent-switcher-for-c/djflhoibgkdhkhhcedjiklpkjnoahfmg" target="_blank" rel="external">UserAgent switch</a> 的XSS问题。听这个名字大家都应该知道是干什么使的，对，其实就是一个切换UA的工具。很多人都注意了各方面的params、COOKIE、referer blablabla什么什么的过滤，但是往往还忽略了UserAgent也可能带来隐患。这不问题来了，使用UA工具添加一条UA信息准备切换过去，但是问题出来了。我添加的信息VALUE是一段脚本，如：<code>&lt;script&gt;window.location = &quot;http://www.yhv5.com/&quot;&lt;/script&gt;</code>，保存之后我便再也无法使用UA了，修改、添加、切换都无法使用。就连页面结构都乱了。如下图：</p>
-<p><img src="http://yhv5.com/uploads/2014/04/ua.jpg" alt="ua"></p>
+<p><img src="https://yhv5.com/uploads/2014/04/ua.jpg" alt="ua"></p>
 <p>不过这只是前端的一个影响，细心的朋友就会注意到如果安全工作没有做到位，可能就会遇到：在使用很多日志分析工具都是生成html格式的报告，如果这个字段值没有经过合适的过滤编码就直接输出在html里，管理员查看的时候就会执行插入的js了。<span class="subject">Splunk</span>就曾经出过因为对referer字段没有过滤导致的xss漏洞。本质上来说如果要进行xss攻击，只要找到一个未过滤的输入点。输入的数据在支持脚本的软件（不仅限于浏览器）里解析就可以了。sqli也是类似的道理。而输入点并不仅仅是网页里的表单，只要去发现，输入点无处不在，也防不胜防。</p>
 <p>(The End)</p>
 
