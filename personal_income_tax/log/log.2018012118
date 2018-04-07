@@ -1,0 +1,9 @@
+[NOTICE] [2018-01-21 18:38:54:398981] [15165311346791] [] query:查询个税 all_t:0
+[NOTICE] [2018-01-21 18:38:54:399152] [15165311346791] [{"post":[]}] query:查询个税 all_t:0
+[NOTICE] [2018-01-21 18:38:54:399187] [15165311346791] [{"get":[]}] query:查询个税 all_t:0
+[NOTICE] [2018-01-21 18:39:06:886712] [15165311464602] [] query:两万 number:20000 all_t:0
+[NOTICE] [2018-01-21 18:39:06:886801] [15165311464602] [{"post":[]}] query:两万 number:20000 all_t:0
+[NOTICE] [2018-01-21 18:39:06:886838] [15165311464602] [{"get":[]}] query:两万 number:20000 all_t:0
+[NOTICE] [2018-01-21 18:39:15:567261] [15165311557284] [173] query:南充 number:20000 city:{"city":"南充","country":"中国","origin":"南充","province":"四川"} compute_type:个税 url::https://sp0.baidu.com/8aQDcjqpAAV3otqbppnN2DJv/api.php?ie=utf-8&resource_id=28259&req_from=app&query=个税计算器&monthlysalary=20000&location=南充&compute_type=geshui url_t:173 all_t:174
+[NOTICE] [2018-01-21 18:39:15:567349] [15165311557284] [{"post":[]}] query:南充 number:20000 city:{"city":"南充","country":"中国","origin":"南充","province":"四川"} compute_type:个税 url::https://sp0.baidu.com/8aQDcjqpAAV3otqbppnN2DJv/api.php?ie=utf-8&resource_id=28259&req_from=app&query=个税计算器&monthlysalary=20000&location=南充&compute_type=geshui url_t:173 all_t:174
+[NOTICE] [2018-01-21 18:39:15:567379] [15165311557284] [{"get":[]}] query:南充 number:20000 city:{"city":"南充","country":"中国","origin":"南充","province":"四川"} compute_type:个税 url::https://sp0.baidu.com/8aQDcjqpAAV3otqbppnN2DJv/api.php?ie=utf-8&resource_id=28259&req_from=app&query=个税计算器&monthlysalary=20000&location=南充&compute_type=geshui url_t:173 all_t:174
