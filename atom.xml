@@ -190,9 +190,9 @@
     
       <category term="centos" scheme="http://yhv5.com/tags/centos/"/>
     
-      <category term="mysql" scheme="http://yhv5.com/tags/mysql/"/>
-    
       <category term="Linux" scheme="http://yhv5.com/tags/Linux/"/>
+    
+      <category term="mysql" scheme="http://yhv5.com/tags/mysql/"/>
     
   </entry>
   
