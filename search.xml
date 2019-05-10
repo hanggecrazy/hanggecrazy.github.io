@@ -165,9 +165,9 @@
             
             <tag> centos </tag>
             
-            <tag> Linux </tag>
-            
             <tag> mysql </tag>
+            
+            <tag> Linux </tag>
             
         </tags>
         
@@ -520,9 +520,9 @@
             
             <tag> MySQL </tag>
             
-            <tag> mystat </tag>
-            
             <tag> PHP </tag>
+            
+            <tag> mystat </tag>
             
         </tags>
         
@@ -1765,9 +1765,9 @@
             
             <tag> SVN </tag>
             
-            <tag> crontab </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> crontab </tag>
             
             <tag> Shell </tag>
             
